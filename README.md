@@ -7,6 +7,7 @@ Tutorial cum sa rulezi acelasi bot pe alt cont
 4. Creezi un fisier '.env' in care pui urmatoarele:
 
 TOKEN=[Tokenu tau de pe developer portal]
+
 MONGO_URI=[Url de la baza de date de pe MongoDB]
 
 5. Rulezi botu cu 'node index.js'
