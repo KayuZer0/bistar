@@ -15,7 +15,7 @@ var rainbowTimer: NodeJS.Timeout | null
 const cron = require('node-cron');
 
 export const client = new DiscordJS.Client({
-  intents : [
+  intents: [
     Intents.FLAGS.GUILDS,
     Intents.FLAGS.GUILD_MESSAGES,
     Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
@@ -23,21 +23,21 @@ export const client = new DiscordJS.Client({
   ]
 })
 
-client.on('guildMemberAdd', async (member) => { 
+client.on('guildMemberAdd', async (member) => {
   if (!member.user.bot) {
     utils.CreateMemberSchema(member)
   }
 })
 
 client.on('ready', async () => {
-  
+
   const guild = client.guilds.cache.get(utils.KAYU_SERVER_ID)
   guild?.members.fetch().then(members => {
-  members.forEach(member => {
-    if (!member.user.bot) {
+    members.forEach(member => {
+      if (!member.user.bot) {
         utils.CreateMemberSchema(member)
       }
-    })   
+    })
   })
 
   client.user?.setActivity("cu bi$tarii", {
@@ -53,16 +53,16 @@ client.on('ready', async () => {
     .setDefaultPrefix('-')
 
   StartRainbow()
-  
-  cron.schedule('0 * * * *', function () {
+
+  cron.schedule('0 * * * *', function() {
     Payday(true)
   });
 
 })
 
-export async function Payday(resetMessages: boolean){
+export async function Payday(resetMessages: boolean) {
   await (await userschema.find()).forEach(
-    async function (doc) {
+    async function(doc) {
       const serverDbDoc = await serverschema.findOne({ '_id': utils.SERVER_DATABASE_DOCUMENT_ID })
       const member = (await client.guilds.fetch(utils.KAYU_SERVER_ID)).members.fetch(doc.user_id)
 
@@ -90,13 +90,13 @@ export async function Payday(resetMessages: boolean){
         { _id: doc.id },
         { bistari: newBistari }
       );
-      
+
       const newGiftPoints = doc.gift_points + paydayGiftPoints
       await userschema.findOneAndUpdate(
         { _id: doc.id },
         { gift_points: newGiftPoints }
       );
-        
+
       const userId = doc.user_id
       const user = client.users.fetch(doc.user_id).then(async (user) => {
         if (user.bot) {
@@ -110,19 +110,19 @@ export async function Payday(resetMessages: boolean){
           .addField(`BI$TARI Primiti:`, `${doc.messages_sent} x ${paydayBistari} = ${payday}`, false)
           .addField(`BI$TARI Totali:`, `${newBistari}`, false)
           .addField(`Ai primit 100 Gift Points:`, `${newGiftPoints}/${giftBoxPrice}`, false)
-          
+
         let memberRoles = ((await member).roles as GuildMemberRoleManager).cache;
         if (memberRoles.some((role: any) => role.id === utils.BISTAR_ROLE_ID)) {
           embed.setFooter(`Pentru ca esti BI$TAR, ai primit x${bistarPaydayMultiplier} Payday!`)
         }
 
-        user.send({embeds: [embed]}).catch(error => {
+        user.send({ embeds: [embed] }).catch(error => {
           console.log(`Something went wrong while I tried to send a DM to ${user}`)
-        }) 
-            
+        })
+
       });
-      
-      if (resetMessages) {        
+
+      if (resetMessages) {
         await userschema.findOneAndUpdate(
           { _id: doc.id },
           { messages_sent: 0 }
@@ -131,17 +131,17 @@ export async function Payday(resetMessages: boolean){
     }
   )
 }
-  
+
 export async function RestartRainbow() {
   StopRainbow()
-  setTimeout(function () {
+  setTimeout(function() {
     StartRainbow()
   }, 1000);
 }
 
-async function StartRainbow() { 
+async function StartRainbow() {
   const serverDb = await utils.GetServerDatabase()
-  
+
   if (serverDb) {
     var databaseRainbowSpeed = serverDb.rainbow_speed
     var rainbowSpeed = databaseRainbowSpeed * 5 * 60000
@@ -150,7 +150,7 @@ async function StartRainbow() {
       return
     }
 
-    rainbowTimer = setTimeout(function () {
+    rainbowTimer = setTimeout(function() {
       ChangeBistarRoleColor()
       StartRainbow()
     }, rainbowSpeed);
@@ -176,7 +176,7 @@ function ChangeBistarRoleColor() {
   console.log(`Color change to ${role?.color}`)
 }
 
-client.on("messageCreate", async function (message) {
+client.on("messageCreate", async function(message) {
   const serverDbDoc = await serverschema.findOne({ '_id': utils.SERVER_DATABASE_DOCUMENT_ID })
   const messageAuthorDbDoc = await userschema.findOne({ 'user_id': message.author.id })
 
@@ -191,7 +191,7 @@ client.on("messageCreate", async function (message) {
   console.log(message.content)
 
   const messagesSent = messageAuthorDbDoc.messages_sent
-  
+
   const isBistar = message.member?.roles.cache.some((role: any) => role.id === utils.BISTAR_ROLE_ID)
   const isNadir = message.member?.roles.cache.some((role: any) => role.id === utils.NADIR_ROLE_ID)
 
@@ -226,7 +226,7 @@ client.on("messageCreate", async function (message) {
 
   //? Only speaking with attachments logic.
   if (message.author.id != utils.KAYU_ID && !isBistar && !message.author.bot && message.member) {
-    if (messageAuthorDbDoc.taci) {      
+    if (messageAuthorDbDoc.taci) {
       if (message.attachments.size < 1) {
         message.delete()
       }
