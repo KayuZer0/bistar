@@ -16,7 +16,7 @@ export default {
         index.Payday(false)
 
         interaction.reply({
-            content: `**Bai @everbody smecherosul de KayuZer0 a dat payday la toata lumea gg in chat.**`,
+            content: `**Holy shit @everbody smecherosul de KayuZer0 a dat payday la toata lumea gg in chat.**`,
         })
 
     }

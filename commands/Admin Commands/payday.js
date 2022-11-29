@@ -41,8 +41,7 @@ exports.default = {
     callback: ({ channel, interaction, args }) => __awaiter(void 0, void 0, void 0, function* () {
         index.Payday(false);
         interaction.reply({
-            content: `**Bai @everyone smecherosul de KayuZer0 a dat payday la toata lumea gg in chat.**`,
-            ephemeral: true,
+            content: `**Holy shit @everbody smecherosul de KayuZer0 a dat payday la toata lumea gg in chat.**`,
         });
     })
 };
