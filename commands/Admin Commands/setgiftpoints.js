@@ -17,6 +17,7 @@ exports.default = {
     category: "Admin",
     description: "Seteaza Gift Points cuiva.",
     slash: true,
+    ownerOnly: true,
     options: [
         {
             name: "user",

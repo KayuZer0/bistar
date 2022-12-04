@@ -11,6 +11,7 @@ export default {
     description: "Da Gift Points cuiva.",
 
     slash: true,
+    ownerOnly: true,
 
     options: [
         {

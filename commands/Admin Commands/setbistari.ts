@@ -11,6 +11,7 @@ export default {
     description: "Seateaza BI$TARII cuiva.",
 
     slash: true,
+    ownerOnly: true,
 
     options: [
         {

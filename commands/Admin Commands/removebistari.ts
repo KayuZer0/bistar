@@ -11,6 +11,7 @@ export default {
     description: "Scoate BI$TARI de la cineva.",
 
     slash: true,
+    ownerOnly: true,
 
     options: [
         {

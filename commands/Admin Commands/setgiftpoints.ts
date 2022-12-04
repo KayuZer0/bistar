@@ -11,6 +11,7 @@ export default {
     description: "Seteaza Gift Points cuiva.",
 
     slash: true,
+    ownerOnly: true,
 
     options: [
         {

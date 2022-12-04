@@ -17,6 +17,7 @@ exports.default = {
     category: "Admin",
     description: "Da BI$TARI cuiva.",
     slash: true,
+    ownerOnly: true,
     options: [
         {
             name: "user",

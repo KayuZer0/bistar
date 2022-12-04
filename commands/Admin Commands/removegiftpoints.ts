@@ -11,6 +11,7 @@ export default {
     description: "Scoate Gift Points cuiva.",
 
     slash: true,
+    ownerOnly: true,
 
     options: [
         {

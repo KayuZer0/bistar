@@ -11,6 +11,7 @@ export default {
     description: "Da BI$TARI cuiva.",
 
     slash: true,
+    ownerOnly: true,
 
     options: [
         {

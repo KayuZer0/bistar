@@ -17,6 +17,7 @@ exports.default = {
     category: "Admin",
     description: "Scoate BI$TARI de la cineva.",
     slash: true,
+    ownerOnly: true,
     options: [
         {
             name: "user",
