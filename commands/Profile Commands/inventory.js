@@ -36,12 +36,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const discord_js_1 = require("discord.js");
-const serverschema_1 = __importDefault(require("../schemas/serverschema"));
-const userschema_1 = __importDefault(require("../schemas/userschema"));
-const utils = __importStar(require("../utils"));
+const serverschema_1 = __importDefault(require("../../schemas/serverschema"));
+const userschema_1 = __importDefault(require("../../schemas/userschema"));
+const utils = __importStar(require("../../utils"));
 exports.default = {
-    category: "Stats",
-    description: "Vezi statisticile tale sau ale altui user.",
+    category: "Profile",
+    description: "Vezi ce iteme ai in Inventar.",
     slash: true,
     options: [{
             name: "user",
@@ -58,8 +58,6 @@ exports.default = {
         }
         const giftBoxPrice = serverDbDoc.giftbox_price;
         let member;
-        let bistari;
-        let giftPoints;
         let banAndreeaTickets;
         let trapTickets;
         let modifyServerTickets;
@@ -69,8 +67,6 @@ exports.default = {
         let speakTickets;
         if (userArg == null) {
             member = interaction.user.username;
-            bistari = cmdAuthorDbDoc.bistari;
-            giftPoints = cmdAuthorDbDoc.gift_points;
             banAndreeaTickets = cmdAuthorDbDoc.ban_andreea_tickets;
             trapTickets = cmdAuthorDbDoc.trap_tickets;
             modifyServerTickets = cmdAuthorDbDoc.modify_server_tickets;
@@ -85,8 +81,6 @@ exports.default = {
                 return;
             }
             member = userArg.username;
-            bistari = mentionedUserDbDoc.bistari;
-            giftPoints = mentionedUserDbDoc.gift_points;
             banAndreeaTickets = mentionedUserDbDoc.ban_andreea_tickets;
             trapTickets = mentionedUserDbDoc.trap_tickets;
             modifyServerTickets = mentionedUserDbDoc.modify_server_tickets;
@@ -95,10 +89,29 @@ exports.default = {
             stfuTickets = mentionedUserDbDoc.taci_tickets;
             speakTickets = mentionedUserDbDoc.nu_tac_tickets;
         }
+        let inventory = [banAndreeaTickets, trapTickets, modifyServerTickets, nadirTickets, escapeTickets, stfuTickets, speakTickets];
+        let vanityInventory = [
+            `🎟️ **Ban Andreea Tickets:** ${banAndreeaTickets}`,
+            `🎟️ **Trap Tickets:** ${trapTickets}`,
+            `🎟️ **Modify Server Tickets:** ${modifyServerTickets}`,
+            `🎟️ **Nadir Tickets:** ${nadirTickets}`,
+            `🎟️ **Escape Tickets:** ${escapeTickets}`,
+            `🎟️ **STFU Tickets:** ${stfuTickets}`,
+            `🎟️ **Speak Tickets:** ${speakTickets}`
+        ];
+        let finalInventory = [];
+        for (var i = 0; i < inventory.length; i++) {
+            if (inventory[i] > 0) {
+                finalInventory.push(`${vanityInventory[i]}` + `\n`);
+            }
+        }
+        if (finalInventory.length == 0) {
+            finalInventory[0] = `Inventarul tau este gol.`;
+        }
         const embed = new discord_js_1.MessageEmbed()
             .setColor(utils.GenerateColor())
-            .setTitle(`${member} - Stats`)
-            .setDescription(`🪙 **BI$TARI:** ${bistari}\n🎁 **Gift Points:** ${giftPoints}/${giftBoxPrice}\n\n🎟️ **Ban Andreea Tickets:** ${banAndreeaTickets}\n🎟️ **Trap Tickets:** ${trapTickets}\n🎟️ **Modify Server Tickets:** ${modifyServerTickets}\n🎟️ **Nadir Tickets:** ${nadirTickets}\n🎟️ **Escape Tickets:** ${escapeTickets}\n🎟️ **STFU Tickets:** ${stfuTickets}\n🎟️ **Speak Tickets:** ${speakTickets}`);
+            .setTitle(`${member} - Inventory`)
+            .setDescription(finalInventory.toString().replaceAll(`,`, ``));
         interaction.reply({
             embeds: [embed]
         });
