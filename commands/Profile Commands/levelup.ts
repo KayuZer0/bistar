@@ -20,6 +20,9 @@ export default {
             return
         }
 
+        const bistari = cmdAuthorDbDoc.bistari
+        const premiumPoints = cmdAuthorDbDoc.premium_points
+
         const level = cmdAuthorDbDoc.level
         const rp = cmdAuthorDbDoc.respect_points
         const rpToNextLevel = cmdAuthorDbDoc.respect_points_to_next_level
@@ -52,9 +55,29 @@ export default {
             { respect_points_to_next_level: newRpToNextLevel }
         );
 
+        let bonusMsg = ``
+
+        if (newLevel % 5 == 0) {
+            let bistariBonus = utils.GetRandomNumber(10, 151)
+            let ppBonus = utils.GetRandomNumber(1, 16)
+
+            const newBistari = bistari + bistariBonus
+            await userschema.findOneAndUpdate(
+                { user_id: interaction.member?.user.id },
+                { bistari: newBistari }
+            );
+
+            const newPremiumPoints = premiumPoints + ppBonus
+            await userschema.findOneAndUpdate(
+                { user_id: interaction.member?.user.id },
+                { bistari: newBistari }
+            );
+
+            bonusMsg = `\n**Ai primit un bonus pentru ca ai atins level ${newLevel}!**\n**Ai primit** ${bistariBonus} **BI$TARI.**\n**Ai primit** ${ppBonus} **Premium Points.**`
+        }
+
         interaction.reply({
-            content: `**Holy fucking shit tocmai ai dat level up!**\n**Acum ai Level:** ${newLevel}\n**Respect Points:** ${newRP}`,
-            files: ['./resources/mamacoaie.jpg'],
+            content: `**Holy fucking shit tocmai ai dat level up!**\n**Acum ai Level:** ${newLevel}\n**Respect Points:** ${newRP}${bonusMsg}`,
         })
 
     }
