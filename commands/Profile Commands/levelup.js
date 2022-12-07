@@ -43,12 +43,14 @@ exports.default = {
     description: "Da level up daca poti.",
     slash: true,
     callback: ({ channel, interaction, args }) => __awaiter(void 0, void 0, void 0, function* () {
-        var _a, _b, _c;
+        var _a, _b, _c, _d, _e;
         const serverDbDoc = yield serverschema_1.default.findOne({ '_id': utils.SERVER_DATABASE_DOCUMENT_ID });
         const cmdAuthorDbDoc = yield userschema_1.default.findOne({ 'user_id': interaction.user.id });
         if (serverDbDoc == null || cmdAuthorDbDoc == null) {
             return;
         }
+        const bistari = cmdAuthorDbDoc.bistari;
+        const premiumPoints = cmdAuthorDbDoc.premium_points;
         const level = cmdAuthorDbDoc.level;
         const rp = cmdAuthorDbDoc.respect_points;
         const rpToNextLevel = cmdAuthorDbDoc.respect_points_to_next_level;
@@ -66,8 +68,18 @@ exports.default = {
         yield userschema_1.default.findOneAndUpdate({ user_id: (_b = interaction.member) === null || _b === void 0 ? void 0 : _b.user.id }, { respect_points: newRP });
         const newRpToNextLevel = rpToNextLevel + serverDbDoc.respect_points_increment;
         yield userschema_1.default.findOneAndUpdate({ user_id: (_c = interaction.member) === null || _c === void 0 ? void 0 : _c.user.id }, { respect_points_to_next_level: newRpToNextLevel });
+        let bonusMsg = ``;
+        if (newLevel % 5 == 0) {
+            let bistariBonus = utils.GetRandomNumber(10, 151);
+            let ppBonus = utils.GetRandomNumber(1, 16);
+            const newBistari = bistari + bistariBonus;
+            yield userschema_1.default.findOneAndUpdate({ user_id: (_d = interaction.member) === null || _d === void 0 ? void 0 : _d.user.id }, { bistari: newBistari });
+            const newPremiumPoints = premiumPoints + ppBonus;
+            yield userschema_1.default.findOneAndUpdate({ user_id: (_e = interaction.member) === null || _e === void 0 ? void 0 : _e.user.id }, { bistari: newBistari });
+            bonusMsg = `\n**Ai primit un bonus pentru ca ai atins level ${newLevel}!**\n**Ai primit** ${bistariBonus} **BI$TARI.**\n**Ai primit** ${ppBonus} **Premium Points.**`;
+        }
         interaction.reply({
-            content: `**Holy fucking shit tocmai ai dat level up!**\n**Acum ai Level:** ${newLevel}\n**Respect Points:** ${newRP}`,
+            content: `**Holy fucking shit tocmai ai dat level up!**\n**Acum ai Level:** ${newLevel}\n**Respect Points:** ${newRP} ${bonusMsg}`,
         });
     })
 };

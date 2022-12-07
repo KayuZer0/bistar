@@ -9,6 +9,7 @@ const schema = new mongoose_1.default.Schema({
     rainbow_speed: { type: Number, required: true, default: 1 },
     trap_active: { type: Boolean, required: true, default: false },
     bistari_per_message: { type: Number, required: true },
+    base_payday: { type: Number, required: true },
     premium_points_per_payday: { type: Number, required: true },
     rp_added_per_payday: { type: Number, required: true },
     respect_points_increment: { type: Number, required: true },

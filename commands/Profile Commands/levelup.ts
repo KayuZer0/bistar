@@ -77,7 +77,7 @@ export default {
         }
 
         interaction.reply({
-            content: `**Holy fucking shit tocmai ai dat level up!**\n**Acum ai Level:** ${newLevel}\n**Respect Points:** ${newRP}${bonusMsg}`,
+            content: `**Holy fucking shit tocmai ai dat level up!**\n**Acum ai Level:** ${newLevel}\n**Respect Points:** ${newRP} ${bonusMsg}`,
         })
 
     }
