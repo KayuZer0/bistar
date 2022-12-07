@@ -70,31 +70,14 @@ export async function Payday(resetMessages: boolean) {
         return
       }
 
-      let paydayBistari = serverDbDoc.bistari_per_message
-      let paydayPremiumPoints = serverDbDoc.premium_points_per_payday
-      const bistarPaydayMultiplier = serverDbDoc.bistar_payday_multiplier
+      let paydayMultiplier = 1
 
       let memberRoles = ((await member).roles as GuildMemberRoleManager).cache;
       if (memberRoles.some((role: any) => role.id === utils.BISTAR_ROLE_ID)) {
-        paydayBistari = paydayBistari * bistarPaydayMultiplier
-        paydayPremiumPoints = paydayPremiumPoints * bistarPaydayMultiplier
+        paydayMultiplier = serverDbDoc.bistar_payday_multiplier
       }
 
       const bistari = doc.bistari
-      const respectPoints = doc.respect_points
-      const payday = doc.messages_sent * paydayBistari
-
-      const newBistari = bistari + payday
-      await userschema.findOneAndUpdate(
-        { _id: doc.id },
-        { bistari: newBistari }
-      );
-
-      const newPremiumPoints = doc.premium_points + paydayPremiumPoints
-      await userschema.findOneAndUpdate(
-        { _id: doc.id },
-        { premium_points: newPremiumPoints }
-      );
 
       let messagesSentString = doc.messages_sent.toString()
       const messagesSentStringChars = [...messagesSentString]
@@ -103,7 +86,23 @@ export async function Payday(resetMessages: boolean) {
       const messagesSent = parseInt(messagesSentString)
       const rpAddedPerPayday = serverDbDoc.rp_added_per_payday
 
-      const newRespectPoints = doc.respect_points + (messagesSent / 10) + rpAddedPerPayday
+      const bistariPayday = (serverDbDoc.base_payday + doc.level) + (doc.messages_sent * serverDbDoc.bistari_per_message) * paydayMultiplier
+      const premiumPointsPayday = serverDbDoc.premium_points_per_payday * paydayMultiplier
+      const respectPointsPayday = (messagesSent / 10) + rpAddedPerPayday
+
+      const newBistari = bistari + bistariPayday
+      await userschema.findOneAndUpdate(
+        { _id: doc.id },
+        { bistari: newBistari }
+      );
+
+      const newPremiumPoints = doc.premium_points + premiumPointsPayday
+      await userschema.findOneAndUpdate(
+        { _id: doc.id },
+        { premium_points: newPremiumPoints }
+      );
+
+      const newRespectPoints = doc.respect_points + respectPointsPayday
       await userschema.findOneAndUpdate(
         { _id: doc.id },
         { respect_points: newRespectPoints }
@@ -119,13 +118,14 @@ export async function Payday(resetMessages: boolean) {
           .setColor('#0099ff')
           .setTitle(`🪙 Your Paycheck has arrived!`)
           .addField(`Mesaje trimise ora asta:`, `${doc.messages_sent}`, false)
-          .addField(`BI$TARI Primiti:`, `${doc.messages_sent} x ${paydayBistari} = ${payday}`, false)
+          .addField(`BI$TARI Primiti:`, `${serverDbDoc.base_payday + doc.level} + ${doc.messages_sent * serverDbDoc.bistari_per_message} x ${paydayMultiplier} = ${bistariPayday}`, false)
           .addField(`BI$TARI Totali:`, `${newBistari}`, false)
-          .addField(`Ai primit ${paydayPremiumPoints} Premium Points:`, `Total: ${newPremiumPoints}`, false)
+          .addField(`Ai primit ${premiumPointsPayday} Premium Points:`, `${newPremiumPoints}`, false)
+          .addField(`Ai primit ${respectPointsPayday} Premium Points:`, `${newRespectPoints}/${doc.respect_points_to_next_level}`, false)
 
         let memberRoles = ((await member).roles as GuildMemberRoleManager).cache;
         if (memberRoles.some((role: any) => role.id === utils.BISTAR_ROLE_ID)) {
-          embed.setFooter(`Pentru ca esti BI$TAR, ai primit x${bistarPaydayMultiplier} Payday!`)
+          embed.setFooter(`Pentru ca esti BI$TAR, ai primit x${paydayMultiplier}} Payday!`)
         }
 
         user.send({ embeds: [embed] }).catch(error => {

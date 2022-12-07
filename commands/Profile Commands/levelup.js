@@ -67,8 +67,7 @@ exports.default = {
         const newRpToNextLevel = rpToNextLevel + serverDbDoc.respect_points_increment;
         yield userschema_1.default.findOneAndUpdate({ user_id: (_c = interaction.member) === null || _c === void 0 ? void 0 : _c.user.id }, { respect_points_to_next_level: newRpToNextLevel });
         interaction.reply({
-            content: `**Holy fucking shit tocmai ai dat level up!**\n**Acum ai Level: ${newLevel}**\n**Respect Points:** ${newRP}`,
-            files: ['./resources/mamacoaie.jpg'],
+            content: `**Holy fucking shit tocmai ai dat level up!**\n**Acum ai Level:** ${newLevel}\n**Respect Points:** ${newRP}`,
         });
     })
 };
