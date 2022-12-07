@@ -63,7 +63,6 @@ exports.default = {
         if (userArg == null) {
             member = interaction.user.username;
             dbDoc = cmdAuthorDbDoc;
-            console.log(dbDoc);
         }
         else {
             const mentionedUserDbDoc = yield userschema_1.default.findOne({ 'user_id': userArg === null || userArg === void 0 ? void 0 : userArg.id });

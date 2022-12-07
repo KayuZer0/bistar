@@ -71,7 +71,6 @@ export async function CreateMemberSchema(member: GuildMember) {
             respect_points: 0,
             respect_points_to_next_level: 10,
             job: 0,
-            job_skill: 1,
             miner_skill: 1,
             coal: 0,
             copper: 0,

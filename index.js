@@ -103,11 +103,20 @@ function Payday(resetMessages) {
                     paydayPremiumPoints = paydayPremiumPoints * bistarPaydayMultiplier;
                 }
                 const bistari = doc.bistari;
+                const respectPoints = doc.respect_points;
                 const payday = doc.messages_sent * paydayBistari;
                 const newBistari = bistari + payday;
                 yield userschema_1.default.findOneAndUpdate({ _id: doc.id }, { bistari: newBistari });
                 const newPremiumPoints = doc.premium_points + paydayPremiumPoints;
                 yield userschema_1.default.findOneAndUpdate({ _id: doc.id }, { premium_points: newPremiumPoints });
+                let messagesSentString = doc.messages_sent.toString();
+                const messagesSentStringChars = [...messagesSentString];
+                messagesSentStringChars[messagesSentStringChars.length - 1] = '0';
+                messagesSentString = messagesSentStringChars.join('');
+                const messagesSent = parseInt(messagesSentString);
+                const rpAddedPerPayday = serverDbDoc.rp_added_per_payday;
+                const newRespectPoints = doc.respect_points + (messagesSent / 10) + rpAddedPerPayday;
+                yield userschema_1.default.findOneAndUpdate({ _id: doc.id }, { respect_points: newRespectPoints });
                 const userId = doc.user_id;
                 const user = exports.client.users.fetch(doc.user_id).then((user) => __awaiter(this, void 0, void 0, function* () {
                     if (user.bot) {

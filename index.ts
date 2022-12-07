@@ -81,6 +81,7 @@ export async function Payday(resetMessages: boolean) {
       }
 
       const bistari = doc.bistari
+      const respectPoints = doc.respect_points
       const payday = doc.messages_sent * paydayBistari
 
       const newBistari = bistari + payday
@@ -93,6 +94,19 @@ export async function Payday(resetMessages: boolean) {
       await userschema.findOneAndUpdate(
         { _id: doc.id },
         { premium_points: newPremiumPoints }
+      );
+
+      let messagesSentString = doc.messages_sent.toString()
+      const messagesSentStringChars = [...messagesSentString]
+      messagesSentStringChars[messagesSentStringChars.length - 1] = '0'
+      messagesSentString = messagesSentStringChars.join('')
+      const messagesSent = parseInt(messagesSentString)
+      const rpAddedPerPayday = serverDbDoc.rp_added_per_payday
+
+      const newRespectPoints = doc.respect_points + (messagesSent / 10) + rpAddedPerPayday
+      await userschema.findOneAndUpdate(
+        { _id: doc.id },
+        { respect_points: newRespectPoints }
       );
 
       const userId = doc.user_id

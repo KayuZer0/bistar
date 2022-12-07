@@ -11,7 +11,7 @@ export default {
     slash: true,
 
     callback: async ({ channel, interaction, args }) => {
-        
+
     }
 
 } as ICommand

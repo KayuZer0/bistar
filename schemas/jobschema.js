@@ -7,7 +7,9 @@ const mongoose_1 = __importDefault(require("mongoose"));
 // import mongooseUniqueValidator from "mongoose-unique-validator";
 const schema = new mongoose_1.default.Schema({
     job_id: { type: Number, required: true },
-    job_name: { type: String, required: true },
+    name: { type: String, required: true },
+    skill_name: { type: String, required: true },
+    vanity_name: { type: String, required: true },
 });
 // schema.plugin(mongooseUniqueValidator)
 exports.default = mongoose_1.default.model('jobs', schema, 'jobs');

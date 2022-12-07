@@ -4,7 +4,9 @@ import mongoose from "mongoose";
 
 const schema = new mongoose.Schema({
     job_id: { type: Number, required: true },
-    job_name: { type: String, required: true },
+    name: { type: String, required: true },
+    skill_name: { type: String, required: true },
+    vanity_name: { type: String, required: true },
 })
 
 // schema.plugin(mongooseUniqueValidator)

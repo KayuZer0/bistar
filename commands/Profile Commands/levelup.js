@@ -35,72 +35,40 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const discord_js_1 = require("discord.js");
+const utils = __importStar(require("../../utils"));
 const serverschema_1 = __importDefault(require("../../schemas/serverschema"));
 const userschema_1 = __importDefault(require("../../schemas/userschema"));
-const jobschema_1 = __importDefault(require("../../schemas/jobschema"));
-const utils = __importStar(require("../../utils"));
 exports.default = {
     category: "Profile",
-    description: "Vezi statisticile tale sau ale altui user.",
+    description: "Da level up daca poti.",
     slash: true,
-    options: [{
-            name: "user",
-            description: "Cui vrei sa vezi statisticile.",
-            type: "USER",
-            required: false
-        }],
     callback: ({ channel, interaction, args }) => __awaiter(void 0, void 0, void 0, function* () {
-        const userArg = interaction.options.getUser('user');
+        var _a, _b, _c;
         const serverDbDoc = yield serverschema_1.default.findOne({ '_id': utils.SERVER_DATABASE_DOCUMENT_ID });
         const cmdAuthorDbDoc = yield userschema_1.default.findOne({ 'user_id': interaction.user.id });
         if (serverDbDoc == null || cmdAuthorDbDoc == null) {
             return;
         }
-        let member;
-        let dbDoc;
-        if (userArg == null) {
-            member = interaction.user.username;
-            dbDoc = cmdAuthorDbDoc;
-        }
-        else {
-            const mentionedUserDbDoc = yield userschema_1.default.findOne({ 'user_id': userArg === null || userArg === void 0 ? void 0 : userArg.id });
-            if (mentionedUserDbDoc == null) {
-                return;
-            }
-            member = userArg.username;
-            dbDoc = mentionedUserDbDoc;
-        }
-        let bistari = dbDoc.bistari;
-        let premiumPoints = dbDoc.premium_points;
-        let level = dbDoc.level;
-        let rp = dbDoc.respect_points;
-        let rpToNextLevel = dbDoc.respect_points_to_next_level;
-        let job = dbDoc.job;
-        let skill;
-        const jobsDbDoc = yield jobschema_1.default.findOne({ 'job_id': job });
-        if (jobsDbDoc == null) {
+        const level = cmdAuthorDbDoc.level;
+        const rp = cmdAuthorDbDoc.respect_points;
+        const rpToNextLevel = cmdAuthorDbDoc.respect_points_to_next_level;
+        if (rp < rpToNextLevel) {
+            interaction.reply({
+                content: `**Unde coxu meu dai tu level up daca nu ai destule Respect Points? Momentan ai:** ${rp}/${rpToNextLevel}`,
+                files: ['./resources/ceprost.jpg'],
+                ephemeral: true
+            });
             return;
         }
-        //! Poate fac cumva sa nu fie switch case idk
-        switch (job) {
-            case 0:
-                skill = ``;
-                break;
-            case 1:
-                skill = `\n💪 **Skill:** ${dbDoc.miner_skill}`;
-                break;
-            default:
-                skill = ``;
-                break;
-        }
-        const jobName = jobsDbDoc === null || jobsDbDoc === void 0 ? void 0 : jobsDbDoc.vanity_name;
-        const embed = new discord_js_1.MessageEmbed()
-            .setColor(utils.GenerateColor())
-            .setTitle(`${member} - Stats`)
-            .setDescription(`💵 **BI$TARI:** ${bistari}\n:coin: **Premium Points:** ${premiumPoints}\n\n⚙️ **Level:** ${level}\n⭐ **Respect Points:** ${rp}/${rpToNextLevel}\n\n💼 **Job:** ${jobName}${skill}`);
+        const newLevel = level + 1;
+        yield userschema_1.default.findOneAndUpdate({ user_id: (_a = interaction.member) === null || _a === void 0 ? void 0 : _a.user.id }, { level: newLevel });
+        const newRP = rp - rpToNextLevel;
+        yield userschema_1.default.findOneAndUpdate({ user_id: (_b = interaction.member) === null || _b === void 0 ? void 0 : _b.user.id }, { respect_points: newRP });
+        const newRpToNextLevel = rpToNextLevel + serverDbDoc.respect_points_increment;
+        yield userschema_1.default.findOneAndUpdate({ user_id: (_c = interaction.member) === null || _c === void 0 ? void 0 : _c.user.id }, { respect_points_to_next_level: newRpToNextLevel });
         interaction.reply({
-            embeds: [embed]
+            content: `**Holy fucking shit tocmai ai dat level up!**\n**Acum ai Level: ${newLevel}**\n**Respect Points:** ${newRP}`,
+            files: ['./resources/mamacoaie.jpg'],
         });
     })
 };
