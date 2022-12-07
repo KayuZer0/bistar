@@ -58,12 +58,16 @@ exports.default = {
         if (memberArg == null) {
             return;
         }
-        if (userArg === null || userArg === void 0 ? void 0 : userArg.bot) {
+        const cmdAuthorDbDoc = yield userschema_1.default.findOne({ 'user_id': interaction.user.id });
+        const mentionedUserDbDoc = yield userschema_1.default.findOne({ 'user_id': userArg.id });
+        if (!mentionedUserDbDoc) {
             interaction.reply({
-                content: `**Baiete nu poti sa furi de la boti**`,
-                files: ['./resources/ceprost.jpg'],
+                content: `**Acel user nu exista in baza de date. Daca crezi ca asta e o eroare da-i 7 pinguri lui KayuZer0**`,
                 ephemeral: true,
             });
+            return;
+        }
+        if (!cmdAuthorDbDoc) {
             return;
         }
         let authorRoles = ((_b = interaction.member) === null || _b === void 0 ? void 0 : _b.roles).cache;
@@ -74,11 +78,6 @@ exports.default = {
                 files: ['./resources/ceprost.jpg'],
                 ephemeral: true,
             });
-            return;
-        }
-        const cmdAuthorDbDoc = yield userschema_1.default.findOne({ 'user_id': interaction.user.id });
-        const mentionedUserDbDoc = yield userschema_1.default.findOne({ 'user_id': userArg.id });
-        if (!cmdAuthorDbDoc || !mentionedUserDbDoc) {
             return;
         }
         if (cmdAuthorDbDoc.bistari < 200) {

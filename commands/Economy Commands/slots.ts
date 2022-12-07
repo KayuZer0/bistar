@@ -125,7 +125,7 @@ export default {
       if ($ == $$ && $$ == $$$) {
         if ($ == "🍉") {
           $4.setFooter(`Ai castigat ${bet * 0.5} BI$TARI!`)
-          const newBistari = bistari + (bet * 0.5)
+          const newBistari = Math.ceil(bistari + (bet * 0.5))
           await userschema.findOneAndUpdate(
             { user_id: interaction.member?.user.id },
             { bistari: newBistari }

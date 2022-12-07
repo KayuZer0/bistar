@@ -65,7 +65,11 @@ exports.default = {
         }
         else {
             const mentionedUserDbDoc = yield userschema_1.default.findOne({ 'user_id': userArg === null || userArg === void 0 ? void 0 : userArg.id });
-            if (mentionedUserDbDoc == null) {
+            if (!mentionedUserDbDoc) {
+                interaction.reply({
+                    content: `**Acel user nu exista in baza de date. Daca crezi ca asta e o eroare da-i 7 pinguri lui KayuZer0**`,
+                    ephemeral: true,
+                });
                 return;
             }
             member = userArg.username;

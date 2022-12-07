@@ -66,7 +66,11 @@ exports.default = {
         }
         else {
             const mentionedUserDbDoc = yield userschema_1.default.findOne({ 'user_id': userArg === null || userArg === void 0 ? void 0 : userArg.id });
-            if (mentionedUserDbDoc == null) {
+            if (!mentionedUserDbDoc) {
+                interaction.reply({
+                    content: `**Acel user nu exista in baza de date. Daca crezi ca asta e o eroare da-i 7 pinguri lui KayuZer0**`,
+                    ephemeral: true,
+                });
                 return;
             }
             member = userArg.username;
@@ -82,13 +86,13 @@ exports.default = {
             dbDoc.nu_tac_tickets
         ];
         let vanityInventory = [
-            `**${(_a = (yield ticketschema_1.default.findOne({ 'id': 0 }))) === null || _a === void 0 ? void 0 : _a.vanity_name}** ${dbDoc.ban_andreea_tickets}`,
-            `**${(_b = (yield ticketschema_1.default.findOne({ 'id': 1 }))) === null || _b === void 0 ? void 0 : _b.vanity_name}** ${dbDoc.trap_tickets}`,
-            `**${(_c = (yield ticketschema_1.default.findOne({ 'id': 2 }))) === null || _c === void 0 ? void 0 : _c.vanity_name}** ${dbDoc.modify_server_tickets}`,
-            `**${(_d = (yield ticketschema_1.default.findOne({ 'id': 3 }))) === null || _d === void 0 ? void 0 : _d.vanity_name}** ${dbDoc.nadir_tickets}`,
-            `**${(_e = (yield ticketschema_1.default.findOne({ 'id': 4 }))) === null || _e === void 0 ? void 0 : _e.vanity_name}** ${dbDoc.escape_nadir_tickets}`,
-            `**${(_f = (yield ticketschema_1.default.findOne({ 'id': 5 }))) === null || _f === void 0 ? void 0 : _f.vanity_name}** ${dbDoc.taci_tickets}`,
-            `**${(_g = (yield ticketschema_1.default.findOne({ 'id': 6 }))) === null || _g === void 0 ? void 0 : _g.vanity_name}** ${dbDoc.nu_tac_tickets}`
+            `**${(_a = (yield ticketschema_1.default.findOne({ 'id': 0 }))) === null || _a === void 0 ? void 0 : _a.vanity_name}** x${dbDoc.ban_andreea_tickets}`,
+            `**${(_b = (yield ticketschema_1.default.findOne({ 'id': 1 }))) === null || _b === void 0 ? void 0 : _b.vanity_name}** x${dbDoc.trap_tickets}`,
+            `**${(_c = (yield ticketschema_1.default.findOne({ 'id': 2 }))) === null || _c === void 0 ? void 0 : _c.vanity_name}** x${dbDoc.modify_server_tickets}`,
+            `**${(_d = (yield ticketschema_1.default.findOne({ 'id': 3 }))) === null || _d === void 0 ? void 0 : _d.vanity_name}** x${dbDoc.nadir_tickets}`,
+            `**${(_e = (yield ticketschema_1.default.findOne({ 'id': 4 }))) === null || _e === void 0 ? void 0 : _e.vanity_name}** x${dbDoc.escape_nadir_tickets}`,
+            `**${(_f = (yield ticketschema_1.default.findOne({ 'id': 5 }))) === null || _f === void 0 ? void 0 : _f.vanity_name}** x${dbDoc.taci_tickets}`,
+            `**${(_g = (yield ticketschema_1.default.findOne({ 'id': 6 }))) === null || _g === void 0 ? void 0 : _g.vanity_name}** x${dbDoc.nu_tac_tickets}`
         ];
         let finalInventory = [];
         for (var i = 0; i < inventory.length; i++) {

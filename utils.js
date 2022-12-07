@@ -77,6 +77,8 @@ function CreateMemberSchema(member) {
                 respect_points_to_next_level: 10,
                 job: 0,
                 miner_skill: 1,
+                miner_worked: 0,
+                miner_worked_to_next_skill: 10,
                 coal: 0,
                 copper: 0,
                 iron: 0,

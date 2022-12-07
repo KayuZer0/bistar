@@ -39,7 +39,15 @@ export default {
             dbDoc = cmdAuthorDbDoc
         } else {
             const mentionedUserDbDoc = await userschema.findOne({ 'user_id': userArg?.id })
-            if (mentionedUserDbDoc == null) { return }
+            if (!mentionedUserDbDoc) {
+                interaction.reply({
+                    content: `**Acel user nu exista in baza de date. Daca crezi ca asta e o eroare da-i 7 pinguri lui KayuZer0**`,
+                    ephemeral: true,
+                })
+
+                return
+            }
+
             member = userArg.username
             dbDoc = mentionedUserDbDoc
         }
@@ -55,13 +63,13 @@ export default {
         ]
 
         let vanityInventory = [
-            `**${(await ticketschema.findOne({ 'id': 0 }))?.vanity_name}** ${dbDoc.ban_andreea_tickets}`,
-            `**${(await ticketschema.findOne({ 'id': 1 }))?.vanity_name}** ${dbDoc.trap_tickets}`,
-            `**${(await ticketschema.findOne({ 'id': 2 }))?.vanity_name}** ${dbDoc.modify_server_tickets}`,
-            `**${(await ticketschema.findOne({ 'id': 3 }))?.vanity_name}** ${dbDoc.nadir_tickets}`,
-            `**${(await ticketschema.findOne({ 'id': 4 }))?.vanity_name}** ${dbDoc.escape_nadir_tickets}`,
-            `**${(await ticketschema.findOne({ 'id': 5 }))?.vanity_name}** ${dbDoc.taci_tickets}`,
-            `**${(await ticketschema.findOne({ 'id': 6 }))?.vanity_name}** ${dbDoc.nu_tac_tickets}`
+            `**${(await ticketschema.findOne({ 'id': 0 }))?.vanity_name}** x${dbDoc.ban_andreea_tickets}`,
+            `**${(await ticketschema.findOne({ 'id': 1 }))?.vanity_name}** x${dbDoc.trap_tickets}`,
+            `**${(await ticketschema.findOne({ 'id': 2 }))?.vanity_name}** x${dbDoc.modify_server_tickets}`,
+            `**${(await ticketschema.findOne({ 'id': 3 }))?.vanity_name}** x${dbDoc.nadir_tickets}`,
+            `**${(await ticketschema.findOne({ 'id': 4 }))?.vanity_name}** x${dbDoc.escape_nadir_tickets}`,
+            `**${(await ticketschema.findOne({ 'id': 5 }))?.vanity_name}** x${dbDoc.taci_tickets}`,
+            `**${(await ticketschema.findOne({ 'id': 6 }))?.vanity_name}** x${dbDoc.nu_tac_tickets}`
         ]
 
         let finalInventory = []

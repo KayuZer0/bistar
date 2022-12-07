@@ -134,7 +134,7 @@ exports.default = {
             if ($ == $$ && $$ == $$$) {
                 if ($ == "🍉") {
                     $4.setFooter(`Ai castigat ${bet * 0.5} BI$TARI!`);
-                    const newBistari = bistari + (bet * 0.5);
+                    const newBistari = Math.ceil(bistari + (bet * 0.5));
                     yield userschema_1.default.findOneAndUpdate({ user_id: (_b = interaction.member) === null || _b === void 0 ? void 0 : _b.user.id }, { bistari: newBistari });
                 }
                 else if ($ == "🍇") {

@@ -45,10 +45,9 @@ export default {
         var bistari = cmdAuthorDbDoc.bistari
         var mentionedUserBistari = mentionedUserDbDoc.bistari
 
-        if (userArg?.bot) {
+        if (!mentionedUserDbDoc) {
             interaction.reply({
-                content: `**Baiete nu poti sa dai BI$TARI la boti**`,
-                files: ['./resources/ceprost.jpg'],
+                content: `**Acel user nu exista in baza de date. Daca crezi ca asta e o eroare da-i 7 pinguri lui KayuZer0**`,
                 ephemeral: true,
             })
 

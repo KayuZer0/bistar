@@ -28,6 +28,8 @@ export default {
                 files: ['./resources/ceprost.jpg'],
                 ephemeral: true,
             })
+
+            return
         }
 
         const minerDbDoc = await minerschema.findOne({ 'skill': cmdAuthorDbDoc.miner_skill })
@@ -67,7 +69,13 @@ export default {
             { user_id: interaction.user.id },
             { $inc: { respect_points: rp } }
         );
+
         ores.push(`:star: **Respect Points** x${rp}`)
+
+        await userschema.findOneAndUpdate(
+            { user_id: interaction.user.id },
+            { $inc: { miner_worked: 1 } }
+        );
 
         let finalOres = []
         for (var i = 0; i < ores.length; i++) {

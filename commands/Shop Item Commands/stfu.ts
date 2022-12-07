@@ -46,7 +46,12 @@ export default {
 
         const mentionedMemberDbDoc = await userschema.findOne({ 'user_id': userArg.id })
 
-        if (mentionedMemberDbDoc == null) {
+        if (!mentionedMemberDbDoc) {
+            interaction.reply({
+                content: `**Acel user nu exista in baza de date. Daca crezi ca asta e o eroare da-i 7 pinguri lui KayuZer0**`,
+                ephemeral: true,
+            })
+
             return
         }
 

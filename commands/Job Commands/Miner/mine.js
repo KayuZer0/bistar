@@ -57,6 +57,7 @@ exports.default = {
                 files: ['./resources/ceprost.jpg'],
                 ephemeral: true,
             });
+            return;
         }
         const minerDbDoc = yield minerschema_1.default.findOne({ 'skill': cmdAuthorDbDoc.miner_skill });
         if (minerDbDoc == null) {
@@ -80,6 +81,7 @@ exports.default = {
         const rp = utils.GetRandomNumber(1, 4) + cmdAuthorDbDoc.miner_skill;
         yield userschema_1.default.findOneAndUpdate({ user_id: interaction.user.id }, { $inc: { respect_points: rp } });
         ores.push(`:star: **Respect Points** x${rp}`);
+        yield userschema_1.default.findOneAndUpdate({ user_id: interaction.user.id }, { $inc: { miner_worked: 1 } });
         let finalOres = [];
         for (var i = 0; i < ores.length; i++) {
             finalOres.push(`**+** ${ores[i]}\n`);

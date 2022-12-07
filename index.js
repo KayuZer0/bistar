@@ -122,12 +122,11 @@ function Payday(resetMessages) {
                     }
                     const embed = new discord_js_1.MessageEmbed()
                         .setColor('#0099ff')
-                        .setTitle(`🪙 Your Paycheck has arrived!`)
-                        .addField(`Mesaje trimise ora asta:`, `${doc.messages_sent}`, false)
-                        .addField(`BI$TARI Primiti:`, `${serverDbDoc.base_payday + doc.level} + ${doc.messages_sent * serverDbDoc.bistari_per_message} x ${paydayMultiplier} = ${bistariPayday}`, false)
-                        .addField(`BI$TARI Totali:`, `${newBistari}`, false)
-                        .addField(`Ai primit ${premiumPointsPayday} Premium Points:`, `${newPremiumPoints}`, false)
-                        .addField(`Ai primit ${respectPointsPayday} Premium Points:`, `${newRespectPoints}/${doc.respect_points_to_next_level}`, false);
+                        .setTitle(`Your Paycheck has arrived!`)
+                        .addField(`💬 Mesaje trimise ora asta:`, `ㅤ ↳ **Total:** ${doc.messages_sent}`, false)
+                        .addField(`💵 BI$TARI Acumulati:`, `ㅤ ↳ **Payday:** (${serverDbDoc.base_payday + doc.level} + ${doc.messages_sent * serverDbDoc.bistari_per_message}) x ${paydayMultiplier} = ${bistariPayday}\nㅤ ↳ **Total:** ${newBistari}`, false)
+                        .addField(`🪙 Premium Points +${premiumPointsPayday}`, `ㅤ ↳ **Total:** ${newPremiumPoints}`, false)
+                        .addField(`⭐ Respect Points +${respectPointsPayday}`, `ㅤ ↳ **Total:** ${newRespectPoints}/${doc.respect_points_to_next_level}`, false);
                     let memberRoles = (yield member).roles.cache;
                     if (memberRoles.some((role) => role.id === utils.BISTAR_ROLE_ID)) {
                         embed.setFooter(`Pentru ca esti BI$TAR, ai primit x${paydayMultiplier}} Payday!`);

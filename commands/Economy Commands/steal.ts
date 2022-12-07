@@ -34,16 +34,21 @@ export default {
             return
         }
 
-        if (userArg?.bot) {
+        const cmdAuthorDbDoc = await userschema.findOne({ 'user_id': interaction.user.id })
+        const mentionedUserDbDoc = await userschema.findOne({ 'user_id': userArg.id })
+
+        if (!mentionedUserDbDoc) {
             interaction.reply({
-                content: `**Baiete nu poti sa furi de la boti**`,
-                files: ['./resources/ceprost.jpg'],
+                content: `**Acel user nu exista in baza de date. Daca crezi ca asta e o eroare da-i 7 pinguri lui KayuZer0**`,
                 ephemeral: true,
             })
 
             return
         }
 
+        if (!cmdAuthorDbDoc) {
+            return
+        }
 
         let authorRoles = (interaction.member?.roles as GuildMemberRoleManager).cache;
         let mentionedMemberRoles = (memberArg?.roles as GuildMemberRoleManager).cache;
@@ -55,13 +60,6 @@ export default {
                 ephemeral: true,
             })
 
-            return
-        }
-
-        const cmdAuthorDbDoc = await userschema.findOne({ 'user_id': interaction.user.id })
-        const mentionedUserDbDoc = await userschema.findOne({ 'user_id': userArg.id })
-
-        if (!cmdAuthorDbDoc || !mentionedUserDbDoc) {
             return
         }
 

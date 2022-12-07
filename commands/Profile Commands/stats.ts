@@ -40,7 +40,16 @@ export default {
             dbDoc = cmdAuthorDbDoc
         } else {
             const mentionedUserDbDoc = await userschema.findOne({ 'user_id': userArg?.id })
-            if (mentionedUserDbDoc == null) { return }
+
+            if (!mentionedUserDbDoc) {
+                interaction.reply({
+                    content: `**Acel user nu exista in baza de date. Daca crezi ca asta e o eroare da-i 7 pinguri lui KayuZer0**`,
+                    ephemeral: true,
+                })
+
+                return
+            }
+
             member = userArg.username
             dbDoc = mentionedUserDbDoc
         }
