@@ -1,6 +1,7 @@
 import { Guild, Message, MessageOptions, MessagePayload } from "discord.js";
 import { MessageEmbed}  from 'discord.js'
 import { ICommand } from "wokcommands";
+import * as utils from "../utils";
 import mongoose from "mongoose";
 
 export default {

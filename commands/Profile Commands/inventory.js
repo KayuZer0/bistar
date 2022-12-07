@@ -39,6 +39,7 @@ const discord_js_1 = require("discord.js");
 const serverschema_1 = __importDefault(require("../../schemas/serverschema"));
 const userschema_1 = __importDefault(require("../../schemas/userschema"));
 const utils = __importStar(require("../../utils"));
+const ticketschema_1 = __importDefault(require("../../schemas/ticketschema"));
 exports.default = {
     category: "Profile",
     description: "Vezi ce iteme ai in Inventar.",
@@ -50,54 +51,45 @@ exports.default = {
             required: false
         }],
     callback: ({ channel, interaction, args }) => __awaiter(void 0, void 0, void 0, function* () {
+        var _a, _b, _c, _d, _e, _f, _g;
         const userArg = interaction.options.getUser('user');
         const serverDbDoc = yield serverschema_1.default.findOne({ '_id': utils.SERVER_DATABASE_DOCUMENT_ID });
         const cmdAuthorDbDoc = yield userschema_1.default.findOne({ 'user_id': interaction.user.id });
         if (serverDbDoc == null || cmdAuthorDbDoc == null) {
             return;
         }
-        const giftBoxPrice = serverDbDoc.giftbox_price;
         let member;
-        let banAndreeaTickets;
-        let trapTickets;
-        let modifyServerTickets;
-        let nadirTickets;
-        let escapeTickets;
-        let stfuTickets;
-        let speakTickets;
+        let dbDoc;
         if (userArg == null) {
             member = interaction.user.username;
-            banAndreeaTickets = cmdAuthorDbDoc.ban_andreea_tickets;
-            trapTickets = cmdAuthorDbDoc.trap_tickets;
-            modifyServerTickets = cmdAuthorDbDoc.modify_server_tickets;
-            nadirTickets = cmdAuthorDbDoc.nadir_tickets;
-            escapeTickets = cmdAuthorDbDoc.escape_nadir_tickets;
-            stfuTickets = cmdAuthorDbDoc.taci_tickets;
-            speakTickets = cmdAuthorDbDoc.nu_tac_tickets;
+            dbDoc = cmdAuthorDbDoc;
+            console.log(dbDoc);
         }
         else {
-            const mentionedUserDbDoc = yield userschema_1.default.findOne({ 'user_id': userArg.id });
+            const mentionedUserDbDoc = yield userschema_1.default.findOne({ 'user_id': userArg === null || userArg === void 0 ? void 0 : userArg.id });
             if (mentionedUserDbDoc == null) {
                 return;
             }
             member = userArg.username;
-            banAndreeaTickets = mentionedUserDbDoc.ban_andreea_tickets;
-            trapTickets = mentionedUserDbDoc.trap_tickets;
-            modifyServerTickets = mentionedUserDbDoc.modify_server_tickets;
-            nadirTickets = mentionedUserDbDoc.nadir_tickets;
-            escapeTickets = mentionedUserDbDoc.escape_nadir_tickets;
-            stfuTickets = mentionedUserDbDoc.taci_tickets;
-            speakTickets = mentionedUserDbDoc.nu_tac_tickets;
+            dbDoc = mentionedUserDbDoc;
         }
-        let inventory = [banAndreeaTickets, trapTickets, modifyServerTickets, nadirTickets, escapeTickets, stfuTickets, speakTickets];
+        let inventory = [
+            dbDoc.ban_andreea_tickets,
+            dbDoc.trap_tickets,
+            dbDoc.modify_server_tickets,
+            dbDoc.nadir_tickets,
+            dbDoc.escape_nadir_tickets,
+            dbDoc.taci_tickets,
+            dbDoc.nu_tac_tickets
+        ];
         let vanityInventory = [
-            `🎟️ **Ban Andreea Tickets:** ${banAndreeaTickets}`,
-            `🎟️ **Trap Tickets:** ${trapTickets}`,
-            `🎟️ **Modify Server Tickets:** ${modifyServerTickets}`,
-            `🎟️ **Nadir Tickets:** ${nadirTickets}`,
-            `🎟️ **Escape Tickets:** ${escapeTickets}`,
-            `🎟️ **STFU Tickets:** ${stfuTickets}`,
-            `🎟️ **Speak Tickets:** ${speakTickets}`
+            `**${(_a = (yield ticketschema_1.default.findOne({ 'id': 0 }))) === null || _a === void 0 ? void 0 : _a.vanity_name}** ${dbDoc.ban_andreea_tickets}`,
+            `**${(_b = (yield ticketschema_1.default.findOne({ 'id': 1 }))) === null || _b === void 0 ? void 0 : _b.vanity_name}** ${dbDoc.trap_tickets}`,
+            `**${(_c = (yield ticketschema_1.default.findOne({ 'id': 2 }))) === null || _c === void 0 ? void 0 : _c.vanity_name}** ${dbDoc.modify_server_tickets}`,
+            `**${(_d = (yield ticketschema_1.default.findOne({ 'id': 3 }))) === null || _d === void 0 ? void 0 : _d.vanity_name}** ${dbDoc.nadir_tickets}`,
+            `**${(_e = (yield ticketschema_1.default.findOne({ 'id': 4 }))) === null || _e === void 0 ? void 0 : _e.vanity_name}** ${dbDoc.escape_nadir_tickets}`,
+            `**${(_f = (yield ticketschema_1.default.findOne({ 'id': 5 }))) === null || _f === void 0 ? void 0 : _f.vanity_name}** ${dbDoc.taci_tickets}`,
+            `**${(_g = (yield ticketschema_1.default.findOne({ 'id': 6 }))) === null || _g === void 0 ? void 0 : _g.vanity_name}** ${dbDoc.nu_tac_tickets}`
         ];
         let finalInventory = [];
         for (var i = 0; i < inventory.length; i++) {
@@ -106,7 +98,7 @@ exports.default = {
             }
         }
         if (finalInventory.length == 0) {
-            finalInventory[0] = `Inventarul tau este gol.`;
+            finalInventory[0] = `Acest inventar este gol.`;
         }
         const embed = new discord_js_1.MessageEmbed()
             .setColor(utils.GenerateColor())

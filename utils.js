@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GenerateColor = exports.GetRandomNumber = exports.CreateMemberSchema = exports.RemoveNadir = exports.MakeNadir = exports.GetServerDatabase = exports.NadirChannel = exports.NADIR_CHANNEL_ID = exports.SERVER_DATABASE_DOCUMENT_ID = exports.NADIR_ROLE_ID = exports.BISTAR_ROLE_ID = exports.KAYU_SERVER_ID = exports.DEEYUH_ID = exports.KAYU_ID = void 0;
+exports.percentageChance = exports.GenerateColor = exports.GetRandomNumber = exports.CreateMemberSchema = exports.RemoveNadir = exports.MakeNadir = exports.GetServerDatabase = exports.NadirChannel = exports.NADIR_CHANNEL_ID = exports.SERVER_DATABASE_DOCUMENT_ID = exports.NADIR_ROLE_ID = exports.BISTAR_ROLE_ID = exports.KAYU_SERVER_ID = exports.DEEYUH_ID = exports.KAYU_ID = void 0;
 require("dotenv/config");
 const serverschema_1 = __importDefault(require("./schemas/serverschema"));
 const userschema_1 = __importDefault(require("./schemas/userschema"));
@@ -71,16 +71,27 @@ function CreateMemberSchema(member) {
             new userschema_1.default({
                 user_id: member.id,
                 bistari: 0,
+                premium_points: 0,
+                level: 1,
+                respect_points: 0,
+                respect_points_to_next_level: 10,
+                job: 0,
+                job_skill: 1,
+                miner_skill: 1,
+                coal: 0,
+                copper: 0,
+                iron: 0,
+                gold: 0,
+                diamond: 0,
+                emerald: 0,
                 ban_andreea_tickets: 0,
+                trap_tickets: 0,
+                modify_server_tickets: 0,
                 nadir_tickets: 0,
                 escape_nadir_tickets: 0,
                 taci_tickets: 0,
                 nu_tac_tickets: 0,
                 taci: false,
-                trap_tickets: 0,
-                modify_server_tickets: 0,
-                gift_points: 0,
-                xd_counter: 0,
                 messages_sent: 0,
             }).save();
         }
@@ -109,3 +120,23 @@ function GenerateColor() {
     return `#${f(0)}${f(8)}${f(4)}`;
 }
 exports.GenerateColor = GenerateColor;
+function percentageChance(values, chances) {
+    for (var i = 0, pool = []; i < chances.length; i++) {
+        for (var i2 = 0; i2 < chances[i]; i2++) {
+            pool.push(i);
+        }
+    }
+    return values[arrayShuffle(pool)['0']];
+}
+exports.percentageChance = percentageChance;
+;
+function arrayShuffle(array) {
+    for (var i = 0, length = array.length, swap = 0, temp = ''; i < length; i++) {
+        swap = Math.floor(Math.random() * (i + 1));
+        temp = array[swap];
+        array[swap] = array[i];
+        array[i] = temp;
+    }
+    return array;
+}
+;

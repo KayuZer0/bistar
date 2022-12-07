@@ -6,6 +6,7 @@ import serverschema from "../../schemas/serverschema";
 import userschema from "../../schemas/userschema";
 import * as utils from "../../utils";
 import { client } from "../../index"
+import ticketschema from "../../schemas/ticketschema";
 
 export default {
     category: "Profile",
@@ -30,56 +31,40 @@ export default {
             return
         }
 
-        const giftBoxPrice = serverDbDoc.giftbox_price
-
         let member
-        let banAndreeaTickets
-        let trapTickets
-        let modifyServerTickets
-        let nadirTickets
-        let escapeTickets
-        let stfuTickets
-        let speakTickets
+        let dbDoc
 
         if (userArg == null) {
             member = interaction.user.username
-            banAndreeaTickets = cmdAuthorDbDoc.ban_andreea_tickets
-            trapTickets = cmdAuthorDbDoc.trap_tickets
-            modifyServerTickets = cmdAuthorDbDoc.modify_server_tickets
-            nadirTickets = cmdAuthorDbDoc.nadir_tickets
-            escapeTickets = cmdAuthorDbDoc.escape_nadir_tickets
-            stfuTickets = cmdAuthorDbDoc.taci_tickets
-            speakTickets = cmdAuthorDbDoc.nu_tac_tickets
+            dbDoc = cmdAuthorDbDoc
         } else {
-            const mentionedUserDbDoc = await userschema.findOne({ 'user_id': userArg.id })
-
-            if (mentionedUserDbDoc == null) {
-                return
-            }
-
+            const mentionedUserDbDoc = await userschema.findOne({ 'user_id': userArg?.id })
+            if (mentionedUserDbDoc == null) { return }
             member = userArg.username
-            banAndreeaTickets = mentionedUserDbDoc.ban_andreea_tickets
-            trapTickets = mentionedUserDbDoc.trap_tickets
-            modifyServerTickets = mentionedUserDbDoc.modify_server_tickets
-            nadirTickets = mentionedUserDbDoc.nadir_tickets
-            escapeTickets = mentionedUserDbDoc.escape_nadir_tickets
-            stfuTickets = mentionedUserDbDoc.taci_tickets
-            speakTickets = mentionedUserDbDoc.nu_tac_tickets
+            dbDoc = mentionedUserDbDoc
         }
 
-        let inventory = [banAndreeaTickets, trapTickets, modifyServerTickets, nadirTickets, escapeTickets, stfuTickets, speakTickets]
+        let inventory = [
+            dbDoc.ban_andreea_tickets,
+            dbDoc.trap_tickets,
+            dbDoc.modify_server_tickets,
+            dbDoc.nadir_tickets,
+            dbDoc.escape_nadir_tickets,
+            dbDoc.taci_tickets,
+            dbDoc.nu_tac_tickets
+        ]
+
         let vanityInventory = [
-            `🎟️ **Ban Andreea Tickets:** ${banAndreeaTickets}`,
-            `🎟️ **Trap Tickets:** ${trapTickets}`,
-            `🎟️ **Modify Server Tickets:** ${modifyServerTickets}`,
-            `🎟️ **Nadir Tickets:** ${nadirTickets}`,
-            `🎟️ **Escape Tickets:** ${escapeTickets}`,
-            `🎟️ **STFU Tickets:** ${stfuTickets}`,
-            `🎟️ **Speak Tickets:** ${speakTickets}`
+            `**${(await ticketschema.findOne({ 'id': 0 }))?.vanity_name}** ${dbDoc.ban_andreea_tickets}`,
+            `**${(await ticketschema.findOne({ 'id': 1 }))?.vanity_name}** ${dbDoc.trap_tickets}`,
+            `**${(await ticketschema.findOne({ 'id': 2 }))?.vanity_name}** ${dbDoc.modify_server_tickets}`,
+            `**${(await ticketschema.findOne({ 'id': 3 }))?.vanity_name}** ${dbDoc.nadir_tickets}`,
+            `**${(await ticketschema.findOne({ 'id': 4 }))?.vanity_name}** ${dbDoc.escape_nadir_tickets}`,
+            `**${(await ticketschema.findOne({ 'id': 5 }))?.vanity_name}** ${dbDoc.taci_tickets}`,
+            `**${(await ticketschema.findOne({ 'id': 6 }))?.vanity_name}** ${dbDoc.nu_tac_tickets}`
         ]
 
         let finalInventory = []
-
         for (var i = 0; i < inventory.length; i++) {
             if (inventory[i] > 0) {
                 finalInventory.push(`${vanityInventory[i]}` + `\n`)
@@ -87,7 +72,7 @@ export default {
         }
 
         if (finalInventory.length == 0) {
-            finalInventory[0] = `Inventarul tau este gol.`
+            finalInventory[0] = `Acest inventar este gol.`
         }
 
         const embed = new MessageEmbed()

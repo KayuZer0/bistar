@@ -4,6 +4,7 @@ import { ICommand } from "wokcommands";
 import mongoose from "mongoose";
 import serverschema from "../../schemas/serverschema";
 import userschema from "../../schemas/userschema";
+import jobschema from "../../schemas/jobschema";
 import * as utils from "../../utils";
 import { client } from "../../index"
 
@@ -34,12 +35,20 @@ export default {
 
         let member
         let bistari
-        let giftPoints
+        let premiumPoints
+        let level
+        let rp
+        let job
+        let skill
 
         if (userArg == null) {
             member = interaction.user.username
             bistari = cmdAuthorDbDoc.bistari
-            giftPoints = cmdAuthorDbDoc.gift_points
+            premiumPoints = cmdAuthorDbDoc.premium_points
+            level = cmdAuthorDbDoc.level
+            rp = cmdAuthorDbDoc.respect_points
+            job = cmdAuthorDbDoc.job
+            skill = cmdAuthorDbDoc.job_skill
         } else {
             const mentionedUserDbDoc = await userschema.findOne({ 'user_id': userArg.id })
 
@@ -49,12 +58,26 @@ export default {
 
             member = userArg.username
             bistari = mentionedUserDbDoc.bistari
-            giftPoints = mentionedUserDbDoc.gift_points
+            premiumPoints = mentionedUserDbDoc.premium_points
+            level = mentionedUserDbDoc.level
+            rp = mentionedUserDbDoc.respect_points
+            job = mentionedUserDbDoc.job
+            skill = mentionedUserDbDoc.job_skill
         }
+
+        const jobsDbDoc = await jobschema.findOne({ 'job_id': job })
+        const jobName = jobsDbDoc?.job_name
+
+        if (job == 0) {
+            skill = ``
+        } else {
+            skill = `\n💪 **Skill:** ${skill}`
+        }
+
         const embed = new MessageEmbed()
             .setColor(utils.GenerateColor() as ColorResolvable)
             .setTitle(`${member} - Stats`)
-            .setDescription(`🪙 **BI$TARI:** ${bistari}\n🎁 **Gift Points:** ${giftPoints}/${giftBoxPrice}`)
+            .setDescription(`💵 **BI$TARI:** ${bistari}\n:coin: **Premium Points:** ${premiumPoints}\n\n⚙️ **Level:** ${level}\n⭐ **Respect Points:** ${rp}\n\n💼 **Job:** ${jobName}${skill}`)
 
         interaction.reply({
             embeds: [embed]

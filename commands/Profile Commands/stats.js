@@ -38,6 +38,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const discord_js_1 = require("discord.js");
 const serverschema_1 = __importDefault(require("../../schemas/serverschema"));
 const userschema_1 = __importDefault(require("../../schemas/userschema"));
+const jobschema_1 = __importDefault(require("../../schemas/jobschema"));
 const utils = __importStar(require("../../utils"));
 exports.default = {
     category: "Profile",
@@ -59,11 +60,19 @@ exports.default = {
         const giftBoxPrice = serverDbDoc.giftbox_price;
         let member;
         let bistari;
-        let giftPoints;
+        let premiumPoints;
+        let level;
+        let rp;
+        let job;
+        let skill;
         if (userArg == null) {
             member = interaction.user.username;
             bistari = cmdAuthorDbDoc.bistari;
-            giftPoints = cmdAuthorDbDoc.gift_points;
+            premiumPoints = cmdAuthorDbDoc.premium_points;
+            level = cmdAuthorDbDoc.level;
+            rp = cmdAuthorDbDoc.respect_points;
+            job = cmdAuthorDbDoc.job;
+            skill = cmdAuthorDbDoc.job_skill;
         }
         else {
             const mentionedUserDbDoc = yield userschema_1.default.findOne({ 'user_id': userArg.id });
@@ -72,12 +81,24 @@ exports.default = {
             }
             member = userArg.username;
             bistari = mentionedUserDbDoc.bistari;
-            giftPoints = mentionedUserDbDoc.gift_points;
+            premiumPoints = mentionedUserDbDoc.premium_points;
+            level = mentionedUserDbDoc.level;
+            rp = mentionedUserDbDoc.respect_points;
+            job = mentionedUserDbDoc.job;
+            skill = mentionedUserDbDoc.job_skill;
+        }
+        const jobsDbDoc = yield jobschema_1.default.findOne({ 'job_id': job });
+        const jobName = jobsDbDoc === null || jobsDbDoc === void 0 ? void 0 : jobsDbDoc.job_name;
+        if (job == 0) {
+            skill = ``;
+        }
+        else {
+            skill = `\n💪 **Skill:** ${skill}`;
         }
         const embed = new discord_js_1.MessageEmbed()
             .setColor(utils.GenerateColor())
             .setTitle(`${member} - Stats`)
-            .setDescription(`🪙 **BI$TARI:** ${bistari}\n🎁 **Gift Points:** ${giftPoints}/${giftBoxPrice}`);
+            .setDescription(`💵 **BI$TARI:** ${bistari}\n:coin: **Premium Points:** ${premiumPoints}\n\n⚙️ **Level:** ${level}\n⭐ **Respect Points:** ${rp}\n\n💼 **Job:** ${jobName}${skill}`);
         interaction.reply({
             embeds: [embed]
         });

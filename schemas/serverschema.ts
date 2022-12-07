@@ -14,10 +14,17 @@ const schema = new mongoose.Schema({
     stfu_ticket_price: { type: Number, required: true },
     speak_ticket_price: { type: Number, required: true },
     bistari_per_message: { type: Number, required: true },
-    giftpoints_per_payday: { type: Number, required: true },
+    premium_points_per_payday: { type: Number, required: true },
     bistar_payday_multiplier: { type: Number, required: true },
     slots_roll_emoji: { type: String, required: true },
     slots_jackpot_emoji: { type: String, required: true },
+    coal_emoji: { type: String, required: true },
+    copper_emoji: { type: String, required: true },
+    iron_emoji: { type: String, required: true },
+    gold_emoji: { type: String, required: true },
+    diamond_emoji: { type: String, required: true },
+    emerald_emoji: { type: String, required: true },
+    mine_gif_url: { type: String, required: true }
 })
 
 // schema.plugin(mongooseUniqueValidator)

@@ -66,16 +66,27 @@ export async function CreateMemberSchema(member: GuildMember) {
         new userschema({
             user_id: member.id,
             bistari: 0,
+            premium_points: 0,
+            level: 1,
+            respect_points: 0,
+            respect_points_to_next_level: 10,
+            job: 0,
+            job_skill: 1,
+            miner_skill: 1,
+            coal: 0,
+            copper: 0,
+            iron: 0,
+            gold: 0,
+            diamond: 0,
+            emerald: 0,
             ban_andreea_tickets: 0,
+            trap_tickets: 0,
+            modify_server_tickets: 0,
             nadir_tickets: 0,
             escape_nadir_tickets: 0,
             taci_tickets: 0,
             nu_tac_tickets: 0,
             taci: false,
-            trap_tickets: 0,
-            modify_server_tickets: 0,
-            gift_points: 0,
-            xd_counter: 0,
             messages_sent: 0,
 
         }).save()
@@ -104,3 +115,23 @@ export function GenerateColor() {
     };
     return `#${f(0)}${f(8)}${f(4)}`;
 }
+
+export function percentageChance(values: any, chances: any) {
+    for (var i = 0, pool = []; i < chances.length; i++) {
+        for (var i2 = 0; i2 < chances[i]; i2++) {
+            pool.push(i);
+        }
+    }
+    return values[arrayShuffle(pool)['0']];
+};
+
+function arrayShuffle(array: any[]) {
+    for (var i = 0, length = array.length, swap = 0, temp = ''; i < length; i++) {
+        swap = Math.floor(Math.random() * (i + 1));
+        temp = array[swap];
+        array[swap] = array[i];
+        array[i] = temp;
+    }
+    return array;
+};
+

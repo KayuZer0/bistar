@@ -95,20 +95,19 @@ function Payday(resetMessages) {
                     return;
                 }
                 let paydayBistari = serverDbDoc.bistari_per_message;
-                let paydayGiftPoints = serverDbDoc.giftpoints_per_payday;
+                let paydayPremiumPoints = serverDbDoc.premium_points_per_payday;
                 const bistarPaydayMultiplier = serverDbDoc.bistar_payday_multiplier;
-                const giftBoxPrice = serverDbDoc.giftbox_price;
                 let memberRoles = (yield member).roles.cache;
                 if (memberRoles.some((role) => role.id === utils.BISTAR_ROLE_ID)) {
                     paydayBistari = paydayBistari * bistarPaydayMultiplier;
-                    paydayGiftPoints = paydayGiftPoints * bistarPaydayMultiplier;
+                    paydayPremiumPoints = paydayPremiumPoints * bistarPaydayMultiplier;
                 }
                 const bistari = doc.bistari;
                 const payday = doc.messages_sent * paydayBistari;
                 const newBistari = bistari + payday;
                 yield userschema_1.default.findOneAndUpdate({ _id: doc.id }, { bistari: newBistari });
-                const newGiftPoints = doc.gift_points + paydayGiftPoints;
-                yield userschema_1.default.findOneAndUpdate({ _id: doc.id }, { gift_points: newGiftPoints });
+                const newPremiumPoints = doc.premium_points + paydayPremiumPoints;
+                yield userschema_1.default.findOneAndUpdate({ _id: doc.id }, { premium_points: newPremiumPoints });
                 const userId = doc.user_id;
                 const user = exports.client.users.fetch(doc.user_id).then((user) => __awaiter(this, void 0, void 0, function* () {
                     if (user.bot) {
@@ -120,7 +119,7 @@ function Payday(resetMessages) {
                         .addField(`Mesaje trimise ora asta:`, `${doc.messages_sent}`, false)
                         .addField(`BI$TARI Primiti:`, `${doc.messages_sent} x ${paydayBistari} = ${payday}`, false)
                         .addField(`BI$TARI Totali:`, `${newBistari}`, false)
-                        .addField(`Ai primit 100 Gift Points:`, `${newGiftPoints}/${giftBoxPrice}`, false);
+                        .addField(`Ai primit ${paydayPremiumPoints} Premium Points:`, `Total: ${newPremiumPoints}`, false);
                     let memberRoles = (yield member).roles.cache;
                     if (memberRoles.some((role) => role.id === utils.BISTAR_ROLE_ID)) {
                         embed.setFooter(`Pentru ca esti BI$TAR, ai primit x${bistarPaydayMultiplier} Payday!`);
