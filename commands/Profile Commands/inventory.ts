@@ -7,6 +7,7 @@ import userschema from "../../schemas/userschema";
 import * as utils from "../../utils";
 import { client } from "../../index"
 import ticketschema from "../../schemas/ticketschema";
+import oreschema from "../../schemas/oreschema";
 
 export default {
     category: "Profile",
@@ -59,7 +60,13 @@ export default {
             dbDoc.nadir_tickets,
             dbDoc.escape_nadir_tickets,
             dbDoc.taci_tickets,
-            dbDoc.nu_tac_tickets
+            dbDoc.nu_tac_tickets,
+            dbDoc.coal,
+            dbDoc.copper,
+            dbDoc.iron,
+            dbDoc.gold,
+            dbDoc.diamond,
+            dbDoc.emerald
         ]
 
         let vanityInventory = [
@@ -69,7 +76,14 @@ export default {
             `**${(await ticketschema.findOne({ 'id': 3 }))?.vanity_name}** x${dbDoc.nadir_tickets}`,
             `**${(await ticketschema.findOne({ 'id': 4 }))?.vanity_name}** x${dbDoc.escape_nadir_tickets}`,
             `**${(await ticketschema.findOne({ 'id': 5 }))?.vanity_name}** x${dbDoc.taci_tickets}`,
-            `**${(await ticketschema.findOne({ 'id': 6 }))?.vanity_name}** x${dbDoc.nu_tac_tickets}`
+            `**${(await ticketschema.findOne({ 'id': 6 }))?.vanity_name}** x${dbDoc.nu_tac_tickets}`,
+
+            `${(await oreschema.findOne({ 'id': 0 }))?.vanity_emoji} **${(await oreschema.findOne({ 'id': 0 }))?.vanity_name}** x${dbDoc.coal}`,
+            `${(await oreschema.findOne({ 'id': 1 }))?.vanity_emoji} **${(await oreschema.findOne({ 'id': 1 }))?.vanity_name}** x${dbDoc.copper}`,
+            `${(await oreschema.findOne({ 'id': 2 }))?.vanity_emoji} **${(await oreschema.findOne({ 'id': 2 }))?.vanity_name}** x${dbDoc.iron}`,
+            `${(await oreschema.findOne({ 'id': 3 }))?.vanity_emoji} **${(await oreschema.findOne({ 'id': 3 }))?.vanity_name}** x${dbDoc.gold}`,
+            `${(await oreschema.findOne({ 'id': 4 }))?.vanity_emoji} **${(await oreschema.findOne({ 'id': 4 }))?.vanity_name}** x${dbDoc.diamond}`,
+            `${(await oreschema.findOne({ 'id': 5 }))?.vanity_emoji} **${(await oreschema.findOne({ 'id': 5 }))?.vanity_name}** x${dbDoc.emerald}`,
         ]
 
         let finalInventory = []

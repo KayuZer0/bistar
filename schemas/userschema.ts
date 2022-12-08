@@ -11,7 +11,6 @@ const schema = new mongoose.Schema({
     job: { type: Number, required: true, default: 0 },
     miner_skill: { type: Number, required: true, default: 1 },
     miner_worked: { type: Number, required: true, default: 0 },
-    miner_worked_to_next_skill: { type: Number, required: true, default: 10 },
     coal: { type: Number, required: true, default: 0 },
     copper: { type: Number, required: true, default: 0 },
     iron: { type: Number, required: true, default: 0 },

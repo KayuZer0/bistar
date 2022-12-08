@@ -41,76 +41,24 @@ const userschema_1 = __importDefault(require("../../schemas/userschema"));
 const jobschema_1 = __importDefault(require("../../schemas/jobschema"));
 const utils = __importStar(require("../../utils"));
 exports.default = {
-    category: "Profile",
-    description: "Vezi statisticile tale sau ale altui user.",
+    category: "Jobs",
+    description: "Vezi la ce joburi poti sa lucrezi.",
     slash: true,
-    options: [{
-            name: "user",
-            description: "Cui vrei sa vezi statisticile.",
-            type: "USER",
-            required: false
-        }],
     callback: ({ channel, interaction, args }) => __awaiter(void 0, void 0, void 0, function* () {
-        const userArg = interaction.options.getUser('user');
+        var _a, _b, _c, _d, _e, _f;
         const serverDbDoc = yield serverschema_1.default.findOne({ '_id': utils.SERVER_DATABASE_DOCUMENT_ID });
         const cmdAuthorDbDoc = yield userschema_1.default.findOne({ 'user_id': interaction.user.id });
         if (serverDbDoc == null || cmdAuthorDbDoc == null) {
             return;
         }
-        let member;
-        let dbDoc;
-        if (userArg == null) {
-            member = interaction.user.username;
-            dbDoc = cmdAuthorDbDoc;
-        }
-        else {
-            const mentionedUserDbDoc = yield userschema_1.default.findOne({ 'user_id': userArg === null || userArg === void 0 ? void 0 : userArg.id });
-            if (!mentionedUserDbDoc) {
-                interaction.reply({
-                    content: `**Acel user nu exista in baza de date. Daca crezi ca asta e o eroare da-i 7 pinguri lui KayuZer0**`,
-                    ephemeral: true,
-                });
-                return;
-            }
-            member = userArg.username;
-            dbDoc = mentionedUserDbDoc;
-        }
-        let bistari = dbDoc.bistari;
-        let premiumPoints = dbDoc.premium_points;
-        let level = dbDoc.level;
-        let rp = dbDoc.respect_points;
-        let rpToNextLevel = dbDoc.respect_points_to_next_level;
-        let job = dbDoc.job;
-        let skillMessage;
-        const jobsDbDoc = yield jobschema_1.default.findOne({ 'job_id': job });
-        if (jobsDbDoc == null) {
-            interaction.reply({
-                content: `**Frate s-a produs o eroare pentru ca jobul tau e invalid. Daca crezi ca asta e o eroare da-i 7 pinguri lui KayuZer0**`,
-                ephemeral: true,
-            });
-            return;
-        }
-        if (job == 0) {
-            skillMessage = ``;
-        }
-        else {
-            const jobName = jobsDbDoc.name;
-            const jobSkillName = jobsDbDoc.skill_name; //miner_skill
-            const skill = cmdAuthorDbDoc.get(jobSkillName);
-            const jobWorkedQuery = jobName + '_worked';
-            const jobWorked = cmdAuthorDbDoc.get(jobWorkedQuery);
-            let workedForNextSkill = `/Max`;
-            if (skill < 6) {
-                const workedForNextSkillQuery = 'worked_for_skill_' + (cmdAuthorDbDoc.get(jobSkillName) + 1).toString();
-                workedForNextSkill = `/${jobsDbDoc.get(workedForNextSkillQuery)}`;
-            }
-            skillMessage = `💪 **Skill:** ${skill} (${jobWorked}${workedForNextSkill})`;
-        }
-        let jobVanityName = jobsDbDoc.vanity_name;
+        const bistari = cmdAuthorDbDoc.bistari;
+        const jobName = (_a = (yield jobschema_1.default.findOne({ 'job_id': cmdAuthorDbDoc.job }))) === null || _a === void 0 ? void 0 : _a.vanity_name;
         const embed = new discord_js_1.MessageEmbed()
             .setColor(utils.GenerateColor())
-            .setTitle(`${member} - Stats`)
-            .setDescription(`💵 **BI$TARI:** ${bistari}\n:coin: **Premium Points:** ${premiumPoints}\n\n⚙️ **Level:** ${level}\n⭐ **Respect Points:** ${rp}/${rpToNextLevel}\n\n💼 **Job:** ${jobVanityName}\n${skillMessage}`);
+            .setTitle(`Lista de joburi [-] /getjob <ID> [-] Momentan esti ${jobName}`)
+            .addField(`${(_b = (yield jobschema_1.default.findOne({ 'job_id': 1 }))) === null || _b === void 0 ? void 0 : _b.vanity_emoji} **${(_c = (yield jobschema_1.default.findOne({ 'job_id': 1 }))) === null || _c === void 0 ? void 0 : _c.vanity_name} (ID: 1)**`, `\nㅤ ↳ **Info:** ${(_d = (yield jobschema_1.default.findOne({ 'job_id': 1 }))) === null || _d === void 0 ? void 0 : _d.info} \nㅤ ↳ **Comenzi:** ${(_e = (yield jobschema_1.default.findOne({ 'job_id': 1 }))) === null || _e === void 0 ? void 0 : _e.commands} \nㅤ ↳ **Tip:** ${(_f = (yield jobschema_1.default.findOne({ 'job_id': 1 }))) === null || _f === void 0 ? void 0 : _f.type}`, false)
+            // .addField(`${(await jobschema.findOne({ 'job_id': 2 }))?.vanity_emoji} **${(await jobschema.findOne({ 'job_id': 2 }))?.vanity_name} (ID: 2)**`, `\nㅤ ↳ **Info:** ${(await jobschema.findOne({ 'job_id': 2 }))?.info} \nㅤ ↳ **Comenzi:** ${(await jobschema.findOne({ 'job_id': 2 }))?.commands} \nㅤ ↳ **Tip:** ${(await jobschema.findOne({ 'job_id': 2 }))?.type}`, false)
+            .setFooter(`O sa mai vina joburi da simcer acuma nu mai am chef sa fac.`);
         interaction.reply({
             embeds: [embed]
         });

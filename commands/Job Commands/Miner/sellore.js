@@ -35,64 +35,74 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const discord_js_1 = require("discord.js");
 const utils = __importStar(require("../../../utils"));
 const serverschema_1 = __importDefault(require("../../../schemas/serverschema"));
 const userschema_1 = __importDefault(require("../../../schemas/userschema"));
-const minerschema_1 = __importDefault(require("../../../schemas/minerschema"));
 const oreschema_1 = __importDefault(require("../../../schemas/oreschema"));
 exports.default = {
     category: "Job Miner",
-    description: "Mineaza niste minereuri calificate.",
+    description: "Vinde minereurile pentru BI$TARI.",
     slash: true,
+    options: [
+        {
+            name: "name",
+            description: "Numele minereului pe care vrei sa-l vinzi.",
+            type: "STRING",
+            required: true
+        },
+        {
+            name: "amount",
+            description: "Cate vrei sa vinzi.",
+            type: "INTEGER",
+            required: true
+        }
+    ],
     callback: ({ channel, interaction, args }) => __awaiter(void 0, void 0, void 0, function* () {
+        var _a, _b;
         const serverDbDoc = yield serverschema_1.default.findOne({ '_id': utils.SERVER_DATABASE_DOCUMENT_ID });
         const cmdAuthorDbDoc = yield userschema_1.default.findOne({ 'user_id': interaction.user.id });
-        if (serverDbDoc == null || cmdAuthorDbDoc == null) {
+        if (cmdAuthorDbDoc == null || serverDbDoc == null) {
             return;
         }
-        if (cmdAuthorDbDoc.job != 1) {
+        const nameArg = interaction.options.getString('name');
+        const amountArg = interaction.options.getInteger('amount');
+        if (nameArg == null || amountArg == null) {
+            return;
+        }
+        if (amountArg < 1) {
             interaction.reply({
-                content: `**Unde te duci bai haladitule daca nu esti Miner? Foloseste** /jobs`,
+                content: `**Baiete trebuie sa vinzi cel putin 1 minereu credeam ca e logic.**`,
                 files: ['./resources/ceprost.jpg'],
                 ephemeral: true,
             });
             return;
         }
-        const minerDbDoc = yield minerschema_1.default.findOne({ 'skill': cmdAuthorDbDoc.miner_skill });
-        if (minerDbDoc == null) {
+        const ore = yield oreschema_1.default.findOne({ 'name': nameArg });
+        if (ore == null || nameArg == 'premium_points') {
+            interaction.reply({
+                content: `**Baiete ai introdus un nume invalid. Foloseste** /myjob **daca esti miner ca sa vezi ce minereuri poti sa vinzi.**`,
+                files: ['./resources/ceprost.jpg'],
+                ephemeral: true,
+            });
             return;
         }
-        let max_ores = minerDbDoc.max_ores;
-        let chances = [minerDbDoc.coal_chance, minerDbDoc.copper_chance, minerDbDoc.iron_chance, minerDbDoc.gold_chance, minerDbDoc.diamond_chance, minerDbDoc.emerald_chance, minerDbDoc.pp_chance];
-        let ores = [];
-        const m1 = new discord_js_1.MessageEmbed()
-            .setTitle(`Ai inceput sa minezi. Asteapta sa vezi ce ai gasit.`)
-            .setImage(serverDbDoc.mine_gif_url);
-        yield interaction.reply({
-            embeds: [m1]
-        });
-        for (var i = 0; i < max_ores; i++) {
-            let ore = utils.percentageChance(['coal', 'copper', 'iron', 'gold', 'diamond', 'emerald', 'premium_points'], chances);
-            const oresDbDoc = yield oreschema_1.default.findOne({ 'name': ore });
-            yield userschema_1.default.findOneAndUpdate({ user_id: interaction.user.id }, { $inc: { [ore]: 1 } });
-            ores.push(`**${oresDbDoc === null || oresDbDoc === void 0 ? void 0 : oresDbDoc.vanity_emoji} ${oresDbDoc === null || oresDbDoc === void 0 ? void 0 : oresDbDoc.vanity_name}** x1`);
-        }
-        const rp = utils.GetRandomNumber(1, 4) + cmdAuthorDbDoc.miner_skill;
-        yield userschema_1.default.findOneAndUpdate({ user_id: interaction.user.id }, { $inc: { respect_points: rp } });
-        ores.push(`:star: **Respect Points** x${rp}`);
-        let finalOres = [];
-        for (var i = 0; i < ores.length; i++) {
-            finalOres.push(`**+** ${ores[i]}\n`);
-        }
-        const m2 = new discord_js_1.MessageEmbed()
-            .setTitle(`Ai terminat de minat!`)
-            .setDescription(finalOres.toString().replaceAll(`,`, ``));
-        setTimeout(() => __awaiter(void 0, void 0, void 0, function* () {
-            yield interaction.editReply({
-                embeds: [m2]
+        const oresInInv = cmdAuthorDbDoc.get(ore.name);
+        if (oresInInv < amountArg) {
+            interaction.reply({
+                content: `**Baiete nu ai destul ${ore.vanity_emoji} ${ore.vanity_name} in inventar. Momentai ai doar:** ${oresInInv}`,
+                files: ['./resources/ceprost.jpg'],
+                ephemeral: true,
             });
-        }), 4200);
-        yield userschema_1.default.findOneAndUpdate({ user_id: interaction.user.id }, { $inc: { miner_worked: 1 } });
+            return;
+        }
+        const bistariEarned = ore.sell_price * amountArg;
+        const newBistari = cmdAuthorDbDoc.bistari + bistariEarned;
+        yield userschema_1.default.findOneAndUpdate({ user_id: (_a = interaction.member) === null || _a === void 0 ? void 0 : _a.user.id }, { $inc: { bistari: bistariEarned } });
+        const newOres = oresInInv - amountArg;
+        yield userschema_1.default.findOneAndUpdate({ user_id: (_b = interaction.member) === null || _b === void 0 ? void 0 : _b.user.id }, { $set: { [ore.name]: newOres } });
+        interaction.reply({
+            content: `**Ai vandut** ${ore.vanity_emoji}${ore.vanity_name} x${amountArg} **pentru** ${bistariEarned} **BI$TARI.**\n**Acum ai in total:** ${newBistari} **BI$TARI**`,
+            files: ['./resources/bistari.gif'],
+        });
     })
 };

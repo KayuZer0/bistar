@@ -60,30 +60,45 @@ export default {
         let rp = dbDoc.respect_points
         let rpToNextLevel = dbDoc.respect_points_to_next_level
         let job = dbDoc.job
-        let skill
+
+        let skillMessage
 
         const jobsDbDoc = await jobschema.findOne({ 'job_id': job })
-        if (jobsDbDoc == null) { return }
+        if (jobsDbDoc == null) {
+            interaction.reply({
+                content: `**Frate s-a produs o eroare pentru ca jobul tau e invalid. Daca crezi ca asta e o eroare da-i 7 pinguri lui KayuZer0**`,
+                ephemeral: true,
+            })
 
-        //! Poate fac cumva sa nu fie switch case idk
-        switch (job) {
-            case 0:
-                skill = ``
-                break
-            case 1:
-                skill = `\n💪 **Skill:** ${dbDoc.miner_skill}`
-                break
-            default:
-                skill = ``
-                break
+            return
         }
 
-        const jobName = jobsDbDoc?.vanity_name
+        if (job == 0) {
+            skillMessage = ``
+        } else {
+            const jobName = jobsDbDoc.name
+            const jobSkillName = jobsDbDoc.skill_name //miner_skill
+            const skill = cmdAuthorDbDoc.get(jobSkillName)
+
+            const jobWorkedQuery = jobName + '_worked'
+            const jobWorked = cmdAuthorDbDoc.get(jobWorkedQuery)
+
+            let workedForNextSkill = `/Max`
+
+            if (skill < 6) {
+                const workedForNextSkillQuery = 'worked_for_skill_' + (cmdAuthorDbDoc.get(jobSkillName) + 1).toString()
+                workedForNextSkill = `/${jobsDbDoc.get(workedForNextSkillQuery)}`
+            }
+
+            skillMessage = `💪 **Skill:** ${skill} (${jobWorked}${workedForNextSkill})`
+        }
+
+        let jobVanityName = jobsDbDoc.vanity_name
 
         const embed = new MessageEmbed()
             .setColor(utils.GenerateColor() as ColorResolvable)
             .setTitle(`${member} - Stats`)
-            .setDescription(`💵 **BI$TARI:** ${bistari}\n:coin: **Premium Points:** ${premiumPoints}\n\n⚙️ **Level:** ${level}\n⭐ **Respect Points:** ${rp}/${rpToNextLevel}\n\n💼 **Job:** ${jobName}${skill}`)
+            .setDescription(`💵 **BI$TARI:** ${bistari}\n:coin: **Premium Points:** ${premiumPoints}\n\n⚙️ **Level:** ${level}\n⭐ **Respect Points:** ${rp}/${rpToNextLevel}\n\n💼 **Job:** ${jobVanityName}\n${skillMessage}`)
 
         interaction.reply({
             embeds: [embed]

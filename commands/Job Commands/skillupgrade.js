@@ -35,53 +35,29 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const discord_js_1 = require("discord.js");
-const serverschema_1 = __importDefault(require("../../schemas/serverschema"));
-const userschema_1 = __importDefault(require("../../schemas/userschema"));
-const jobschema_1 = __importDefault(require("../../schemas/jobschema"));
 const utils = __importStar(require("../../utils"));
+const userschema_1 = __importDefault(require("../../schemas/userschema"));
+const serverschema_1 = __importDefault(require("../../schemas/serverschema"));
+const jobschema_1 = __importDefault(require("../../schemas/jobschema"));
 exports.default = {
-    category: "Profile",
-    description: "Vezi statisticile tale sau ale altui user.",
+    category: "Help",
+    description: "Vezi comensile boss",
     slash: true,
-    options: [{
-            name: "user",
-            description: "Cui vrei sa vezi statisticile.",
-            type: "USER",
-            required: false
-        }],
     callback: ({ channel, interaction, args }) => __awaiter(void 0, void 0, void 0, function* () {
-        const userArg = interaction.options.getUser('user');
         const serverDbDoc = yield serverschema_1.default.findOne({ '_id': utils.SERVER_DATABASE_DOCUMENT_ID });
         const cmdAuthorDbDoc = yield userschema_1.default.findOne({ 'user_id': interaction.user.id });
         if (serverDbDoc == null || cmdAuthorDbDoc == null) {
             return;
         }
-        let member;
-        let dbDoc;
-        if (userArg == null) {
-            member = interaction.user.username;
-            dbDoc = cmdAuthorDbDoc;
+        const job = cmdAuthorDbDoc.job;
+        if (job == 0) {
+            interaction.reply({
+                content: `**La ce vrei sa cresti skillu daca nu ai job? Foloseste** /jobs`,
+                files: ['./resources/ceprost.jpg'],
+                ephemeral: true,
+            });
+            return;
         }
-        else {
-            const mentionedUserDbDoc = yield userschema_1.default.findOne({ 'user_id': userArg === null || userArg === void 0 ? void 0 : userArg.id });
-            if (!mentionedUserDbDoc) {
-                interaction.reply({
-                    content: `**Acel user nu exista in baza de date. Daca crezi ca asta e o eroare da-i 7 pinguri lui KayuZer0**`,
-                    ephemeral: true,
-                });
-                return;
-            }
-            member = userArg.username;
-            dbDoc = mentionedUserDbDoc;
-        }
-        let bistari = dbDoc.bistari;
-        let premiumPoints = dbDoc.premium_points;
-        let level = dbDoc.level;
-        let rp = dbDoc.respect_points;
-        let rpToNextLevel = dbDoc.respect_points_to_next_level;
-        let job = dbDoc.job;
-        let skillMessage;
         const jobsDbDoc = yield jobschema_1.default.findOne({ 'job_id': job });
         if (jobsDbDoc == null) {
             interaction.reply({
@@ -90,29 +66,47 @@ exports.default = {
             });
             return;
         }
-        if (job == 0) {
-            skillMessage = ``;
+        const jobSkillName = jobsDbDoc.skill_name;
+        const jobName = jobsDbDoc.name;
+        const jobVanityName = jobsDbDoc.vanity_name;
+        const jobWorkedQuery = jobName + '_worked';
+        const jobWorked = cmdAuthorDbDoc.get(jobWorkedQuery);
+        const workedForNextSkillQuery = 'worked_for_skill_' + (cmdAuthorDbDoc.get(jobSkillName) + 1).toString();
+        const workedForNextSkill = jobsDbDoc.get(workedForNextSkillQuery);
+        if (cmdAuthorDbDoc.get(jobSkillName) == 6) {
+            interaction.reply({
+                content: `**La ce vrei sa cresti skillu daca deja ai Skill 6?**`,
+                files: ['./resources/ceprost.jpg'],
+                ephemeral: true,
+            });
+            return;
         }
-        else {
-            const jobName = jobsDbDoc.name;
-            const jobSkillName = jobsDbDoc.skill_name; //miner_skill
-            const skill = cmdAuthorDbDoc.get(jobSkillName);
-            const jobWorkedQuery = jobName + '_worked';
-            const jobWorked = cmdAuthorDbDoc.get(jobWorkedQuery);
-            let workedForNextSkill = `/Max`;
-            if (skill < 6) {
-                const workedForNextSkillQuery = 'worked_for_skill_' + (cmdAuthorDbDoc.get(jobSkillName) + 1).toString();
-                workedForNextSkill = `/${jobsDbDoc.get(workedForNextSkillQuery)}`;
-            }
-            skillMessage = `💪 **Skill:** ${skill} (${jobWorked}${workedForNextSkill})`;
+        if (jobWorked < workedForNextSkill) {
+            interaction.reply({
+                content: `**Unde te grabesti asa serifule? Nu ai lucrat de suficiente ori ca sa upgradezi skillu. Ai lucrat:** ${jobWorked}/${workedForNextSkill}`,
+                files: ['./resources/ceprost.jpg'],
+                ephemeral: true,
+            });
+            return;
         }
-        let jobVanityName = jobsDbDoc.vanity_name;
-        const embed = new discord_js_1.MessageEmbed()
-            .setColor(utils.GenerateColor())
-            .setTitle(`${member} - Stats`)
-            .setDescription(`💵 **BI$TARI:** ${bistari}\n:coin: **Premium Points:** ${premiumPoints}\n\n⚙️ **Level:** ${level}\n⭐ **Respect Points:** ${rp}/${rpToNextLevel}\n\n💼 **Job:** ${jobVanityName}\n${skillMessage}`);
+        const price = cmdAuthorDbDoc.get(jobSkillName) * jobsDbDoc.base_price_per_skill;
+        if (cmdAuthorDbDoc.bistari < price) {
+            interaction.reply({
+                content: `**Unde te grabesti asa serifule? Nu ai destui BI$TARI ca sa upgradezi skillu. Ai doar:** ${cmdAuthorDbDoc.bistari}`,
+                files: ['./resources/ceprost.jpg'],
+                ephemeral: true,
+            });
+            return;
+        }
+        const newBistari = cmdAuthorDbDoc.bistari - price;
+        yield userschema_1.default.findOneAndUpdate({ user_id: interaction.user.id }, { $set: { bistari: newBistari } });
+        const newSkill = cmdAuthorDbDoc.get(jobSkillName) + 1;
+        yield userschema_1.default.findOneAndUpdate({ user_id: interaction.user.id }, { $set: { [jobSkillName]: newSkill } });
         interaction.reply({
-            embeds: [embed]
+            content: `**Holy fucking shit ti-ai upgradad skillul la ${jobVanityName} si acum ai Skill** ${newSkill}`,
+            files: ['./resources/mamacoaie.jpg'],
+            ephemeral: true,
         });
+        return;
     })
 };

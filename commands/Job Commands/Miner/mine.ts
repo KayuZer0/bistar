@@ -7,9 +7,10 @@ import serverschema from "../../../schemas/serverschema";
 import userschema from "../../../schemas/userschema";
 import minerschema from "../../../schemas/minerschema";
 import oreschema from "../../../schemas/oreschema";
+import jobschema from "../../../schemas/jobschema";
 
 export default {
-    category: "Miner Job",
+    category: "Job Miner",
     description: "Mineaza niste minereuri calificate.",
 
     slash: true,
@@ -24,7 +25,7 @@ export default {
 
         if (cmdAuthorDbDoc.job != 1) {
             interaction.reply({
-                content: `**Unde te duci bai haladitule daca nu esti Miner? Foloseste /jobs**`,
+                content: `**Unde te duci bai haladitule daca nu esti Miner? Foloseste** /jobs`,
                 files: ['./resources/ceprost.jpg'],
                 ephemeral: true,
             })
@@ -60,7 +61,7 @@ export default {
                 { $inc: { [ore]: 1 } }
             );
 
-            ores.push(`${oresDbDoc?.vanity_emoji} ${oresDbDoc?.vanity_name} x1`)
+            ores.push(`**${oresDbDoc?.vanity_emoji} ${oresDbDoc?.vanity_name}** x1`)
 
         }
 
@@ -72,16 +73,10 @@ export default {
 
         ores.push(`:star: **Respect Points** x${rp}`)
 
-        await userschema.findOneAndUpdate(
-            { user_id: interaction.user.id },
-            { $inc: { miner_worked: 1 } }
-        );
-
         let finalOres = []
         for (var i = 0; i < ores.length; i++) {
             finalOres.push(`**+** ${ores[i]}\n`)
         }
-
 
         const m2 = new MessageEmbed()
             .setTitle(`Ai terminat de minat!`)
@@ -93,6 +88,10 @@ export default {
             })
         }, 4200);
 
+        await userschema.findOneAndUpdate(
+            { user_id: interaction.user.id },
+            { $inc: { miner_worked: 1 } }
+        );
     }
 
 } as ICommand
