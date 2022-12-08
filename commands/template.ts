@@ -3,6 +3,8 @@ import { MessageEmbed}  from 'discord.js'
 import { ICommand } from "wokcommands";
 import * as utils from "../utils";
 import mongoose from "mongoose";
+// import serverschema from "../../schemas/serverschema";
+// import userschema from "../../schemas/userschema";
 
 export default {
     category: "Help",

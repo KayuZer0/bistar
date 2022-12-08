@@ -9,6 +9,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+// import serverschema from "../../schemas/serverschema";
+// import userschema from "../../schemas/userschema";
 exports.default = {
     category: "Help",
     description: "Vezi comensile boss",

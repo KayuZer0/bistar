@@ -69,6 +69,7 @@ exports.default = {
         const jobSkillName = jobsDbDoc.skill_name;
         const jobName = jobsDbDoc.name;
         const jobVanityName = jobsDbDoc.vanity_name;
+        const jobVanityEmoji = jobsDbDoc.vanity_emoji;
         const jobWorkedQuery = jobName + '_worked';
         const jobWorked = cmdAuthorDbDoc.get(jobWorkedQuery);
         const workedForNextSkillQuery = 'worked_for_skill_' + (cmdAuthorDbDoc.get(jobSkillName) + 1).toString();
@@ -92,7 +93,7 @@ exports.default = {
         const price = cmdAuthorDbDoc.get(jobSkillName) * jobsDbDoc.base_price_per_skill;
         if (cmdAuthorDbDoc.bistari < price) {
             interaction.reply({
-                content: `**Unde te grabesti asa serifule? Nu ai destui BI$TARI ca sa upgradezi skillu. Ai doar:** ${cmdAuthorDbDoc.bistari}`,
+                content: `**Unde te grabesti asa serifule? Nu ai destui BI$TARI ca sa upgradezi skillu. Ai doar:** ${cmdAuthorDbDoc.bistari}/${price}`,
                 files: ['./resources/ceprost.jpg'],
                 ephemeral: true,
             });
@@ -103,9 +104,7 @@ exports.default = {
         const newSkill = cmdAuthorDbDoc.get(jobSkillName) + 1;
         yield userschema_1.default.findOneAndUpdate({ user_id: interaction.user.id }, { $set: { [jobSkillName]: newSkill } });
         interaction.reply({
-            content: `**Holy fucking shit ti-ai upgradad skillul la ${jobVanityName} si acum ai Skill** ${newSkill}`,
-            files: ['./resources/mamacoaie.jpg'],
-            ephemeral: true,
+            content: `**Tocmai ti-ai upgradat Skillul la jobul:**  ${jobVanityEmoji} ${jobVanityName}.\n**Ai platit:** ${price} **BI$TARI**\n**Acum ai Skill:** ${newSkill}`,
         });
         return;
     })

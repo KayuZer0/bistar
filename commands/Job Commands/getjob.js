@@ -81,7 +81,7 @@ exports.default = {
         var jobVanityName = jobsDbDoc.vanity_name;
         yield userschema_1.default.findOneAndUpdate({ user_id: (_a = interaction.member) === null || _a === void 0 ? void 0 : _a.user.id }, { $set: { job: id } });
         interaction.reply({
-            content: `**Felicitari! Te-ai angajat ca:** ${jobVanityName}`
+            content: `**Felicitari! Te-ai angajat ca:** ${jobVanityName}\n**Foloseste** /myjob **pentru a vedea informatiile jobului tau.**`
         });
     })
 };

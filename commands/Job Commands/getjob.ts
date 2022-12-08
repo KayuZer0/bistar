@@ -63,7 +63,7 @@ export default {
         );
 
         interaction.reply({
-            content: `**Felicitari! Te-ai angajat ca:** ${jobVanityName}`
+            content: `**Felicitari! Te-ai angajat ca:** ${jobVanityName}\n**Foloseste** /myjob **pentru a vedea informatiile jobului tau.**`
         })
 
     }
