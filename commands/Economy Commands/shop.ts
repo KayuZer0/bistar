@@ -18,6 +18,7 @@ export default {
         const cmdAuthorDbDoc = await userschema.findOne({ 'user_id': interaction.user.id })
 
         if (serverDbDoc == null || cmdAuthorDbDoc == null) {
+            console.log('cox')
             return
         }
 

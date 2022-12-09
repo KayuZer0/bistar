@@ -49,6 +49,7 @@ exports.default = {
         const serverDbDoc = yield serverschema_1.default.findOne({ '_id': utils.SERVER_DATABASE_DOCUMENT_ID });
         const cmdAuthorDbDoc = yield userschema_1.default.findOne({ 'user_id': interaction.user.id });
         if (serverDbDoc == null || cmdAuthorDbDoc == null) {
+            console.log('cox');
             return;
         }
         const bistari = cmdAuthorDbDoc.bistari;
