@@ -45,7 +45,6 @@ exports.default = {
     description: "Vezi ce poti sa mperi",
     slash: true,
     callback: ({ channel, interaction, args }) => __awaiter(void 0, void 0, void 0, function* () {
-        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _0, _1, _2, _3;
         const serverDbDoc = yield serverschema_1.default.findOne({ '_id': utils.SERVER_DATABASE_DOCUMENT_ID });
         const cmdAuthorDbDoc = yield userschema_1.default.findOne({ 'user_id': interaction.user.id });
         if (serverDbDoc == null || cmdAuthorDbDoc == null) {
@@ -54,16 +53,26 @@ exports.default = {
         }
         const bistari = cmdAuthorDbDoc.bistari;
         yield interaction.deferReply();
+        const ticket1 = yield ticketschema_1.default.findOne({ 'id': 0 });
+        const ticket2 = yield ticketschema_1.default.findOne({ 'id': 1 });
+        const ticket3 = yield ticketschema_1.default.findOne({ 'id': 2 });
+        const ticket4 = yield ticketschema_1.default.findOne({ 'id': 3 });
+        const ticket5 = yield ticketschema_1.default.findOne({ 'id': 4 });
+        const ticket6 = yield ticketschema_1.default.findOne({ 'id': 5 });
+        const ticket7 = yield ticketschema_1.default.findOne({ 'id': 6 });
+        if (ticket1 == null || ticket2 == null || ticket3 == null || ticket4 == null || ticket5 == null || ticket6 == null || ticket7 == null) {
+            return;
+        }
         const embed = new discord_js_1.MessageEmbed()
             .setColor(utils.GenerateColor()) //! ${(await ticketschema.findOne({ 'id': 0 }))?.shop_price}
             .setTitle(`Bun venit la Shop [-] Foloseste /buy <ID> [-] Momentan ai ${bistari} ${serverDbDoc.bistar_emoji}`)
-            .addField(`${(_a = (yield ticketschema_1.default.findOne({ 'id': 0 }))) === null || _a === void 0 ? void 0 : _a.vanity_name} (ID: 0)`, `ㅤ ↳ **Pret:** ${(_b = (yield ticketschema_1.default.findOne({ 'id': 0 }))) === null || _b === void 0 ? void 0 : _b.shop_price} ${serverDbDoc.bistar_emoji} \nㅤ ↳ **Info:** ${(_c = (yield ticketschema_1.default.findOne({ 'id': 0 }))) === null || _c === void 0 ? void 0 : _c.info} \nㅤ ↳ **Usage:** ${(_d = (yield ticketschema_1.default.findOne({ 'id': 0 }))) === null || _d === void 0 ? void 0 : _d.usage}`, false)
-            .addField(`${(_e = (yield ticketschema_1.default.findOne({ 'id': 1 }))) === null || _e === void 0 ? void 0 : _e.vanity_name} (ID: 1)`, `ㅤ ↳ **Pret:** ${(_f = (yield ticketschema_1.default.findOne({ 'id': 1 }))) === null || _f === void 0 ? void 0 : _f.shop_price} ${serverDbDoc.bistar_emoji} \nㅤ ↳ **Info:** ${(_g = (yield ticketschema_1.default.findOne({ 'id': 1 }))) === null || _g === void 0 ? void 0 : _g.info} \nㅤ ↳ **Usage:** ${(_h = (yield ticketschema_1.default.findOne({ 'id': 1 }))) === null || _h === void 0 ? void 0 : _h.usage}`, false)
-            .addField(`${(_j = (yield ticketschema_1.default.findOne({ 'id': 2 }))) === null || _j === void 0 ? void 0 : _j.vanity_name} (ID: 2)`, `ㅤ ↳ **Pret:** ${(_k = (yield ticketschema_1.default.findOne({ 'id': 2 }))) === null || _k === void 0 ? void 0 : _k.shop_price} ${serverDbDoc.bistar_emoji} \nㅤ ↳ **Info:** ${(_l = (yield ticketschema_1.default.findOne({ 'id': 2 }))) === null || _l === void 0 ? void 0 : _l.info} \nㅤ ↳ **Usage:** ${(_m = (yield ticketschema_1.default.findOne({ 'id': 2 }))) === null || _m === void 0 ? void 0 : _m.usage}`, false)
-            .addField(`${(_o = (yield ticketschema_1.default.findOne({ 'id': 3 }))) === null || _o === void 0 ? void 0 : _o.vanity_name} (ID: 3)`, `ㅤ ↳ **Pret:** ${(_p = (yield ticketschema_1.default.findOne({ 'id': 3 }))) === null || _p === void 0 ? void 0 : _p.shop_price} ${serverDbDoc.bistar_emoji} \nㅤ ↳ **Info:** ${(_q = (yield ticketschema_1.default.findOne({ 'id': 3 }))) === null || _q === void 0 ? void 0 : _q.info} \nㅤ ↳ **Usage:** ${(_r = (yield ticketschema_1.default.findOne({ 'id': 3 }))) === null || _r === void 0 ? void 0 : _r.usage}`, false)
-            .addField(`${(_s = (yield ticketschema_1.default.findOne({ 'id': 4 }))) === null || _s === void 0 ? void 0 : _s.vanity_name} (ID: 4)`, `ㅤ ↳ **Pret:** ${(_t = (yield ticketschema_1.default.findOne({ 'id': 4 }))) === null || _t === void 0 ? void 0 : _t.shop_price} ${serverDbDoc.bistar_emoji} \nㅤ ↳ **Info:** ${(_u = (yield ticketschema_1.default.findOne({ 'id': 4 }))) === null || _u === void 0 ? void 0 : _u.info} \nㅤ ↳ **Usage:** ${(_v = (yield ticketschema_1.default.findOne({ 'id': 4 }))) === null || _v === void 0 ? void 0 : _v.usage}`, false)
-            .addField(`${(_w = (yield ticketschema_1.default.findOne({ 'id': 5 }))) === null || _w === void 0 ? void 0 : _w.vanity_name} (ID: 5)`, `ㅤ ↳ **Pret:** ${(_x = (yield ticketschema_1.default.findOne({ 'id': 5 }))) === null || _x === void 0 ? void 0 : _x.shop_price} ${serverDbDoc.bistar_emoji} \nㅤ ↳ **Info:** ${(_y = (yield ticketschema_1.default.findOne({ 'id': 5 }))) === null || _y === void 0 ? void 0 : _y.info} \nㅤ ↳ **Usage:** ${(_z = (yield ticketschema_1.default.findOne({ 'id': 5 }))) === null || _z === void 0 ? void 0 : _z.usage}`, false)
-            .addField(`${(_0 = (yield ticketschema_1.default.findOne({ 'id': 6 }))) === null || _0 === void 0 ? void 0 : _0.vanity_name} (ID: 6)`, `ㅤ ↳ **Pret:** ${(_1 = (yield ticketschema_1.default.findOne({ 'id': 6 }))) === null || _1 === void 0 ? void 0 : _1.shop_price} ${serverDbDoc.bistar_emoji} \nㅤ ↳ **Info:** ${(_2 = (yield ticketschema_1.default.findOne({ 'id': 6 }))) === null || _2 === void 0 ? void 0 : _2.info} \nㅤ ↳ **Usage:** ${(_3 = (yield ticketschema_1.default.findOne({ 'id': 6 }))) === null || _3 === void 0 ? void 0 : _3.usage}`, false);
+            .addField(`${ticket1.vanity_name} (ID: 0)`, `ㅤ ↳ **Pret:** ${ticket1.shop_price} ${serverDbDoc.bistar_emoji} \nㅤ ↳ **Info:** ${ticket1.info} \nㅤ ↳ **Usage:** ${ticket1.usage}`, false)
+            .addField(`${ticket2.vanity_name} (ID: 1)`, `ㅤ ↳ **Pret:** ${ticket2.shop_price} ${serverDbDoc.bistar_emoji} \nㅤ ↳ **Info:** ${ticket2.info} \nㅤ ↳ **Usage:** ${ticket2.usage}`, false)
+            .addField(`${ticket3.vanity_name} (ID: 2)`, `ㅤ ↳ **Pret:** ${ticket3.shop_price} ${serverDbDoc.bistar_emoji} \nㅤ ↳ **Info:** ${ticket3.info} \nㅤ ↳ **Usage:** ${ticket3.usage}`, false)
+            .addField(`${ticket4.vanity_name} (ID: 3)`, `ㅤ ↳ **Pret:** ${ticket4.shop_price} ${serverDbDoc.bistar_emoji} \nㅤ ↳ **Info:** ${ticket4.info} \nㅤ ↳ **Usage:** ${ticket4.usage}`, false)
+            .addField(`${ticket5.vanity_name} (ID: 4)`, `ㅤ ↳ **Pret:** ${ticket5.shop_price} ${serverDbDoc.bistar_emoji} \nㅤ ↳ **Info:** ${ticket5.info} \nㅤ ↳ **Usage:** ${ticket5.usage}`, false)
+            .addField(`${ticket6.vanity_name} (ID: 5)`, `ㅤ ↳ **Pret:** ${ticket6.shop_price} ${serverDbDoc.bistar_emoji} \nㅤ ↳ **Info:** ${ticket6.info} \nㅤ ↳ **Usage:** ${ticket6.usage}`, false)
+            .addField(`${ticket7.vanity_name} (ID: 6)`, `ㅤ ↳ **Pret:** ${ticket7.shop_price} ${serverDbDoc.bistar_emoji} \nㅤ ↳ **Info:** ${ticket7.info} \nㅤ ↳ **Usage:** ${ticket7.usage}`, false);
         interaction.editReply({
             embeds: [embed]
         });
