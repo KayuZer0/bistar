@@ -24,6 +24,8 @@ export default {
 
         const bistari = cmdAuthorDbDoc.bistari
 
+        await interaction.deferReply();
+
         const embed = new MessageEmbed()
             .setColor(utils.GenerateColor() as ColorResolvable) //! ${(await ticketschema.findOne({ 'id': 0 }))?.shop_price}
             .setTitle(`Bun venit la Shop [-] Foloseste /buy <ID> [-] Momentan ai ${bistari} ${serverDbDoc.bistar_emoji}`)

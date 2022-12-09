@@ -53,6 +53,7 @@ exports.default = {
             return;
         }
         const bistari = cmdAuthorDbDoc.bistari;
+        yield interaction.deferReply();
         const embed = new discord_js_1.MessageEmbed()
             .setColor(utils.GenerateColor()) //! ${(await ticketschema.findOne({ 'id': 0 }))?.shop_price}
             .setTitle(`Bun venit la Shop [-] Foloseste /buy <ID> [-] Momentan ai ${bistari} ${serverDbDoc.bistar_emoji}`)
