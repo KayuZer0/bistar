@@ -46,7 +46,7 @@ export default {
             .addField(`${ticket6.vanity_name} (ID: 5)`, `ㅤ ↳ **Pret:** ${ticket6.shop_price} ${serverDbDoc.bistar_emoji}. \nㅤ ↳ **Info:** ${ticket6.info} \nㅤ ↳ **Usage:** ${ticket6.usage}`, false)
             .addField(`${ticket7.vanity_name} (ID: 6)`, `ㅤ ↳ **Pret:** ${ticket7.shop_price} ${serverDbDoc.bistar_emoji}. \nㅤ ↳ **Info:** ${ticket7.info} \nㅤ ↳ **Usage:** ${ticket7.usage}`, false)
         
-        interaction.reply({
+        interaction.editReply({
             embeds: [embed]
         })
     }
