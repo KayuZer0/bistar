@@ -24,6 +24,7 @@ const schema = new mongoose.Schema({
     escape_nadir_tickets: { type: Number, required: true, default: 0 },
     taci_tickets: { type: Number, required: true, default: 0 },
     nu_tac_tickets: { type: Number, required: true, default: 0 },
+    basic_crates: { type: Number, required: true, default: 0 },
     taci: { type: Boolean, required: true, default: false },
     messages_sent: { type: Number, required: true, default: 0 },
     roles_cache: {type: Array, required: true},

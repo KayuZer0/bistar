@@ -35,39 +35,53 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const userschema_1 = __importDefault(require("../../schemas/userschema"));
 const serverschema_1 = __importDefault(require("../../schemas/serverschema"));
+const userschema_1 = __importDefault(require("../../schemas/userschema"));
 const utils = __importStar(require("../../utils"));
+const crateschema_1 = __importDefault(require("../../schemas/crateschema"));
 exports.default = {
-    category: "Admin",
-    description: "Da Premium Points la toata lumea.",
+    category: "Crates",
+    description: "Cumpara un crate frate",
     slash: true,
-    ownerOnly: true,
     options: [{
-            name: "amount",
-            description: "Cati Premium Points vrei sa dai.",
+            name: "id",
+            description: "ID la ce crate vrei sa cumperi.",
             type: "INTEGER",
             required: true
         }],
     callback: ({ channel, interaction, args }) => __awaiter(void 0, void 0, void 0, function* () {
+        var _a, _b;
         const serverDbDoc = yield serverschema_1.default.findOne({ '_id': utils.SERVER_DATABASE_DOCUMENT_ID });
         const cmdAuthorDbDoc = yield userschema_1.default.findOne({ 'user_id': interaction.user.id });
         if (cmdAuthorDbDoc == null || serverDbDoc == null) {
             return;
         }
-        const amountArg = interaction.options.getInteger('amount');
-        if (amountArg == null) {
+        const id = interaction.options.getInteger('id');
+        var bistari = cmdAuthorDbDoc.bistari;
+        const crateDbDoc = yield crateschema_1.default.findOne({ 'id': id });
+        if (crateDbDoc == null) {
+            interaction.reply({
+                content: `**Ai introdus un ID Invalid. Foloseste** /crates **ca sa vezi ce crateuri poti cumpara.**`,
+                ephemeral: true,
+            });
             return;
         }
-        yield (yield userschema_1.default.find()).forEach(function (doc) {
-            return __awaiter(this, void 0, void 0, function* () {
-                const pp = doc.premium_points;
-                const newPp = pp + amountArg;
-                yield userschema_1.default.findOneAndUpdate({ _id: doc.id }, { premium_points: newPp });
+        var itemName = crateDbDoc.name;
+        var vanityName = crateDbDoc.vanity_name;
+        var vanityEmoji = crateDbDoc.vanity_emoji;
+        var itemPrice = crateDbDoc.price;
+        if (cmdAuthorDbDoc.premium_points < itemPrice) {
+            interaction.reply({
+                content: `**Sarakule nu ai destule Premium Points. Crateu' ala costa** ${itemPrice} ${serverDbDoc.pp_emoji} **si tu ai** ${cmdAuthorDbDoc.premium_points}`,
+                ephemeral: true,
             });
-        });
+            return;
+        }
+        const newPp = cmdAuthorDbDoc.premium_points - itemPrice;
+        yield userschema_1.default.findOneAndUpdate({ user_id: (_a = interaction.member) === null || _a === void 0 ? void 0 : _a.user.id }, { premium_points: newPp });
+        yield userschema_1.default.findOneAndUpdate({ user_id: (_b = interaction.member) === null || _b === void 0 ? void 0 : _b.user.id }, { $inc: { [itemName]: 1 } });
         interaction.reply({
-            content: `**Mama bai @everyone smecherosul de KayuZer0 a dat** ${amountArg} ${serverDbDoc.pp_emoji} **la toata lumea gg in chat!**`
+            content: `**Felicitari! Ai cumparat:** ${vanityEmoji} ${vanityName} **pentru** ${itemPrice} :coin:\n`
         });
     })
 };

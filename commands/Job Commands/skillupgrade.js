@@ -104,8 +104,7 @@ exports.default = {
         const newSkill = cmdAuthorDbDoc.get(jobSkillName) + 1;
         yield userschema_1.default.findOneAndUpdate({ user_id: interaction.user.id }, { $set: { [jobSkillName]: newSkill } });
         interaction.reply({
-            content: `**Tocmai ti-ai upgradat Skillul la jobul:**  ${jobVanityEmoji} ${jobVanityName}.\n**Ai platit:** ${price} **BI$TARI**\n**Acum ai Skill:** ${newSkill}`,
+            content: `**Tocmai ti-ai upgradat Skillul la jobul:**  ${jobVanityEmoji} ${jobVanityName}.\n**Ai platit:** ${price} ${serverDbDoc.bistar_emoji}\n**Acum ai Skill:** ${newSkill}`,
         });
-        return;
     })
 };

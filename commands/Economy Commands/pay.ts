@@ -27,7 +27,7 @@ export default {
         }
     ],
 
-    callback: async ({ channel, interaction, args }) => {        
+    callback: async ({ channel, interaction, args }) => {       
         const userArg = interaction.options.getUser('user')
         const amountArg = interaction.options.getInteger('amount')
         
@@ -35,10 +35,11 @@ export default {
             return
         }
         
+        const serverDbDoc = await serverschema.findOne({ '_id': utils.SERVER_DATABASE_DOCUMENT_ID })
         const cmdAuthorDbDoc = await userschema.findOne({ 'user_id': interaction.user.id })
         const mentionedUserDbDoc = await userschema.findOne({ 'user_id': userArg.id })
 
-        if (cmdAuthorDbDoc == null || mentionedUserDbDoc == null) {
+        if (cmdAuthorDbDoc == null || mentionedUserDbDoc == null || serverDbDoc == null) {
             return
         }
 
@@ -66,7 +67,7 @@ export default {
 
         if (bistari < amountArg) {
             interaction.reply({
-                content: `**Sarakule nu ai destui BI$TARI. Ai doar** ${bistari}`,
+                content: `**Sarakule nu ai destui BI$TARI. Ai doar** ${bistari} ${serverDbDoc.bistar_emoji}`,
                 files: ['./resources/muie.jpg'],
                 ephemeral: true,
             })
@@ -89,7 +90,7 @@ export default {
         const memberArg = interaction.guild?.members.cache.get(userArg?.id.toString())
 
         interaction.reply({
-            content: `**Ai trimis cu succes** ${amountArg} **BI$TARI lui ${memberArg}**`,
+            content: `**Ai trimis cu succes** ${amountArg} ${serverDbDoc.bistar_emoji} **lui ${memberArg}**`,
             files: ['./resources/bistari.gif'],
         })
 

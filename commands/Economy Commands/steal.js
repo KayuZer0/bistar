@@ -37,6 +37,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const userschema_1 = __importDefault(require("../../schemas/userschema"));
 const utils = __importStar(require("../../utils"));
+const serverschema_1 = __importDefault(require("../../schemas/serverschema"));
 exports.default = {
     category: "Economy",
     description: "Incearca sa furi de la cnv da vezi poate ajungi la anchisoare (Nadir)!!!",
@@ -58,6 +59,7 @@ exports.default = {
         if (memberArg == null) {
             return;
         }
+        const serverDbDoc = yield serverschema_1.default.findOne({ '_id': utils.SERVER_DATABASE_DOCUMENT_ID });
         const cmdAuthorDbDoc = yield userschema_1.default.findOne({ 'user_id': interaction.user.id });
         const mentionedUserDbDoc = yield userschema_1.default.findOne({ 'user_id': userArg.id });
         if (!mentionedUserDbDoc) {
@@ -67,7 +69,7 @@ exports.default = {
             });
             return;
         }
-        if (!cmdAuthorDbDoc) {
+        if (!cmdAuthorDbDoc || !serverDbDoc) {
             return;
         }
         let authorRoles = ((_b = interaction.member) === null || _b === void 0 ? void 0 : _b.roles).cache;
@@ -82,14 +84,14 @@ exports.default = {
         }
         if (cmdAuthorDbDoc.bistari < 200) {
             interaction.reply({
-                content: `**Nu poti sa furi de la cineva daca ai mai putin de 200 BI$TARI.**`,
+                content: `**Nu poti sa furi de la cineva daca ai mai putin de 200 ${serverDbDoc.bistar_emoji}**`,
                 ephemeral: true
             });
             return;
         }
         if (mentionedUserDbDoc.bistari < 200) {
             interaction.reply({
-                content: `**Nu poti sa furi de la cineva care are mai putin de 200 BI$TARI, nesimptitule.**`,
+                content: `**Nu poti sa furi de la cineva care are mai putin de 200 ${serverDbDoc.bistar_emoji}, nesimptitule.**`,
                 ephemeral: true
             });
             return;
@@ -108,17 +110,17 @@ exports.default = {
             // Fura jumate din bistari
             newAuthorBistari = Math.floor(authorBistari + (mentionedUserBistari / 2));
             newMentionedUserBistari = Math.floor(mentionedUserBistari / 2);
-            stealMessage = `**Ai furat ** ${Math.floor(mentionedUserBistari / 2)} **BI$TARI de la** ${memberArg}`;
+            stealMessage = `**Ai furat ** ${Math.floor(mentionedUserBistari / 2)} **${serverDbDoc.bistar_emoji} de la** ${memberArg}`;
         }
         else {
             // Primesti Nadir in pula mea
             newAuthorBistari = Math.floor(authorBistari - (authorBistari / 2));
             if ((authorRoles.some((role) => role.id === utils.BISTAR_ROLE_ID) || interaction.user.id == utils.KAYU_ID)) {
                 utils.MakeNadir(memberArg);
-                stealMessage = `**Ai fost prins de Aitilop in timp ce incercai sa furi de la ${memberArg}. Acum esti Nadir. Ai pierdut** ${Math.floor(authorBistari / 2)} **BI$TARI**`;
+                stealMessage = `**Ai fost prins de Aitilop in timp ce incercai sa furi de la ${memberArg}. Acum esti Nadir. Ai pierdut** ${Math.floor(authorBistari / 2)} ${serverDbDoc.bistar_emoji}`;
             }
             else {
-                stealMessage = `**Ai fost prins de Aitilop in timp ce incercai sa furi de la ${memberArg}. Ai pierdut** ${Math.floor(authorBistari / 2)} **BI$TARI**`;
+                stealMessage = `**Ai fost prins de Aitilop in timp ce incercai sa furi de la ${memberArg}. Ai pierdut** ${Math.floor(authorBistari / 2)} ${serverDbDoc.bistar_emoji}`;
             }
         }
         yield userschema_1.default.findOneAndUpdate({ user_id: (_e = interaction.member) === null || _e === void 0 ? void 0 : _e.user.id }, { bistari: newAuthorBistari });

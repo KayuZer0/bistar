@@ -22,6 +22,9 @@ const schema = new mongoose_1.default.Schema({
     gold_emoji: { type: String, required: true },
     diamond_emoji: { type: String, required: true },
     emerald_emoji: { type: String, required: true },
+    bistar_emoji: { type: String, required: true },
+    pp_emoji: { type: String, required: true },
+    rp_emoji: { type: String, required: true },
     mine_gif_url: { type: String, required: true }
 });
 // schema.plugin(mongooseUniqueValidator)

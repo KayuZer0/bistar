@@ -71,7 +71,7 @@ export default {
             { $inc: { respect_points: rp } }
         );
 
-        ores.push(`:star: **Respect Points** x${rp}`)
+        ores.push(`${serverDbDoc.rp_emoji} **Respect Points** x${rp}`)
 
         let finalOres = []
         for (var i = 0; i < ores.length; i++) {

@@ -35,39 +35,29 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const userschema_1 = __importDefault(require("../../schemas/userschema"));
-const serverschema_1 = __importDefault(require("../../schemas/serverschema"));
+const discord_js_1 = require("discord.js");
 const utils = __importStar(require("../../utils"));
+const crateschema_1 = __importDefault(require("../../schemas/crateschema"));
+const serverschema_1 = __importDefault(require("../../schemas/serverschema"));
+const userschema_1 = __importDefault(require("../../schemas/userschema"));
 exports.default = {
-    category: "Admin",
-    description: "Da Premium Points la toata lumea.",
+    category: "Crates",
+    description: "Vezi crateurile pe care poti sa le cumperi.",
     slash: true,
-    ownerOnly: true,
-    options: [{
-            name: "amount",
-            description: "Cati Premium Points vrei sa dai.",
-            type: "INTEGER",
-            required: true
-        }],
     callback: ({ channel, interaction, args }) => __awaiter(void 0, void 0, void 0, function* () {
+        var _a, _b, _c, _d;
         const serverDbDoc = yield serverschema_1.default.findOne({ '_id': utils.SERVER_DATABASE_DOCUMENT_ID });
         const cmdAuthorDbDoc = yield userschema_1.default.findOne({ 'user_id': interaction.user.id });
-        if (cmdAuthorDbDoc == null || serverDbDoc == null) {
+        if (serverDbDoc == null || cmdAuthorDbDoc == null) {
             return;
         }
-        const amountArg = interaction.options.getInteger('amount');
-        if (amountArg == null) {
-            return;
-        }
-        yield (yield userschema_1.default.find()).forEach(function (doc) {
-            return __awaiter(this, void 0, void 0, function* () {
-                const pp = doc.premium_points;
-                const newPp = pp + amountArg;
-                yield userschema_1.default.findOneAndUpdate({ _id: doc.id }, { premium_points: newPp });
-            });
-        });
+        const pp = cmdAuthorDbDoc.premium_points;
+        const embed = new discord_js_1.MessageEmbed()
+            .setColor(utils.GenerateColor())
+            .setTitle(`Crate Place [-] Foloseste /buycrate <ID> [-] Momentan ai ${pp} ${serverDbDoc.pp_emoji}`)
+            .addField(`${(_a = (yield crateschema_1.default.findOne({ 'id': 0 }))) === null || _a === void 0 ? void 0 : _a.vanity_emoji} ${(_b = (yield crateschema_1.default.findOne({ 'id': 0 }))) === null || _b === void 0 ? void 0 : _b.vanity_name} (ID: 0)`, `ㅤ ↳ **Pret:** ${(_c = (yield crateschema_1.default.findOne({ 'id': 0 }))) === null || _c === void 0 ? void 0 : _c.price} ${serverDbDoc.pp_emoji}. \nㅤ ↳ **Info:** ${(_d = (yield crateschema_1.default.findOne({ 'id': 0 }))) === null || _d === void 0 ? void 0 : _d.info}`, false);
         interaction.reply({
-            content: `**Mama bai @everyone smecherosul de KayuZer0 a dat** ${amountArg} ${serverDbDoc.pp_emoji} **la toata lumea gg in chat!**`
+            embeds: [embed]
         });
     })
 };

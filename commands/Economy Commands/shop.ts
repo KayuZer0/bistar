@@ -25,7 +25,7 @@ export default {
 
         const embed = new MessageEmbed()
             .setColor(utils.GenerateColor() as ColorResolvable) //! ${(await ticketschema.findOne({ 'id': 0 }))?.shop_price}
-            .setTitle(`Bun venit la Shop [-] Foloseste /buy <ID> [-] Momentan ai ${bistari} BI$TARI`)
+            .setTitle(`Bun venit la Shop [-] Foloseste /buy <ID> [-] Momentan ai ${bistari} ${serverDbDoc.bistar_emoji}`)
             .addField(`${(await ticketschema.findOne({ 'id': 0 }))?.vanity_name} (ID: 0)`, `ㅤ ↳ **Pret:** ${(await ticketschema.findOne({ 'id': 0 }))?.shop_price} BI$TARI. \nㅤ ↳ **Info:** ${(await ticketschema.findOne({ 'id': 0 }))?.info} \nㅤ ↳ **Usage:** ${(await ticketschema.findOne({ 'id': 0 }))?.usage}`, false)
             .addField(`${(await ticketschema.findOne({ 'id': 1 }))?.vanity_name} (ID: 1)`, `ㅤ ↳ **Pret:** ${(await ticketschema.findOne({ 'id': 1 }))?.shop_price} BI$TARI. \nㅤ ↳ **Info:** ${(await ticketschema.findOne({ 'id': 1 }))?.info} \nㅤ ↳ **Usage:** ${(await ticketschema.findOne({ 'id': 1 }))?.usage}`, false)
             .addField(`${(await ticketschema.findOne({ 'id': 2 }))?.vanity_name} (ID: 2)`, `ㅤ ↳ **Pret:** ${(await ticketschema.findOne({ 'id': 2 }))?.shop_price} BI$TARI. \nㅤ ↳ **Info:** ${(await ticketschema.findOne({ 'id': 2 }))?.info} \nㅤ ↳ **Usage:** ${(await ticketschema.findOne({ 'id': 2 }))?.usage}`, false)

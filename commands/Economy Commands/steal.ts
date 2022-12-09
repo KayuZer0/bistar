@@ -5,6 +5,7 @@ import { ICommand } from "wokcommands";
 import mongoose from "mongoose";
 import userschema from "../../schemas/userschema";
 import * as utils from "../../utils"
+import serverschema from "../../schemas/serverschema";
 
 export default {
     category: "Economy",
@@ -34,6 +35,7 @@ export default {
             return
         }
 
+        const serverDbDoc = await serverschema.findOne({ '_id': utils.SERVER_DATABASE_DOCUMENT_ID })
         const cmdAuthorDbDoc = await userschema.findOne({ 'user_id': interaction.user.id })
         const mentionedUserDbDoc = await userschema.findOne({ 'user_id': userArg.id })
 
@@ -46,7 +48,7 @@ export default {
             return
         }
 
-        if (!cmdAuthorDbDoc) {
+        if (!cmdAuthorDbDoc || !serverDbDoc) {
             return
         }
 
@@ -65,7 +67,7 @@ export default {
 
         if (cmdAuthorDbDoc.bistari < 200) {
             interaction.reply({
-                content: `**Nu poti sa furi de la cineva daca ai mai putin de 200 BI$TARI.**`,
+                content: `**Nu poti sa furi de la cineva daca ai mai putin de 200 ${serverDbDoc.bistar_emoji}**`,
                 ephemeral: true
             })
 
@@ -74,7 +76,7 @@ export default {
 
         if (mentionedUserDbDoc.bistari < 200) {
             interaction.reply({
-                content: `**Nu poti sa furi de la cineva care are mai putin de 200 BI$TARI, nesimptitule.**`,
+                content: `**Nu poti sa furi de la cineva care are mai putin de 200 ${serverDbDoc.bistar_emoji}, nesimptitule.**`,
                 ephemeral: true
             })
 
@@ -100,16 +102,16 @@ export default {
             // Fura jumate din bistari
             newAuthorBistari = Math.floor(authorBistari + ( mentionedUserBistari / 2 ))
             newMentionedUserBistari = Math.floor(mentionedUserBistari / 2)
-            stealMessage = `**Ai furat ** ${Math.floor(mentionedUserBistari / 2)} **BI$TARI de la** ${memberArg}`
+            stealMessage = `**Ai furat ** ${Math.floor(mentionedUserBistari / 2)} **${serverDbDoc.bistar_emoji} de la** ${memberArg}`
         } else {
             // Primesti Nadir in pula mea
             newAuthorBistari = Math.floor(authorBistari - (authorBistari / 2))
             if ((authorRoles.some((role: any) => role.id === utils.BISTAR_ROLE_ID) || interaction.user.id == utils.KAYU_ID)) {
                 utils.MakeNadir(memberArg)
-                stealMessage = `**Ai fost prins de Aitilop in timp ce incercai sa furi de la ${memberArg}. Acum esti Nadir. Ai pierdut** ${Math.floor(authorBistari / 2)} **BI$TARI**`
+                stealMessage = `**Ai fost prins de Aitilop in timp ce incercai sa furi de la ${memberArg}. Acum esti Nadir. Ai pierdut** ${Math.floor(authorBistari / 2)} ${serverDbDoc.bistar_emoji}`
             }
             else {
-                stealMessage = `**Ai fost prins de Aitilop in timp ce incercai sa furi de la ${memberArg}. Ai pierdut** ${Math.floor(authorBistari / 2)} **BI$TARI**`
+                stealMessage = `**Ai fost prins de Aitilop in timp ce incercai sa furi de la ${memberArg}. Ai pierdut** ${Math.floor(authorBistari / 2)} ${serverDbDoc.bistar_emoji}`
             }
         }
 

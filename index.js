@@ -124,9 +124,10 @@ function Payday(resetMessages) {
                         .setColor('#0099ff')
                         .setTitle(`Your Paycheck has arrived!`)
                         .addField(`💬 Mesaje trimise ora asta:`, `ㅤ ↳ **Total:** ${doc.messages_sent}`, false)
-                        .addField(`💵 BI$TARI Acumulati:`, `ㅤ ↳ **Payday:** (${serverDbDoc.base_payday + doc.level} + ${doc.messages_sent * serverDbDoc.bistari_per_message}) x ${paydayMultiplier} = ${bistariPayday}\nㅤ ↳ **Total:** ${newBistari}`, false)
-                        .addField(`🪙 Premium Points +${premiumPointsPayday}`, `ㅤ ↳ **Total:** ${newPremiumPoints}`, false)
-                        .addField(`⭐ Respect Points +${respectPointsPayday}`, `ㅤ ↳ **Total:** ${newRespectPoints}/${doc.respect_points_to_next_level}`, false);
+                        .addField(`${serverDbDoc.pp_emoji} BI$TARI +${bistariPayday}`, `\nㅤ ↳ **Total:** ${newBistari}`, false)
+                        .addField(`${serverDbDoc.pp_emoji} Premium Points +${premiumPointsPayday}`, `ㅤ ↳ **Total:** ${newPremiumPoints}`, false)
+                        .addField(`${serverDbDoc.rp_emoji} Respect Points +${respectPointsPayday}`, `ㅤ ↳ **Total:** ${newRespectPoints}/${doc.respect_points_to_next_level}`, false)
+                        .setFooter(`Cum se calculeaza PayDay: 'bit.ly/bistarpayday'`);
                     let memberRoles = (yield member).roles.cache;
                     if (memberRoles.some((role) => role.id === utils.BISTAR_ROLE_ID)) {
                         embed.setFooter(`Pentru ca esti BI$TAR, ai primit x${paydayMultiplier}} Payday!`);

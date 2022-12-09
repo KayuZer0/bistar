@@ -71,7 +71,7 @@ exports.default = {
         var itemPrice = ticketDbDoc.shop_price;
         if (cmdAuthorDbDoc.bistari < itemPrice) {
             interaction.reply({
-                content: `**Sarakule nu ai destui BI$TARI. Itemu' ala costa** ${itemPrice} **BI$TARI si tu ai** ${cmdAuthorDbDoc.bistari}`,
+                content: `**Sarakule nu ai destui BI$TARI. Itemu' ala costa** ${itemPrice} ${serverDbDoc.bistar_emoji} **si tu ai** ${cmdAuthorDbDoc.bistari} ${serverDbDoc.bistar_emoji}`,
                 ephemeral: true,
             });
             return;

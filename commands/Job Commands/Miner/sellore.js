@@ -101,7 +101,7 @@ exports.default = {
         const newOres = oresInInv - amountArg;
         yield userschema_1.default.findOneAndUpdate({ user_id: (_b = interaction.member) === null || _b === void 0 ? void 0 : _b.user.id }, { $set: { [ore.name]: newOres } });
         interaction.reply({
-            content: `**Ai vandut** ${ore.vanity_emoji}${ore.vanity_name} x${amountArg} **pentru** ${bistariEarned} **BI$TARI.**\n**Acum ai in total:** ${newBistari} **BI$TARI**`,
+            content: `**Ai vandut** ${ore.vanity_emoji}${ore.vanity_name} x${amountArg} **pentru** ${bistariEarned} ${serverDbDoc.bistar_emoji}\n**Acum ai in total:** ${newBistari} ${serverDbDoc.bistar_emoji}`,
             files: ['./resources/bistari.gif'],
         });
     })

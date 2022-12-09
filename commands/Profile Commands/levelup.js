@@ -76,10 +76,10 @@ exports.default = {
             yield userschema_1.default.findOneAndUpdate({ user_id: (_d = interaction.member) === null || _d === void 0 ? void 0 : _d.user.id }, { bistari: newBistari });
             const newPremiumPoints = premiumPoints + ppBonus;
             yield userschema_1.default.findOneAndUpdate({ user_id: (_e = interaction.member) === null || _e === void 0 ? void 0 : _e.user.id }, { bistari: newBistari });
-            bonusMsg = `\n**Ai primit un bonus pentru ca ai atins level ${newLevel}!**\n**Ai primit** ${bistariBonus} **BI$TARI.**\n**Ai primit** ${ppBonus} **Premium Points.**`;
+            bonusMsg = `\n**Ai primit un bonus pentru ca ai atins level ${newLevel}!**\n**Ai primit** ${bistariBonus} ${serverDbDoc.bistar_emoji}\n**Ai primit** ${ppBonus} ${serverDbDoc.pp_emoji}`;
         }
         interaction.reply({
-            content: `**Holy fucking shit tocmai ai dat level up!**\n**Acum ai Level:** ${newLevel}\n**Respect Points:** ${newRP} ${bonusMsg}`,
+            content: `**Holy fucking shit tocmai ai dat level up!**\n**Acum ai Level:** ${newLevel}\n**Acum mai ai:** ${newRP} ${serverDbDoc.rp_emoji} ${bonusMsg}`,
         });
     })
 };

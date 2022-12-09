@@ -40,19 +40,19 @@ export default {
             if (cmdAuthorDbDoc.miner_skill < 6) {
                 const workedForNextSkillQuery = 'worked_for_skill_' + (cmdAuthorDbDoc.miner_skill + 1).toString()
                 workedForNextSkill = jobsDbDoc?.get(workedForNextSkillQuery)
-                skillUpgradePrice = `🏷️ **Pret Skill Upgrade:** ${cmdAuthorDbDoc.miner_skill * jobsDbDoc.base_price_per_skill} :dollar:\n`
+                skillUpgradePrice = `🏷️ **Pret Skill Upgrade:** ${cmdAuthorDbDoc.miner_skill * jobsDbDoc.base_price_per_skill} ${serverDbDoc.bistar_emoji}\n`
             }
 
             const embed = new MessageEmbed()
                 .setColor(utils.GenerateColor() as ColorResolvable)
                 .setTitle(`Jobul tau este:  ${jobsDbDoc?.vanity_emoji} ${jobsDbDoc?.vanity_name}`)
                 .setDescription(`:muscle: **Skill:** ${cmdAuthorDbDoc.miner_skill} (Ture: ${cmdAuthorDbDoc.miner_worked}/${workedForNextSkill})\n${skillUpgradePrice}🎒 **Minereuri pe tura:** ${minerDbDoc.max_ores}\n\n**La Jobul de miner poti sa minezi urmatoarele:**
-                **${(await oreschema.findOne({ 'id': 0 }))?.vanity_emoji} ${(await oreschema.findOne({ 'id': 0 }))?.vanity_name}** - **Chance:** ${chances[0]}**%** - **Sells for:** ${(await oreschema.findOne({ 'id': 0 }))?.sell_price} :dollar:
-                **${(await oreschema.findOne({ 'id': 1 }))?.vanity_emoji} ${(await oreschema.findOne({ 'id': 1 }))?.vanity_name}** - **Chance:** ${chances[1]}**%** - **Sells for:** ${(await oreschema.findOne({ 'id': 1 }))?.sell_price} :dollar:
-                **${(await oreschema.findOne({ 'id': 2 }))?.vanity_emoji} ${(await oreschema.findOne({ 'id': 2 }))?.vanity_name}** - **Chance:** ${chances[2]}**%** - **Sells for:** ${(await oreschema.findOne({ 'id': 2 }))?.sell_price} :dollar:
-                **${(await oreschema.findOne({ 'id': 3 }))?.vanity_emoji} ${(await oreschema.findOne({ 'id': 3 }))?.vanity_name}** - **Chance:** ${chances[3]}**%** - **Sells for:** ${(await oreschema.findOne({ 'id': 3 }))?.sell_price} :dollar:
-                **${(await oreschema.findOne({ 'id': 4 }))?.vanity_emoji} ${(await oreschema.findOne({ 'id': 4 }))?.vanity_name}** - **Chance:** ${chances[4]}**%** - **Sells for:** ${(await oreschema.findOne({ 'id': 4 }))?.sell_price} :dollar:
-                **${(await oreschema.findOne({ 'id': 5 }))?.vanity_emoji} ${(await oreschema.findOne({ 'id': 5 }))?.vanity_name}** - **Chance:** ${chances[5]}**%** - **Sells for:** ${(await oreschema.findOne({ 'id': 5 }))?.sell_price} :dollar:
+                **${(await oreschema.findOne({ 'id': 0 }))?.vanity_emoji} ${(await oreschema.findOne({ 'id': 0 }))?.vanity_name}** - **Chance:** ${chances[0]}**%** - **Sells for:** ${(await oreschema.findOne({ 'id': 0 }))?.sell_price} ${serverDbDoc.bistar_emoji}
+                **${(await oreschema.findOne({ 'id': 1 }))?.vanity_emoji} ${(await oreschema.findOne({ 'id': 1 }))?.vanity_name}** - **Chance:** ${chances[1]}**%** - **Sells for:** ${(await oreschema.findOne({ 'id': 1 }))?.sell_price} ${serverDbDoc.bistar_emoji}
+                **${(await oreschema.findOne({ 'id': 2 }))?.vanity_emoji} ${(await oreschema.findOne({ 'id': 2 }))?.vanity_name}** - **Chance:** ${chances[2]}**%** - **Sells for:** ${(await oreschema.findOne({ 'id': 2 }))?.sell_price} ${serverDbDoc.bistar_emoji}
+                **${(await oreschema.findOne({ 'id': 3 }))?.vanity_emoji} ${(await oreschema.findOne({ 'id': 3 }))?.vanity_name}** - **Chance:** ${chances[3]}**%** - **Sells for:** ${(await oreschema.findOne({ 'id': 3 }))?.sell_price} ${serverDbDoc.bistar_emoji}
+                **${(await oreschema.findOne({ 'id': 4 }))?.vanity_emoji} ${(await oreschema.findOne({ 'id': 4 }))?.vanity_name}** - **Chance:** ${chances[4]}**%** - **Sells for:** ${(await oreschema.findOne({ 'id': 4 }))?.sell_price} ${serverDbDoc.bistar_emoji}
+                **${(await oreschema.findOne({ 'id': 5 }))?.vanity_emoji} ${(await oreschema.findOne({ 'id': 5 }))?.vanity_name}** - **Chance:** ${chances[5]}**%** - **Sells for:** ${(await oreschema.findOne({ 'id': 5 }))?.sell_price} ${serverDbDoc.bistar_emoji}
                 **${(await oreschema.findOne({ 'id': 5.5 }))?.vanity_emoji} ${(await oreschema.findOne({ 'id': 5.5 }))?.vanity_name}** - **Chance:** ${chances[6]}**%**\n
                 **Foloseste comanda** /mine **pentru a mina**
                 **Foloseste comanda** /sellore **pentru a vinde minereurile**

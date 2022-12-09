@@ -35,39 +35,72 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const userschema_1 = __importDefault(require("../../schemas/userschema"));
 const serverschema_1 = __importDefault(require("../../schemas/serverschema"));
+const userschema_1 = __importDefault(require("../../schemas/userschema"));
+const ticketschema_1 = __importDefault(require("../../schemas/ticketschema"));
 const utils = __importStar(require("../../utils"));
+const crateschema_1 = __importDefault(require("../../schemas/crateschema"));
 exports.default = {
-    category: "Admin",
-    description: "Da Premium Points la toata lumea.",
+    category: "Crates",
+    description: "Cumpara un crate frate",
     slash: true,
-    ownerOnly: true,
     options: [{
-            name: "amount",
-            description: "Cati Premium Points vrei sa dai.",
+            name: "id",
+            description: "ID la ce crate vrei sa cumperi.",
             type: "INTEGER",
             required: true
         }],
     callback: ({ channel, interaction, args }) => __awaiter(void 0, void 0, void 0, function* () {
+        var _a, _b, _c;
         const serverDbDoc = yield serverschema_1.default.findOne({ '_id': utils.SERVER_DATABASE_DOCUMENT_ID });
         const cmdAuthorDbDoc = yield userschema_1.default.findOne({ 'user_id': interaction.user.id });
         if (cmdAuthorDbDoc == null || serverDbDoc == null) {
             return;
         }
-        const amountArg = interaction.options.getInteger('amount');
-        if (amountArg == null) {
+        const id = interaction.options.getInteger('id');
+        const crateDbDoc = yield crateschema_1.default.findOne({ 'id': id });
+        if (crateDbDoc == null) {
+            interaction.reply({
+                content: `**Ai introdus un ID Invalid. Foloseste** /crates **sau** /inventory **ca sa vezi ce crateuri exista.**`,
+                ephemeral: true,
+            });
             return;
         }
-        yield (yield userschema_1.default.find()).forEach(function (doc) {
-            return __awaiter(this, void 0, void 0, function* () {
-                const pp = doc.premium_points;
-                const newPp = pp + amountArg;
-                yield userschema_1.default.findOneAndUpdate({ _id: doc.id }, { premium_points: newPp });
+        var crateName = crateDbDoc.name;
+        var vanityName = crateDbDoc.vanity_name;
+        var vanityEmoji = crateDbDoc.vanity_emoji;
+        const crates = cmdAuthorDbDoc.get(crateName);
+        if (crates < 1) {
+            interaction.reply({
+                content: `**Nu ai niciun** ${vanityEmoji} ${vanityName} **pentru a deschide. Foloseste** /crates`,
+                ephemeral: true,
             });
-        });
+            return;
+        }
+        yield userschema_1.default.findOneAndUpdate({ user_id: (_a = interaction.member) === null || _a === void 0 ? void 0 : _a.user.id }, { $inc: { [crates]: -1 } });
+        const prizePool = crateDbDoc.items_to_win;
+        const chances = crateDbDoc.chances;
+        const prize = utils.percentageChance(prizePool, chances);
+        let prizeVanityName = `Nimic`;
+        let prizeIncrement = 1;
+        if (prize == 'bistari') {
+            prizeIncrement = utils.GetRandomNumber(500, 2501);
+            prizeVanityName = `${prizeIncrement} :dollar:`;
+        }
+        if (prize != 'bistari' && prize != 'nothing') {
+            const ticketDbDoc = yield ticketschema_1.default.findOne({ 'name': prize });
+            if (ticketDbDoc == null) {
+                return;
+            }
+            prizeVanityName = ticketDbDoc.vanity_name;
+        }
         interaction.reply({
-            content: `**Mama bai @everyone smecherosul de KayuZer0 a dat** ${amountArg} ${serverDbDoc.pp_emoji} **la toata lumea gg in chat!**`
+            content: `**Ai deschis un** ${vanityEmoji} ${vanityName} **si ai primit:** ${prizeVanityName}`,
+            ephemeral: true,
         });
+        if (prize != 'nothing') {
+            yield userschema_1.default.findOneAndUpdate({ user_id: (_b = interaction.member) === null || _b === void 0 ? void 0 : _b.user.id }, { $inc: { [prize]: prizeIncrement } });
+        }
+        yield userschema_1.default.findOneAndUpdate({ user_id: (_c = interaction.member) === null || _c === void 0 ? void 0 : _c.user.id }, { $inc: { [crateName]: -1 } });
     })
 };

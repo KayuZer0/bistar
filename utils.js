@@ -92,6 +92,7 @@ function CreateMemberSchema(member) {
                 escape_nadir_tickets: 0,
                 taci_tickets: 0,
                 nu_tac_tickets: 0,
+                basic_crates: 0,
                 taci: false,
                 messages_sent: 0,
             }).save();

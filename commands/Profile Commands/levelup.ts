@@ -73,11 +73,11 @@ export default {
                 { bistari: newBistari }
             );
 
-            bonusMsg = `\n**Ai primit un bonus pentru ca ai atins level ${newLevel}!**\n**Ai primit** ${bistariBonus} **BI$TARI.**\n**Ai primit** ${ppBonus} **Premium Points.**`
+            bonusMsg = `\n**Ai primit un bonus pentru ca ai atins level ${newLevel}!**\n**Ai primit** ${bistariBonus} ${serverDbDoc.bistar_emoji}\n**Ai primit** ${ppBonus} ${serverDbDoc.pp_emoji}`
         }
 
         interaction.reply({
-            content: `**Holy fucking shit tocmai ai dat level up!**\n**Acum ai Level:** ${newLevel}\n**Respect Points:** ${newRP} ${bonusMsg}`,
+            content: `**Holy fucking shit tocmai ai dat level up!**\n**Acum ai Level:** ${newLevel}\n**Acum mai ai:** ${newRP} ${serverDbDoc.rp_emoji} ${bonusMsg}`,
         })
 
     }

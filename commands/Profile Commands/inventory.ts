@@ -8,6 +8,7 @@ import * as utils from "../../utils";
 import { client } from "../../index"
 import ticketschema from "../../schemas/ticketschema";
 import oreschema from "../../schemas/oreschema";
+import crateschema from "../../schemas/crateschema";
 
 export default {
     category: "Profile",
@@ -66,7 +67,8 @@ export default {
             dbDoc.iron,
             dbDoc.gold,
             dbDoc.diamond,
-            dbDoc.emerald
+            dbDoc.emerald,
+            dbDoc.basic_crates
         ]
 
         let vanityInventory = [
@@ -84,6 +86,8 @@ export default {
             `${(await oreschema.findOne({ 'id': 3 }))?.vanity_emoji} **${(await oreschema.findOne({ 'id': 3 }))?.vanity_name}** x${dbDoc.gold}`,
             `${(await oreschema.findOne({ 'id': 4 }))?.vanity_emoji} **${(await oreschema.findOne({ 'id': 4 }))?.vanity_name}** x${dbDoc.diamond}`,
             `${(await oreschema.findOne({ 'id': 5 }))?.vanity_emoji} **${(await oreschema.findOne({ 'id': 5 }))?.vanity_name}** x${dbDoc.emerald}`,
+
+            `${(await crateschema.findOne({ 'id': 0 }))?.vanity_emoji} **${(await crateschema.findOne({ 'id': 0 }))?.vanity_name}** x${dbDoc.basic_crates}`,
         ]
 
         let finalInventory = []

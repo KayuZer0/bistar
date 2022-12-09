@@ -98,7 +98,7 @@ export default {
         const embed = new MessageEmbed()
             .setColor(utils.GenerateColor() as ColorResolvable)
             .setTitle(`${member} - Stats`)
-            .setDescription(`💵 **BI$TARI:** ${bistari}\n:coin: **Premium Points:** ${premiumPoints}\n\n⚙️ **Level:** ${level}\n⭐ **Respect Points:** ${rp}/${rpToNextLevel}\n\n💼 **Job:** ${jobVanityName}\n${skillMessage}`)
+            .setDescription(`${serverDbDoc.bistar_emoji} **BI$TARI:** ${bistari}\n${serverDbDoc.pp_emoji} **Premium Points:** ${premiumPoints}\n\n⚙️ **Level:** ${level}\n⭐ **Respect Points:** ${rp}/${rpToNextLevel}\n\n💼 **Job:** ${jobVanityName}\n${skillMessage}`)
 
         interaction.reply({
             embeds: [embed]

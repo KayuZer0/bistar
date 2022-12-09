@@ -24,7 +24,7 @@ export default {
 
     const embed = new MessageEmbed()
       .setColor(utils.GenerateColor() as ColorResolvable)
-      .setTitle(`Păcănele [-] Foloseste /slots <bet> [-] Momentan ai ${bistari} BI$TARI`)
+      .setTitle(`Păcănele [-] Foloseste /slots <bet> [-] Momentan ai ${bistari} ${serverDbDoc.bistar_emoji}`)
       .setDescription(`**Win conditions:**\n\n| ${serverDbDoc.slots_roll_emoji} | ${serverDbDoc.slots_roll_emoji} | ❓ | 🢂 **x1.5**\n\n| 🍀 | 🍀 | 🍀 | 🢂 **x1 + Ban lu' Andreea**\n\n| 🍒 | 🍒 | 🍒 | 🢂 **x2**\n\n| 🍇 | 🍇 | 🍇 | 🢂 **+7**\n\n| ${serverDbDoc.slots_jackpot_emoji} | ${serverDbDoc.slots_jackpot_emoji} | ${serverDbDoc.slots_jackpot_emoji} | 🢂 **x10**`)
 
     interaction.reply({

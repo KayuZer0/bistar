@@ -91,7 +91,7 @@ export default {
         );
 
         interaction.reply({
-            content: `**Ai vandut** ${ore.vanity_emoji}${ore.vanity_name} x${amountArg} **pentru** ${bistariEarned} **BI$TARI.**\n**Acum ai in total:** ${newBistari} **BI$TARI**`,
+            content: `**Ai vandut** ${ore.vanity_emoji}${ore.vanity_name} x${amountArg} **pentru** ${bistariEarned} ${serverDbDoc.bistar_emoji}\n**Acum ai in total:** ${newBistari} ${serverDbDoc.bistar_emoji}`,
             files: ['./resources/bistari.gif'],
         })
 

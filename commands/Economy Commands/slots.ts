@@ -34,7 +34,7 @@ export default {
 
     if (bet < 1) {
       await interaction.reply({
-        content: `**Coaie lasa legalele, cum vrei sa pariezi mai putin de 1 BI$TAR?.**`,
+        content: `**Coaie lasa legalele, cum vrei sa pariezi mai putin de 1 ${serverDbDoc.bistar_emoji}?.**`,
         files: ['./resources/ceprost.jpg'],
         ephemeral: true
       });
@@ -124,62 +124,62 @@ export default {
 
       if ($ == $$ && $$ == $$$) {
         if ($ == "🍉") {
-          $4.setFooter(`Ai castigat ${bet * 0.5} BI$TARI!`)
+          $4.setFooter(`Ai castigat ${bet * 0.5} ${serverDbDoc.bistar_emoji}`)
           const newBistari = Math.ceil(bistari + (bet * 0.5))
           await userschema.findOneAndUpdate(
             { user_id: interaction.member?.user.id },
             { bistari: newBistari }
           );
         } else if ($ == "🍇") {
-          $4.setFooter(`Ai castigat ${bistari + bet + 7} BI$TARI!`)
+          $4.setFooter(`Ai castigat ${bistari + bet + 7} ${serverDbDoc.bistar_emoji}`)
           const newBistari = bistari + bet + 7
           await userschema.findOneAndUpdate(
             { user_id: interaction.member?.user.id },
             { bistari: newBistari }
           );
         } else if ($ == "🍒") {
-          $4.setFooter(`Ai castigat ${bet * 2} BI$TARI!`)
+          $4.setFooter(`Ai castigat ${bet * 2} ${serverDbDoc.bistar_emoji}`)
           const newBistari = bistari + (bet * 2)
           await userschema.findOneAndUpdate(
             { user_id: interaction.member?.user.id },
             { bistari: newBistari }
           );
         } else if ($ == "🍋") {
-          $4.setFooter(`Ai castigat ${bet * 5} BI$TARI!`)
+          $4.setFooter(`Ai castigat ${bet * 5} ${serverDbDoc.bistar_emoji}`)
           const newBistari = bistari + (bet * 5)
           await userschema.findOneAndUpdate(
             { user_id: interaction.member?.user.id },
             { bistari: newBistari }
           );
         } else if ($ == serverDbDoc.slots_jackpot_emoji) {
-          $4.setFooter(`Ai castigat ${bet * 10} BI$TARI!`)
+          $4.setFooter(`Ai castigat ${bet * 10} ${serverDbDoc.bistar_emoji}`)
           const newBistari = bistari + (bet * 10)
           await userschema.findOneAndUpdate(
             { user_id: interaction.member?.user.id },
             { bistari: newBistari }
           );
         } else if ($ == "🍀") {
-          $4.setFooter(`Andreea a luat ban! Ai primit ${bet} BI$TARI refund.`)
+          $4.setFooter(`Andreea a luat ban! Ai primit ${bet} ${serverDbDoc.bistar_emoji} refund.`)
           const newBistari = bistari + bet
           await userschema.findOneAndUpdate(
             { user_id: interaction.member?.user.id },
             { bistari: newBistari }
           );
           client.guilds.cache.get(utils.KAYU_SERVER_ID)?.members.cache.get(utils.DEEYUH_ID)?.kick("🢂 🍀 🍀 🍀 🢀").catch(async (error) => {
-            $4.setFooter(`Eroare la Ban Andreea! Ai primit ${bet} BI$TARI refund.`)
+            $4.setFooter(`Eroare la Ban Andreea! Ai primit ${bet} ${serverDbDoc.bistar_emoji} refund.`)
           });
         }
 
 
       } else if ($ == $$ || $$ == $$$) {
-        $4.setFooter(`Ai castigat ${bet * 1.5} BI$TARI!`)
+        $4.setFooter(`Ai castigat ${bet * 1.5} ${serverDbDoc.bistar_emoji}`)
         const newBistari = bistari + (bet * 1.5)
         await userschema.findOneAndUpdate(
           { user_id: interaction.member?.user.id },
           { bistari: newBistari }
         );
       } else {
-        $4.setFooter(`Ai pierdut ${bet} BI$TARI!`)
+        $4.setFooter(`Ai pierdut ${bet} ${serverDbDoc.bistar_emoji}`)
       }
 
       await interaction.editReply({
