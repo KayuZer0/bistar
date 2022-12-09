@@ -66,6 +66,7 @@ exports.default = {
             });
             return;
         }
+        //
         var crateName = crateDbDoc.name;
         var vanityName = crateDbDoc.vanity_name;
         var vanityEmoji = crateDbDoc.vanity_emoji;

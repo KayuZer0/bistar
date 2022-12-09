@@ -118,7 +118,7 @@ export async function Payday(resetMessages: boolean) {
           .setColor('#0099ff')
           .setTitle(`Your Paycheck has arrived!`)
           .addField(`💬 Mesaje trimise ora asta:`, `ㅤ ↳ **Total:** ${doc.messages_sent}`, false)
-          .addField(`${serverDbDoc.pp_emoji} BI$TARI +${bistariPayday}`, `\nㅤ ↳ **Total:** ${newBistari}`, false)
+          .addField(`${serverDbDoc.bistar_emoji} BI$TARI +${bistariPayday}`, `\nㅤ ↳ **Total:** ${newBistari}`, false)
           .addField(`${serverDbDoc.pp_emoji} Premium Points +${premiumPointsPayday}`, `ㅤ ↳ **Total:** ${newPremiumPoints}`, false)
           .addField(`${serverDbDoc.rp_emoji} Respect Points +${respectPointsPayday}`, `ㅤ ↳ **Total:** ${newRespectPoints}/${doc.respect_points_to_next_level}`, false)
           .setFooter(`Cum se calculeaza PayDay: 'bit.ly/bistarpayday'`)
