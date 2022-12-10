@@ -47,7 +47,7 @@ exports.default = {
     description: "Vezi informatiile jobului tau.",
     slash: true,
     callback: ({ channel, interaction, args }) => __awaiter(void 0, void 0, void 0, function* () {
-        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w;
+        var _a;
         const serverDbDoc = yield serverschema_1.default.findOne({ '_id': utils.SERVER_DATABASE_DOCUMENT_ID });
         const cmdAuthorDbDoc = yield userschema_1.default.findOne({ 'user_id': interaction.user.id });
         if (serverDbDoc == null || cmdAuthorDbDoc == null) {
@@ -73,22 +73,33 @@ exports.default = {
                 workedForNextSkill = jobsDbDoc === null || jobsDbDoc === void 0 ? void 0 : jobsDbDoc.get(workedForNextSkillQuery);
                 skillUpgradePrice = `🏷️ **Pret Skill Upgrade:** ${cmdAuthorDbDoc.miner_skill * jobsDbDoc.base_price_per_skill} ${serverDbDoc.bistar_emoji}\n`;
             }
+            interaction.deferReply();
+            const ore0 = yield oreschema_1.default.findOne({ 'id': 0 });
+            const ore1 = yield oreschema_1.default.findOne({ 'id': 1 });
+            const ore2 = yield oreschema_1.default.findOne({ 'id': 2 });
+            const ore3 = yield oreschema_1.default.findOne({ 'id': 3 });
+            const ore4 = yield oreschema_1.default.findOne({ 'id': 4 });
+            const ore5 = yield oreschema_1.default.findOne({ 'id': 5 });
+            const ore6 = yield oreschema_1.default.findOne({ 'id': 5.5 });
+            if (ore0 == null || ore1 == null || ore2 == null || ore3 == null || ore4 == null || ore5 == null || ore6 == null) {
+                return;
+            }
             const embed = new discord_js_1.MessageEmbed()
                 .setColor(utils.GenerateColor())
                 .setTitle(`Jobul tau este:  ${jobsDbDoc === null || jobsDbDoc === void 0 ? void 0 : jobsDbDoc.vanity_emoji} ${jobsDbDoc === null || jobsDbDoc === void 0 ? void 0 : jobsDbDoc.vanity_name}`)
                 .setDescription(`:muscle: **Skill:** ${cmdAuthorDbDoc.miner_skill} (Ture: ${cmdAuthorDbDoc.miner_worked}/${workedForNextSkill})\n${skillUpgradePrice}🎒 **Minereuri pe tura:** ${minerDbDoc.max_ores}\n\n**La Jobul de miner poti sa minezi urmatoarele:**
-                **${(_b = (yield oreschema_1.default.findOne({ 'id': 0 }))) === null || _b === void 0 ? void 0 : _b.vanity_emoji} ${(_c = (yield oreschema_1.default.findOne({ 'id': 0 }))) === null || _c === void 0 ? void 0 : _c.vanity_name}** - **Chance:** ${chances[0]}**%** - **Sells for:** ${(_d = (yield oreschema_1.default.findOne({ 'id': 0 }))) === null || _d === void 0 ? void 0 : _d.sell_price} ${serverDbDoc.bistar_emoji}
-                **${(_e = (yield oreschema_1.default.findOne({ 'id': 1 }))) === null || _e === void 0 ? void 0 : _e.vanity_emoji} ${(_f = (yield oreschema_1.default.findOne({ 'id': 1 }))) === null || _f === void 0 ? void 0 : _f.vanity_name}** - **Chance:** ${chances[1]}**%** - **Sells for:** ${(_g = (yield oreschema_1.default.findOne({ 'id': 1 }))) === null || _g === void 0 ? void 0 : _g.sell_price} ${serverDbDoc.bistar_emoji}
-                **${(_h = (yield oreschema_1.default.findOne({ 'id': 2 }))) === null || _h === void 0 ? void 0 : _h.vanity_emoji} ${(_j = (yield oreschema_1.default.findOne({ 'id': 2 }))) === null || _j === void 0 ? void 0 : _j.vanity_name}** - **Chance:** ${chances[2]}**%** - **Sells for:** ${(_k = (yield oreschema_1.default.findOne({ 'id': 2 }))) === null || _k === void 0 ? void 0 : _k.sell_price} ${serverDbDoc.bistar_emoji}
-                **${(_l = (yield oreschema_1.default.findOne({ 'id': 3 }))) === null || _l === void 0 ? void 0 : _l.vanity_emoji} ${(_m = (yield oreschema_1.default.findOne({ 'id': 3 }))) === null || _m === void 0 ? void 0 : _m.vanity_name}** - **Chance:** ${chances[3]}**%** - **Sells for:** ${(_o = (yield oreschema_1.default.findOne({ 'id': 3 }))) === null || _o === void 0 ? void 0 : _o.sell_price} ${serverDbDoc.bistar_emoji}
-                **${(_p = (yield oreschema_1.default.findOne({ 'id': 4 }))) === null || _p === void 0 ? void 0 : _p.vanity_emoji} ${(_q = (yield oreschema_1.default.findOne({ 'id': 4 }))) === null || _q === void 0 ? void 0 : _q.vanity_name}** - **Chance:** ${chances[4]}**%** - **Sells for:** ${(_r = (yield oreschema_1.default.findOne({ 'id': 4 }))) === null || _r === void 0 ? void 0 : _r.sell_price} ${serverDbDoc.bistar_emoji}
-                **${(_s = (yield oreschema_1.default.findOne({ 'id': 5 }))) === null || _s === void 0 ? void 0 : _s.vanity_emoji} ${(_t = (yield oreschema_1.default.findOne({ 'id': 5 }))) === null || _t === void 0 ? void 0 : _t.vanity_name}** - **Chance:** ${chances[5]}**%** - **Sells for:** ${(_u = (yield oreschema_1.default.findOne({ 'id': 5 }))) === null || _u === void 0 ? void 0 : _u.sell_price} ${serverDbDoc.bistar_emoji}
-                **${(_v = (yield oreschema_1.default.findOne({ 'id': 5.5 }))) === null || _v === void 0 ? void 0 : _v.vanity_emoji} ${(_w = (yield oreschema_1.default.findOne({ 'id': 5.5 }))) === null || _w === void 0 ? void 0 : _w.vanity_name}** - **Chance:** ${chances[6]}**%**\n
+                **${ore0.vanity_emoji} ${ore0.vanity_name}** - **Chance:** ${chances[0]}**%** - **Sells for:** ${ore0.sell_price} ${serverDbDoc.bistar_emoji}
+                **${ore1.vanity_emoji} ${ore1.vanity_name}** - **Chance:** ${chances[1]}**%** - **Sells for:** ${ore1.sell_price} ${serverDbDoc.bistar_emoji}
+                **${ore2.vanity_emoji} ${ore2.vanity_name}** - **Chance:** ${chances[2]}**%** - **Sells for:** ${ore2.sell_price} ${serverDbDoc.bistar_emoji}
+                **${ore3.vanity_emoji} ${ore3.vanity_name}** - **Chance:** ${chances[3]}**%** - **Sells for:** ${ore3.sell_price} ${serverDbDoc.bistar_emoji}
+                **${ore4.vanity_emoji} ${ore4.vanity_name}** - **Chance:** ${chances[4]}**%** - **Sells for:** ${ore4.sell_price} ${serverDbDoc.bistar_emoji}
+                **${ore5.vanity_emoji} ${ore5.vanity_name}** - **Chance:** ${chances[5]}**%** - **Sells for:** ${ore5.sell_price} ${serverDbDoc.bistar_emoji}
+                **${ore6.vanity_emoji} ${ore6.vanity_name}** - **Chance:** ${chances[6]}**%**\n
                 **Foloseste comanda** /mine **pentru a mina**
                 **Foloseste comanda** /sellore **pentru a vinde minereurile**
                 **Foloseste comanda** /skillupgrade **pentru a-ti upgrada skillul**
                 `);
-            interaction.reply({
+            interaction.editReply({
                 embeds: [embed]
             });
         }

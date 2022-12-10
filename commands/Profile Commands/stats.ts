@@ -54,14 +54,7 @@ export default {
             dbDoc = mentionedUserDbDoc
         }
 
-        let bistari = dbDoc.bistari
-        let premiumPoints = dbDoc.premium_points
-        let level = dbDoc.level
-        let rp = dbDoc.respect_points
-        let rpToNextLevel = dbDoc.respect_points_to_next_level
         let job = dbDoc.job
-
-        let skillMessage
 
         const jobsDbDoc = await jobschema.findOne({ 'job_id': job })
         if (jobsDbDoc == null) {
@@ -72,6 +65,17 @@ export default {
 
             return
         }
+
+        interaction.deferReply()
+
+        let bistari = dbDoc.bistari
+        let premiumPoints = dbDoc.premium_points
+        let level = dbDoc.level
+        let rp = dbDoc.respect_points
+        let rpToNextLevel = dbDoc.respect_points_to_next_level
+
+        let skillMessage
+
 
         if (job == 0) {
             skillMessage = ``
@@ -100,7 +104,7 @@ export default {
             .setTitle(`${member} - Stats`)
             .setDescription(`${serverDbDoc.bistar_emoji} **BI$TARI:** ${bistari}\n${serverDbDoc.pp_emoji} **Premium Points:** ${premiumPoints}\n\n⚙️ **Level:** ${level}\n⭐ **Respect Points:** ${rp}/${rpToNextLevel}\n\n💼 **Job:** ${jobVanityName}\n${skillMessage}`)
 
-        interaction.reply({
+        interaction.editReply({
             embeds: [embed]
         })
 

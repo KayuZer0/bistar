@@ -43,23 +43,35 @@ export default {
                 skillUpgradePrice = `🏷️ **Pret Skill Upgrade:** ${cmdAuthorDbDoc.miner_skill * jobsDbDoc.base_price_per_skill} ${serverDbDoc.bistar_emoji}\n`
             }
 
+            interaction.deferReply()
+
+            const ore0 = await oreschema.findOne({ 'id': 0 })
+            const ore1 = await oreschema.findOne({ 'id': 1 })
+            const ore2 = await oreschema.findOne({ 'id': 2 })
+            const ore3 = await oreschema.findOne({ 'id': 3 })
+            const ore4 = await oreschema.findOne({ 'id': 4 })
+            const ore5 = await oreschema.findOne({ 'id': 5 })
+            const ore6 = await oreschema.findOne({ 'id': 5.5 })
+
+            if (ore0 == null || ore1 == null || ore2 == null || ore3 == null || ore4 == null || ore5 == null || ore6 == null) { return }
+
             const embed = new MessageEmbed()
                 .setColor(utils.GenerateColor() as ColorResolvable)
                 .setTitle(`Jobul tau este:  ${jobsDbDoc?.vanity_emoji} ${jobsDbDoc?.vanity_name}`)
                 .setDescription(`:muscle: **Skill:** ${cmdAuthorDbDoc.miner_skill} (Ture: ${cmdAuthorDbDoc.miner_worked}/${workedForNextSkill})\n${skillUpgradePrice}🎒 **Minereuri pe tura:** ${minerDbDoc.max_ores}\n\n**La Jobul de miner poti sa minezi urmatoarele:**
-                **${(await oreschema.findOne({ 'id': 0 }))?.vanity_emoji} ${(await oreschema.findOne({ 'id': 0 }))?.vanity_name}** - **Chance:** ${chances[0]}**%** - **Sells for:** ${(await oreschema.findOne({ 'id': 0 }))?.sell_price} ${serverDbDoc.bistar_emoji}
-                **${(await oreschema.findOne({ 'id': 1 }))?.vanity_emoji} ${(await oreschema.findOne({ 'id': 1 }))?.vanity_name}** - **Chance:** ${chances[1]}**%** - **Sells for:** ${(await oreschema.findOne({ 'id': 1 }))?.sell_price} ${serverDbDoc.bistar_emoji}
-                **${(await oreschema.findOne({ 'id': 2 }))?.vanity_emoji} ${(await oreschema.findOne({ 'id': 2 }))?.vanity_name}** - **Chance:** ${chances[2]}**%** - **Sells for:** ${(await oreschema.findOne({ 'id': 2 }))?.sell_price} ${serverDbDoc.bistar_emoji}
-                **${(await oreschema.findOne({ 'id': 3 }))?.vanity_emoji} ${(await oreschema.findOne({ 'id': 3 }))?.vanity_name}** - **Chance:** ${chances[3]}**%** - **Sells for:** ${(await oreschema.findOne({ 'id': 3 }))?.sell_price} ${serverDbDoc.bistar_emoji}
-                **${(await oreschema.findOne({ 'id': 4 }))?.vanity_emoji} ${(await oreschema.findOne({ 'id': 4 }))?.vanity_name}** - **Chance:** ${chances[4]}**%** - **Sells for:** ${(await oreschema.findOne({ 'id': 4 }))?.sell_price} ${serverDbDoc.bistar_emoji}
-                **${(await oreschema.findOne({ 'id': 5 }))?.vanity_emoji} ${(await oreschema.findOne({ 'id': 5 }))?.vanity_name}** - **Chance:** ${chances[5]}**%** - **Sells for:** ${(await oreschema.findOne({ 'id': 5 }))?.sell_price} ${serverDbDoc.bistar_emoji}
-                **${(await oreschema.findOne({ 'id': 5.5 }))?.vanity_emoji} ${(await oreschema.findOne({ 'id': 5.5 }))?.vanity_name}** - **Chance:** ${chances[6]}**%**\n
+                **${ore0.vanity_emoji} ${ore0.vanity_name}** - **Chance:** ${chances[0]}**%** - **Sells for:** ${ore0.sell_price} ${serverDbDoc.bistar_emoji}
+                **${ore1.vanity_emoji} ${ore1.vanity_name}** - **Chance:** ${chances[1]}**%** - **Sells for:** ${ore1.sell_price} ${serverDbDoc.bistar_emoji}
+                **${ore2.vanity_emoji} ${ore2.vanity_name}** - **Chance:** ${chances[2]}**%** - **Sells for:** ${ore2.sell_price} ${serverDbDoc.bistar_emoji}
+                **${ore3.vanity_emoji} ${ore3.vanity_name}** - **Chance:** ${chances[3]}**%** - **Sells for:** ${ore3.sell_price} ${serverDbDoc.bistar_emoji}
+                **${ore4.vanity_emoji} ${ore4.vanity_name}** - **Chance:** ${chances[4]}**%** - **Sells for:** ${ore4.sell_price} ${serverDbDoc.bistar_emoji}
+                **${ore5.vanity_emoji} ${ore5.vanity_name}** - **Chance:** ${chances[5]}**%** - **Sells for:** ${ore5.sell_price} ${serverDbDoc.bistar_emoji}
+                **${ore6.vanity_emoji} ${ore6.vanity_name}** - **Chance:** ${chances[6]}**%**\n
                 **Foloseste comanda** /mine **pentru a mina**
                 **Foloseste comanda** /sellore **pentru a vinde minereurile**
                 **Foloseste comanda** /skillupgrade **pentru a-ti upgrada skillul**
                 `)
 
-            interaction.reply({
+            interaction.editReply({
                 embeds: [embed]
             })
         }
