@@ -7,6 +7,7 @@ import "dotenv/config"
 import serverschema from "./schemas/serverschema"
 import userschema from "./schemas/userschema"
 import { client } from "./index"
+import ticketschema from "./schemas/ticketschema"
 
 export const KAYU_ID = "415241379866869771"
 export const DEEYUH_ID = "766336439629643797"
