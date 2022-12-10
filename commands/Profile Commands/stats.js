@@ -84,13 +84,13 @@ exports.default = {
             });
             return;
         }
-        interaction.deferReply();
         let bistari = dbDoc.bistari;
         let premiumPoints = dbDoc.premium_points;
         let level = dbDoc.level;
         let rp = dbDoc.respect_points;
         let rpToNextLevel = dbDoc.respect_points_to_next_level;
         let skillMessage;
+        interaction.deferReply();
         if (job == 0) {
             skillMessage = ``;
         }

@@ -66,8 +66,6 @@ export default {
             return
         }
 
-        interaction.deferReply()
-
         let bistari = dbDoc.bistari
         let premiumPoints = dbDoc.premium_points
         let level = dbDoc.level
@@ -76,6 +74,7 @@ export default {
 
         let skillMessage
 
+        interaction.deferReply()
 
         if (job == 0) {
             skillMessage = ``
