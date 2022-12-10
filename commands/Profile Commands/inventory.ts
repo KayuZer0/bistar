@@ -33,8 +33,8 @@ export default {
             return
         }
 
-        let member
-        let dbDoc
+        let member: string
+        let dbDoc: any
 
         if (userArg == null) {
             member = interaction.user.username
@@ -43,7 +43,7 @@ export default {
             const mentionedUserDbDoc = await userschema.findOne({ 'user_id': userArg?.id })
             if (!mentionedUserDbDoc) {
                 interaction.reply({
-                    content: `**Acel user nu exista in baza de date. Daca crezi ca asta e o eroare da-i 7 pinguri lui KayuZer0**`,
+                    content: `**Acel user nu exista in baza de date. Incearca din nou si daca crezi ca asta e o eroare da-i 7 pinguri lui KayuZer0**`,
                     ephemeral: true,
                 })
 
@@ -71,45 +71,109 @@ export default {
             dbDoc.basic_crates
         ]
 
-        let vanityInventory = [
-            `**${(await ticketschema.findOne({ 'id': 0 }))?.vanity_name}** x${dbDoc.ban_andreea_tickets}`,
-            `**${(await ticketschema.findOne({ 'id': 1 }))?.vanity_name}** x${dbDoc.trap_tickets}`,
-            `**${(await ticketschema.findOne({ 'id': 2 }))?.vanity_name}** x${dbDoc.modify_server_tickets}`,
-            `**${(await ticketschema.findOne({ 'id': 3 }))?.vanity_name}** x${dbDoc.nadir_tickets}`,
-            `**${(await ticketschema.findOne({ 'id': 4 }))?.vanity_name}** x${dbDoc.escape_nadir_tickets}`,
-            `**${(await ticketschema.findOne({ 'id': 5 }))?.vanity_name}** x${dbDoc.taci_tickets}`,
-            `**${(await ticketschema.findOne({ 'id': 6 }))?.vanity_name}** x${dbDoc.nu_tac_tickets}`,
+        let vanityInventory: any[] = []
 
-            `${(await oreschema.findOne({ 'id': 0 }))?.vanity_emoji} **${(await oreschema.findOne({ 'id': 0 }))?.vanity_name}** x${dbDoc.coal}`,
-            `${(await oreschema.findOne({ 'id': 1 }))?.vanity_emoji} **${(await oreschema.findOne({ 'id': 1 }))?.vanity_name}** x${dbDoc.copper}`,
-            `${(await oreschema.findOne({ 'id': 2 }))?.vanity_emoji} **${(await oreschema.findOne({ 'id': 2 }))?.vanity_name}** x${dbDoc.iron}`,
-            `${(await oreschema.findOne({ 'id': 3 }))?.vanity_emoji} **${(await oreschema.findOne({ 'id': 3 }))?.vanity_name}** x${dbDoc.gold}`,
-            `${(await oreschema.findOne({ 'id': 4 }))?.vanity_emoji} **${(await oreschema.findOne({ 'id': 4 }))?.vanity_name}** x${dbDoc.diamond}`,
-            `${(await oreschema.findOne({ 'id': 5 }))?.vanity_emoji} **${(await oreschema.findOne({ 'id': 5 }))?.vanity_name}** x${dbDoc.emerald}`,
+        const ticektCursor = await ticketschema.find({})
+        const oreCursor = await oreschema.find({})
+        const crateCursor = await crateschema.find({})
 
-            `${(await crateschema.findOne({ 'id': 0 }))?.vanity_emoji} **${(await crateschema.findOne({ 'id': 0 }))?.vanity_name}** x${dbDoc.basic_crates}`,
-        ]
+        if (ticektCursor == null || oreCursor == null || crateCursor == null) {
+            interaction.reply({
+                content: `**Eroare la incarcearea inventarului. Incearca din nou si daca nu merge da-i 7 pinguri lui KayuZer0**`,
+                ephemeral: true,
+            })
 
-        let finalInventory = []
-        for (var i = 0; i < inventory.length; i++) {
-            if (inventory[i] > 0) {
-                finalInventory.push(`${vanityInventory[i]}` + `\n`)
-            }
+            return
         }
 
-        if (finalInventory.length == 0) {
-            finalInventory[0] = `Acest inventar este gol.`
-        }
+        await interaction.deferReply()
 
-        const embed = new MessageEmbed()
-            .setColor(utils.GenerateColor() as ColorResolvable)
-            .setTitle(`${member} - Inventory`)
-            .setDescription(finalInventory.toString().replaceAll(`,`, ``))
-
-        interaction.reply({
-            embeds: [embed]
-        })
+        LoadInventory(dbDoc, vanityInventory, interaction, member)
 
     }
 
 } as ICommand
+
+async function LoadInventory(dbDoc: any, vanityInventory: any, interaction: any, member: any) {
+    const ticketCursor = await ticketschema.find({})
+    GetTicketInventory(ticketCursor, dbDoc, vanityInventory, interaction, member)
+}
+
+async function GetTicketInventory(ticketCursor: any, dbDoc: any, vanityInventory: any, interaction: any, member: any) {
+    const max = await ticketschema.findOne().sort({ 'id': -1 }).limit(1)
+    if (max == null) { return }
+
+    ticketCursor.forEach(async function (err: any, id: any) {
+        const ticketDb = await ticketschema.findOne({ 'id': id })
+        if (ticketDb == null) { console.log('cox ticket'); return }
+
+        if (dbDoc.get(ticketDb.name) > 0) {
+            var vanityString = `**${ticketDb.vanity_name}** x${dbDoc.get(ticketDb.name)}\n`
+            await vanityInventory.push(vanityString)
+        }
+
+        if (id == max.id) {
+            GetOreInventory(dbDoc, vanityInventory, interaction, member)
+        }
+
+    })
+}
+
+async function GetOreInventory(dbDoc: any, vanityInventory: any, interaction: any, member: any) {
+    const oreCursor = await oreschema.find({})
+
+    const max = await oreschema.findOne().sort({ 'id': -1 }).limit(1)
+    if (max == null) { return }
+
+    oreCursor.forEach(async function (err: any, id: any) {
+        const oreDb = await oreschema.findOne({ 'id': id })
+        if (oreDb == null) { return }
+
+        if (dbDoc.get(oreDb.name) > 0) {
+            var vanityString = `${oreDb.vanity_emoji} **${oreDb.vanity_name}** x${dbDoc.get(oreDb.name)}\n`
+            await vanityInventory.push(vanityString)
+        }
+
+        if (id == max.id - 0.5) {
+            GetCrateInventory(dbDoc, vanityInventory, interaction, member)
+        }
+
+    })
+}
+
+async function GetCrateInventory(dbDoc: any, vanityInventory: any, interaction: any, member: any) {
+    const crateCursor = await crateschema.find({})
+
+    const max = await crateschema.findOne().sort({ 'id': -1 }).limit(1)
+    if (max == null) { return }
+
+    crateCursor.forEach(async function (err: any, id: any) {
+        const crateDb = await crateschema.findOne({ 'id': id })
+        if (crateDb == null) { return }
+
+        if (dbDoc.get(crateDb.name) > 0) {
+            var vanityString = `${crateDb.vanity_emoji} **${crateDb.vanity_name}** x${dbDoc.get(crateDb.name)}\n`
+            await vanityInventory.push(vanityString)
+        }
+
+        if (id == max.id) {
+            DisplayInventory(dbDoc, vanityInventory, interaction, member)
+        }
+
+    })
+}
+
+async function DisplayInventory(dbDoc: any, vanityInventory: any, interaction: any, member: any) {
+    if (vanityInventory.length == 0) {
+        vanityInventory[0] = `Acest inventar este gol.`
+    }
+
+    const embed = new MessageEmbed()
+        .setColor(utils.GenerateColor() as ColorResolvable)
+        .setTitle(`${member} - Inventory`)
+        .setDescription(vanityInventory.toString().replaceAll(`,`, ``))
+
+    interaction.editReply({
+        embeds: [embed]
+    })
+}

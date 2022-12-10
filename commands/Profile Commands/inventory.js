@@ -53,7 +53,6 @@ exports.default = {
             required: false
         }],
     callback: ({ channel, interaction, args }) => __awaiter(void 0, void 0, void 0, function* () {
-        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w;
         const userArg = interaction.options.getUser('user');
         const serverDbDoc = yield serverschema_1.default.findOne({ '_id': utils.SERVER_DATABASE_DOCUMENT_ID });
         const cmdAuthorDbDoc = yield userschema_1.default.findOne({ 'user_id': interaction.user.id });
@@ -70,7 +69,7 @@ exports.default = {
             const mentionedUserDbDoc = yield userschema_1.default.findOne({ 'user_id': userArg === null || userArg === void 0 ? void 0 : userArg.id });
             if (!mentionedUserDbDoc) {
                 interaction.reply({
-                    content: `**Acel user nu exista in baza de date. Daca crezi ca asta e o eroare da-i 7 pinguri lui KayuZer0**`,
+                    content: `**Acel user nu exista in baza de date. Incearca din nou si daca crezi ca asta e o eroare da-i 7 pinguri lui KayuZer0**`,
                     ephemeral: true,
                 });
                 return;
@@ -94,37 +93,110 @@ exports.default = {
             dbDoc.emerald,
             dbDoc.basic_crates
         ];
-        let vanityInventory = [
-            `**${(_a = (yield ticketschema_1.default.findOne({ 'id': 0 }))) === null || _a === void 0 ? void 0 : _a.vanity_name}** x${dbDoc.ban_andreea_tickets}`,
-            `**${(_b = (yield ticketschema_1.default.findOne({ 'id': 1 }))) === null || _b === void 0 ? void 0 : _b.vanity_name}** x${dbDoc.trap_tickets}`,
-            `**${(_c = (yield ticketschema_1.default.findOne({ 'id': 2 }))) === null || _c === void 0 ? void 0 : _c.vanity_name}** x${dbDoc.modify_server_tickets}`,
-            `**${(_d = (yield ticketschema_1.default.findOne({ 'id': 3 }))) === null || _d === void 0 ? void 0 : _d.vanity_name}** x${dbDoc.nadir_tickets}`,
-            `**${(_e = (yield ticketschema_1.default.findOne({ 'id': 4 }))) === null || _e === void 0 ? void 0 : _e.vanity_name}** x${dbDoc.escape_nadir_tickets}`,
-            `**${(_f = (yield ticketschema_1.default.findOne({ 'id': 5 }))) === null || _f === void 0 ? void 0 : _f.vanity_name}** x${dbDoc.taci_tickets}`,
-            `**${(_g = (yield ticketschema_1.default.findOne({ 'id': 6 }))) === null || _g === void 0 ? void 0 : _g.vanity_name}** x${dbDoc.nu_tac_tickets}`,
-            `${(_h = (yield oreschema_1.default.findOne({ 'id': 0 }))) === null || _h === void 0 ? void 0 : _h.vanity_emoji} **${(_j = (yield oreschema_1.default.findOne({ 'id': 0 }))) === null || _j === void 0 ? void 0 : _j.vanity_name}** x${dbDoc.coal}`,
-            `${(_k = (yield oreschema_1.default.findOne({ 'id': 1 }))) === null || _k === void 0 ? void 0 : _k.vanity_emoji} **${(_l = (yield oreschema_1.default.findOne({ 'id': 1 }))) === null || _l === void 0 ? void 0 : _l.vanity_name}** x${dbDoc.copper}`,
-            `${(_m = (yield oreschema_1.default.findOne({ 'id': 2 }))) === null || _m === void 0 ? void 0 : _m.vanity_emoji} **${(_o = (yield oreschema_1.default.findOne({ 'id': 2 }))) === null || _o === void 0 ? void 0 : _o.vanity_name}** x${dbDoc.iron}`,
-            `${(_p = (yield oreschema_1.default.findOne({ 'id': 3 }))) === null || _p === void 0 ? void 0 : _p.vanity_emoji} **${(_q = (yield oreschema_1.default.findOne({ 'id': 3 }))) === null || _q === void 0 ? void 0 : _q.vanity_name}** x${dbDoc.gold}`,
-            `${(_r = (yield oreschema_1.default.findOne({ 'id': 4 }))) === null || _r === void 0 ? void 0 : _r.vanity_emoji} **${(_s = (yield oreschema_1.default.findOne({ 'id': 4 }))) === null || _s === void 0 ? void 0 : _s.vanity_name}** x${dbDoc.diamond}`,
-            `${(_t = (yield oreschema_1.default.findOne({ 'id': 5 }))) === null || _t === void 0 ? void 0 : _t.vanity_emoji} **${(_u = (yield oreschema_1.default.findOne({ 'id': 5 }))) === null || _u === void 0 ? void 0 : _u.vanity_name}** x${dbDoc.emerald}`,
-            `${(_v = (yield crateschema_1.default.findOne({ 'id': 0 }))) === null || _v === void 0 ? void 0 : _v.vanity_emoji} **${(_w = (yield crateschema_1.default.findOne({ 'id': 0 }))) === null || _w === void 0 ? void 0 : _w.vanity_name}** x${dbDoc.basic_crates}`,
-        ];
-        let finalInventory = [];
-        for (var i = 0; i < inventory.length; i++) {
-            if (inventory[i] > 0) {
-                finalInventory.push(`${vanityInventory[i]}` + `\n`);
-            }
+        let vanityInventory = [];
+        const ticektCursor = yield ticketschema_1.default.find({});
+        const oreCursor = yield oreschema_1.default.find({});
+        const crateCursor = yield crateschema_1.default.find({});
+        if (ticektCursor == null || oreCursor == null || crateCursor == null) {
+            interaction.reply({
+                content: `**Eroare la incarcearea inventarului. Incearca din nou si daca nu merge da-i 7 pinguri lui KayuZer0**`,
+                ephemeral: true,
+            });
+            return;
         }
-        if (finalInventory.length == 0) {
-            finalInventory[0] = `Acest inventar este gol.`;
+        yield interaction.deferReply();
+        LoadInventory(dbDoc, vanityInventory, interaction, member);
+    })
+};
+function LoadInventory(dbDoc, vanityInventory, interaction, member) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const ticketCursor = yield ticketschema_1.default.find({});
+        GetTicketInventory(ticketCursor, dbDoc, vanityInventory, interaction, member);
+    });
+}
+function GetTicketInventory(ticketCursor, dbDoc, vanityInventory, interaction, member) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const max = yield ticketschema_1.default.findOne().sort({ 'id': -1 }).limit(1);
+        if (max == null) {
+            return;
+        }
+        ticketCursor.forEach(function (err, id) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const ticketDb = yield ticketschema_1.default.findOne({ 'id': id });
+                if (ticketDb == null) {
+                    console.log('cox ticket');
+                    return;
+                }
+                if (dbDoc.get(ticketDb.name) > 0) {
+                    var vanityString = `**${ticketDb.vanity_name}** x${dbDoc.get(ticketDb.name)}\n`;
+                    yield vanityInventory.push(vanityString);
+                }
+                if (id == max.id) {
+                    GetOreInventory(dbDoc, vanityInventory, interaction, member);
+                }
+            });
+        });
+    });
+}
+function GetOreInventory(dbDoc, vanityInventory, interaction, member) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const oreCursor = yield oreschema_1.default.find({});
+        const max = yield oreschema_1.default.findOne().sort({ 'id': -1 }).limit(1);
+        if (max == null) {
+            return;
+        }
+        oreCursor.forEach(function (err, id) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const oreDb = yield oreschema_1.default.findOne({ 'id': id });
+                if (oreDb == null) {
+                    return;
+                }
+                if (dbDoc.get(oreDb.name) > 0) {
+                    var vanityString = `${oreDb.vanity_emoji} **${oreDb.vanity_name}** x${dbDoc.get(oreDb.name)}\n`;
+                    yield vanityInventory.push(vanityString);
+                }
+                if (id == max.id - 0.5) {
+                    GetCrateInventory(dbDoc, vanityInventory, interaction, member);
+                }
+            });
+        });
+    });
+}
+function GetCrateInventory(dbDoc, vanityInventory, interaction, member) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const crateCursor = yield crateschema_1.default.find({});
+        const max = yield crateschema_1.default.findOne().sort({ 'id': -1 }).limit(1);
+        if (max == null) {
+            return;
+        }
+        crateCursor.forEach(function (err, id) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const crateDb = yield crateschema_1.default.findOne({ 'id': id });
+                if (crateDb == null) {
+                    return;
+                }
+                if (dbDoc.get(crateDb.name) > 0) {
+                    var vanityString = `${crateDb.vanity_emoji} **${crateDb.vanity_name}** x${dbDoc.get(crateDb.name)}\n`;
+                    yield vanityInventory.push(vanityString);
+                }
+                if (id == max.id) {
+                    DisplayInventory(dbDoc, vanityInventory, interaction, member);
+                }
+            });
+        });
+    });
+}
+function DisplayInventory(dbDoc, vanityInventory, interaction, member) {
+    return __awaiter(this, void 0, void 0, function* () {
+        if (vanityInventory.length == 0) {
+            vanityInventory[0] = `Acest inventar este gol.`;
         }
         const embed = new discord_js_1.MessageEmbed()
             .setColor(utils.GenerateColor())
             .setTitle(`${member} - Inventory`)
-            .setDescription(finalInventory.toString().replaceAll(`,`, ``));
-        interaction.reply({
+            .setDescription(vanityInventory.toString().replaceAll(`,`, ``));
+        interaction.editReply({
             embeds: [embed]
         });
-    })
-};
+    });
+}
