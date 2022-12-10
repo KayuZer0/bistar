@@ -90,7 +90,7 @@ exports.default = {
         let rp = dbDoc.respect_points;
         let rpToNextLevel = dbDoc.respect_points_to_next_level;
         let skillMessage;
-        interaction.deferReply();
+        yield interaction.deferReply();
         if (job == 0) {
             skillMessage = ``;
         }

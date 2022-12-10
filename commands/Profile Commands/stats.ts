@@ -74,7 +74,7 @@ export default {
 
         let skillMessage
 
-        interaction.deferReply()
+        await interaction.deferReply()
 
         if (job == 0) {
             skillMessage = ``
