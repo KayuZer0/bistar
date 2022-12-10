@@ -48,7 +48,7 @@ exports.default = {
             type: "USER",
             required: true
         }],
-    cooldown: "15m",
+    cooldown: "10m",
     callback: ({ channel, interaction, args }) => __awaiter(void 0, void 0, void 0, function* () {
         var _a, _b, _c, _d, _e;
         const userArg = interaction.options.getUser('user');

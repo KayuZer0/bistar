@@ -20,7 +20,7 @@ export default {
         required: true
     }],
 
-    cooldown: "15m",
+    cooldown: "10m",
 
     callback: async ({ channel, interaction, args }) => {
         const userArg = interaction.options.getUser('user')
