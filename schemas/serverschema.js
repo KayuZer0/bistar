@@ -25,7 +25,9 @@ const schema = new mongoose_1.default.Schema({
     bistar_emoji: { type: String, required: true },
     pp_emoji: { type: String, required: true },
     rp_emoji: { type: String, required: true },
-    mine_gif_url: { type: String, required: true }
+    mine_gif_url: { type: String, required: true },
+    minimum_xp_to_next_level: { type: Number, required: true },
+    xp_to_next_level_multiplier: { type: Number, required: true },
 });
 // schema.plugin(mongooseUniqueValidator)
 exports.default = mongoose_1.default.model('server', schema, 'server');

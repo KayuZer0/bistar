@@ -25,7 +25,7 @@ export default {
 
         const level = cmdAuthorDbDoc.level
         const rp = cmdAuthorDbDoc.respect_points
-        const rpToNextLevel = cmdAuthorDbDoc.respect_points_to_next_level
+        let rpToNextLevel = serverDbDoc.minimum_xp_to_next_level + (level * serverDbDoc.xp_to_next_level_multiplier)
 
         if (rp < rpToNextLevel) {
             interaction.reply({

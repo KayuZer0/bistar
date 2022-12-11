@@ -94,9 +94,10 @@ exports.default = {
                 ores.push(`**${oresDbDoc === null || oresDbDoc === void 0 ? void 0 : oresDbDoc.vanity_emoji} ${oresDbDoc === null || oresDbDoc === void 0 ? void 0 : oresDbDoc.vanity_name}** x${amountMined[id]} (Total: ${cmdAuthorDbDoc.get(oresDbDoc.name) + amountMined[id]})`);
             }
         }
+        let rpToNextLevel = serverDbDoc.minimum_xp_to_next_level + (cmdAuthorDbDoc.level * serverDbDoc.xp_to_next_level_multiplier);
         const rp = utils.GetRandomNumber(1, 4) + cmdAuthorDbDoc.miner_skill;
         yield userschema_1.default.findOneAndUpdate({ user_id: interaction.user.id }, { $inc: { respect_points: rp } });
-        ores.push(`${serverDbDoc.rp_emoji} **Respect Points** x${rp} (Total: ${cmdAuthorDbDoc.respect_points + rp})`);
+        ores.push(`${serverDbDoc.rp_emoji} **Respect Points** x${rp} (Total: ${cmdAuthorDbDoc.respect_points + rp}/${rpToNextLevel})`);
         let finalOres = [];
         for (var i = 0; i < ores.length; i++) {
             finalOres.push(`**+** ${ores[i]}\n`);

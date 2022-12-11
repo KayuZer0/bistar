@@ -82,13 +82,15 @@ export default {
             }
         }
 
-        const rp = utils.GetRandomNumber(1, 4) + cmdAuthorDbDoc.miner_skill
+        let rpToNextLevel = serverDbDoc.minimum_xp_to_next_level + (cmdAuthorDbDoc.level * serverDbDoc.xp_to_next_level_multiplier)
+
+        const rp = utils.GetRandomNumber(1, 3) + cmdAuthorDbDoc.miner_skill
         await userschema.findOneAndUpdate(
             { user_id: interaction.user.id },
             { $inc: { respect_points: rp } }
         );
 
-        ores.push(`${serverDbDoc.rp_emoji} **Respect Points** x${rp} (Total: ${cmdAuthorDbDoc.respect_points + rp})`)
+        ores.push(`${serverDbDoc.rp_emoji} **Respect Points** x${rp} (Total: ${cmdAuthorDbDoc.respect_points + rp}/${rpToNextLevel})`)
 
         let finalOres = []
         for (var i = 0; i < ores.length; i++) {

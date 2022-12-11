@@ -70,7 +70,7 @@ export default {
         let premiumPoints = dbDoc.premium_points
         let level = dbDoc.level
         let rp = dbDoc.respect_points
-        let rpToNextLevel = dbDoc.respect_points_to_next_level
+        let rpToNextLevel = serverDbDoc.minimum_xp_to_next_level + (level * serverDbDoc.xp_to_next_level_multiplier)
 
         let skillMessage
 
