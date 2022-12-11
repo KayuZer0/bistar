@@ -45,7 +45,7 @@ exports.default = {
     category: "Job Miner",
     description: "Mineaza niste minereuri calificate.",
     slash: true,
-    cooldown: '5m',
+    // cooldown: '5m',
     callback: ({ channel, interaction, args }) => __awaiter(void 0, void 0, void 0, function* () {
         const serverDbDoc = yield serverschema_1.default.findOne({ '_id': utils.SERVER_DATABASE_DOCUMENT_ID });
         const cmdAuthorDbDoc = yield userschema_1.default.findOne({ 'user_id': interaction.user.id });
@@ -67,6 +67,7 @@ exports.default = {
         let max_ores = minerDbDoc.max_ores;
         let chances = [minerDbDoc.coal_chance, minerDbDoc.copper_chance, minerDbDoc.iron_chance, minerDbDoc.gold_chance, minerDbDoc.diamond_chance, minerDbDoc.emerald_chance, minerDbDoc.pp_chance];
         let ores = [];
+        let amountMined = [0, 0, 0, 0, 0, 0, 0];
         const m1 = new discord_js_1.MessageEmbed()
             .setTitle(`Ai inceput sa minezi. Asteapta sa vezi ce ai gasit.`)
             .setImage(serverDbDoc.mine_gif_url);
@@ -76,12 +77,32 @@ exports.default = {
         for (var i = 0; i < max_ores; i++) {
             let ore = utils.percentageChance(['coal', 'copper', 'iron', 'gold', 'diamond', 'emerald', 'premium_points'], chances);
             const oresDbDoc = yield oreschema_1.default.findOne({ 'name': ore });
+            if (oresDbDoc == null) {
+                return;
+            }
             yield userschema_1.default.findOneAndUpdate({ user_id: interaction.user.id }, { $inc: { [ore]: 1 } });
-            ores.push(`**${oresDbDoc === null || oresDbDoc === void 0 ? void 0 : oresDbDoc.vanity_emoji} ${oresDbDoc === null || oresDbDoc === void 0 ? void 0 : oresDbDoc.vanity_name}** x1`);
+            let index = oresDbDoc.id;
+            if (ore == 'premium_points') {
+                index = 6;
+            }
+            amountMined[index] = amountMined[index] + 1;
+        }
+        for (var id in amountMined) {
+            if (amountMined[id] > 0) {
+                let idQuery = parseInt(id);
+                if (idQuery == 6) {
+                    idQuery = 5.5;
+                }
+                const oresDbDoc = yield oreschema_1.default.findOne({ 'id': idQuery });
+                if (oresDbDoc == null) {
+                    return;
+                }
+                ores.push(`**${oresDbDoc === null || oresDbDoc === void 0 ? void 0 : oresDbDoc.vanity_emoji} ${oresDbDoc === null || oresDbDoc === void 0 ? void 0 : oresDbDoc.vanity_name}** x${amountMined[id]} (Total: ${cmdAuthorDbDoc.get(oresDbDoc.name) + amountMined[id]})`);
+            }
         }
         const rp = utils.GetRandomNumber(1, 4) + cmdAuthorDbDoc.miner_skill;
         yield userschema_1.default.findOneAndUpdate({ user_id: interaction.user.id }, { $inc: { respect_points: rp } });
-        ores.push(`${serverDbDoc.rp_emoji} **Respect Points** x${rp}`);
+        ores.push(`${serverDbDoc.rp_emoji} **Respect Points** x${rp} (Total: ${cmdAuthorDbDoc.respect_points + rp})`);
         let finalOres = [];
         for (var i = 0; i < ores.length; i++) {
             finalOres.push(`**+** ${ores[i]}\n`);

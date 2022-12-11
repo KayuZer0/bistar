@@ -65,33 +65,30 @@ export default {
             return
         }
 
+        await interaction.deferReply()
+
         const oresInInv = cmdAuthorDbDoc.get(ore.name)
+        var oresToSell = amountArg
 
-        if (oresInInv < amountArg) {
-            interaction.reply({
-                content: `**Baiete nu ai destul ${ore.vanity_emoji} ${ore.vanity_name} in inventar. Momentai ai doar:** ${oresInInv}`,
-                files: ['./resources/ceprost.jpg'],
-                ephemeral: true,
-            })
-
-            return
+        if (amountArg > oresInInv) {
+            oresToSell = oresInInv
         }
 
-        const bistariEarned = ore.sell_price * amountArg
+        const bistariEarned = ore.sell_price * oresToSell
         const newBistari = cmdAuthorDbDoc.bistari + bistariEarned
         await userschema.findOneAndUpdate(
             { user_id: interaction.member?.user.id },
             { $inc: { bistari: bistariEarned } }
         );
 
-        const newOres = oresInInv - amountArg
+        const newOres = oresInInv - oresToSell
         await userschema.findOneAndUpdate(
             { user_id: interaction.member?.user.id },
             { $set: { [ore.name]: newOres } }
         );
 
-        interaction.reply({
-            content: `**Ai vandut** ${ore.vanity_emoji}${ore.vanity_name} x${amountArg} **pentru** ${bistariEarned} ${serverDbDoc.bistar_emoji}\n**Acum ai in total:** ${newBistari} ${serverDbDoc.bistar_emoji}`,
+        interaction.editReply({
+            content: `**Ai vandut** ${ore.vanity_emoji}${ore.vanity_name} x${oresToSell} **pentru** ${bistariEarned} ${serverDbDoc.bistar_emoji}\n**Acum ai in total:** ${newBistari} ${serverDbDoc.bistar_emoji}`,
             files: ['./resources/bistari.gif'],
         })
 

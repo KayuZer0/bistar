@@ -14,7 +14,7 @@ export default {
     description: "Mineaza niste minereuri calificate.",
 
     slash: true,
-    cooldown: '5m',
+    // cooldown: '5m',
 
     callback: async ({ channel, interaction, args }) => {
         const serverDbDoc = await serverschema.findOne({ '_id': utils.SERVER_DATABASE_DOCUMENT_ID })
@@ -44,6 +44,8 @@ export default {
         let chances = [minerDbDoc.coal_chance, minerDbDoc.copper_chance, minerDbDoc.iron_chance, minerDbDoc.gold_chance, minerDbDoc.diamond_chance, minerDbDoc.emerald_chance, minerDbDoc.pp_chance]
         let ores = []
 
+        let amountMined = [0, 0, 0, 0, 0, 0, 0]
+
         const m1 = new MessageEmbed()
             .setTitle(`Ai inceput sa minezi. Asteapta sa vezi ce ai gasit.`)
             .setImage(serverDbDoc.mine_gif_url)
@@ -56,14 +58,30 @@ export default {
             let ore = utils.percentageChance(['coal', 'copper', 'iron', 'gold', 'diamond', 'emerald', 'premium_points'], chances)
 
             const oresDbDoc = await oreschema.findOne({ 'name': ore })
+            if (oresDbDoc == null) { return }
 
             await userschema.findOneAndUpdate(
                 { user_id: interaction.user.id },
                 { $inc: { [ore]: 1 } }
             );
 
-            ores.push(`**${oresDbDoc?.vanity_emoji} ${oresDbDoc?.vanity_name}** x1`)
+            let index = oresDbDoc.id
+            if (ore == 'premium_points') { index = 6 }
 
+            amountMined[index] = amountMined[index] + 1
+
+        }
+
+        for (var id in amountMined) {
+            if (amountMined[id] > 0) {
+                let idQuery = parseInt(id)
+                if (idQuery == 6) { idQuery = 5.5 }
+
+                const oresDbDoc = await oreschema.findOne({ 'id': idQuery })
+                if (oresDbDoc == null) { return }
+
+                ores.push(`**${oresDbDoc?.vanity_emoji} ${oresDbDoc?.vanity_name}** x${amountMined[id]} (Total: ${cmdAuthorDbDoc.get(oresDbDoc.name) + amountMined[id]})`)
+            }
         }
 
         const rp = utils.GetRandomNumber(1, 4) + cmdAuthorDbDoc.miner_skill
@@ -72,7 +90,7 @@ export default {
             { $inc: { respect_points: rp } }
         );
 
-        ores.push(`${serverDbDoc.rp_emoji} **Respect Points** x${rp}`)
+        ores.push(`${serverDbDoc.rp_emoji} **Respect Points** x${rp} (Total: ${cmdAuthorDbDoc.respect_points + rp})`)
 
         let finalOres = []
         for (var i = 0; i < ores.length; i++) {

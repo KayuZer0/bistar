@@ -43,7 +43,7 @@ export default {
                 skillUpgradePrice = `🏷️ **Pret Skill Upgrade:** ${cmdAuthorDbDoc.miner_skill * jobsDbDoc.base_price_per_skill} ${serverDbDoc.bistar_emoji}\n`
             }
 
-            interaction.deferReply()
+            await interaction.deferReply()
 
             const ore0 = await oreschema.findOne({ 'id': 0 })
             const ore1 = await oreschema.findOne({ 'id': 1 })

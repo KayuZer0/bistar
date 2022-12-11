@@ -73,7 +73,7 @@ exports.default = {
                 workedForNextSkill = jobsDbDoc === null || jobsDbDoc === void 0 ? void 0 : jobsDbDoc.get(workedForNextSkillQuery);
                 skillUpgradePrice = `🏷️ **Pret Skill Upgrade:** ${cmdAuthorDbDoc.miner_skill * jobsDbDoc.base_price_per_skill} ${serverDbDoc.bistar_emoji}\n`;
             }
-            interaction.deferReply();
+            yield interaction.deferReply();
             const ore0 = yield oreschema_1.default.findOne({ 'id': 0 });
             const ore1 = yield oreschema_1.default.findOne({ 'id': 1 });
             const ore2 = yield oreschema_1.default.findOne({ 'id': 2 });

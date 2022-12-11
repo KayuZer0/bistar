@@ -86,22 +86,19 @@ exports.default = {
             });
             return;
         }
+        yield interaction.deferReply();
         const oresInInv = cmdAuthorDbDoc.get(ore.name);
-        if (oresInInv < amountArg) {
-            interaction.reply({
-                content: `**Baiete nu ai destul ${ore.vanity_emoji} ${ore.vanity_name} in inventar. Momentai ai doar:** ${oresInInv}`,
-                files: ['./resources/ceprost.jpg'],
-                ephemeral: true,
-            });
-            return;
+        var oresToSell = amountArg;
+        if (amountArg > oresInInv) {
+            oresToSell = oresInInv;
         }
-        const bistariEarned = ore.sell_price * amountArg;
+        const bistariEarned = ore.sell_price * oresToSell;
         const newBistari = cmdAuthorDbDoc.bistari + bistariEarned;
         yield userschema_1.default.findOneAndUpdate({ user_id: (_a = interaction.member) === null || _a === void 0 ? void 0 : _a.user.id }, { $inc: { bistari: bistariEarned } });
-        const newOres = oresInInv - amountArg;
+        const newOres = oresInInv - oresToSell;
         yield userschema_1.default.findOneAndUpdate({ user_id: (_b = interaction.member) === null || _b === void 0 ? void 0 : _b.user.id }, { $set: { [ore.name]: newOres } });
-        interaction.reply({
-            content: `**Ai vandut** ${ore.vanity_emoji}${ore.vanity_name} x${amountArg} **pentru** ${bistariEarned} ${serverDbDoc.bistar_emoji}\n**Acum ai in total:** ${newBistari} ${serverDbDoc.bistar_emoji}`,
+        interaction.editReply({
+            content: `**Ai vandut** ${ore.vanity_emoji}${ore.vanity_name} x${oresToSell} **pentru** ${bistariEarned} ${serverDbDoc.bistar_emoji}\n**Acum ai in total:** ${newBistari} ${serverDbDoc.bistar_emoji}`,
             files: ['./resources/bistari.gif'],
         });
     })
