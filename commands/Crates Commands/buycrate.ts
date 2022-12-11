@@ -69,7 +69,7 @@ export default {
         );
 
         interaction.reply({
-            content: `**Felicitari! Ai cumparat:** ${vanityEmoji} ${vanityName} **pentru** ${itemPrice} :coin:\n`
+            content: `**Felicitari! Ai cumparat:** ${vanityEmoji} ${vanityName} **pentru** ${itemPrice} ${serverDbDoc.pp_emoji}\n`
         })
 
     }

@@ -66,7 +66,6 @@ export default {
             );
 
             let index = oresDbDoc.id
-            if (ore == 'premium_points') { index = 6 }
 
             amountMined[index] = amountMined[index] + 1
 
@@ -75,7 +74,6 @@ export default {
         for (var id in amountMined) {
             if (amountMined[id] > 0) {
                 let idQuery = parseInt(id)
-                if (idQuery == 6) { idQuery = 5.5 }
 
                 const oresDbDoc = await oreschema.findOne({ 'id': idQuery })
                 if (oresDbDoc == null) { return }

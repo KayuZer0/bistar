@@ -80,7 +80,7 @@ exports.default = {
             const ore3 = yield oreschema_1.default.findOne({ 'id': 3 });
             const ore4 = yield oreschema_1.default.findOne({ 'id': 4 });
             const ore5 = yield oreschema_1.default.findOne({ 'id': 5 });
-            const ore6 = yield oreschema_1.default.findOne({ 'id': 5.5 });
+            const ore6 = yield oreschema_1.default.findOne({ 'id': 6 });
             if (ore0 == null || ore1 == null || ore2 == null || ore3 == null || ore4 == null || ore5 == null || ore6 == null) {
                 return;
             }

@@ -82,17 +82,11 @@ exports.default = {
             }
             yield userschema_1.default.findOneAndUpdate({ user_id: interaction.user.id }, { $inc: { [ore]: 1 } });
             let index = oresDbDoc.id;
-            if (ore == 'premium_points') {
-                index = 6;
-            }
             amountMined[index] = amountMined[index] + 1;
         }
         for (var id in amountMined) {
             if (amountMined[id] > 0) {
                 let idQuery = parseInt(id);
-                if (idQuery == 6) {
-                    idQuery = 5.5;
-                }
                 const oresDbDoc = yield oreschema_1.default.findOne({ 'id': idQuery });
                 if (oresDbDoc == null) {
                     return;

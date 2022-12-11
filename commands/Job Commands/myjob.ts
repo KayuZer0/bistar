@@ -51,7 +51,7 @@ export default {
             const ore3 = await oreschema.findOne({ 'id': 3 })
             const ore4 = await oreschema.findOne({ 'id': 4 })
             const ore5 = await oreschema.findOne({ 'id': 5 })
-            const ore6 = await oreschema.findOne({ 'id': 5.5 })
+            const ore6 = await oreschema.findOne({ 'id': 6 })
 
             if (ore0 == null || ore1 == null || ore2 == null || ore3 == null || ore4 == null || ore5 == null || ore6 == null) { return }
 

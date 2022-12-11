@@ -81,7 +81,7 @@ exports.default = {
         yield userschema_1.default.findOneAndUpdate({ user_id: (_a = interaction.member) === null || _a === void 0 ? void 0 : _a.user.id }, { premium_points: newPp });
         yield userschema_1.default.findOneAndUpdate({ user_id: (_b = interaction.member) === null || _b === void 0 ? void 0 : _b.user.id }, { $inc: { [itemName]: 1 } });
         interaction.reply({
-            content: `**Felicitari! Ai cumparat:** ${vanityEmoji} ${vanityName} **pentru** ${itemPrice} :coin:\n`
+            content: `**Felicitari! Ai cumparat:** ${vanityEmoji} ${vanityName} **pentru** ${itemPrice} ${serverDbDoc.pp_emoji}\n`
         });
     })
 };

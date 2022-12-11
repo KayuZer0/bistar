@@ -71,9 +71,9 @@ exports.default = {
             });
             return;
         }
-        if (!validOperations.includes(operationArg)) {
+        if (!validOperations.includes(operationArg.toLowerCase())) {
             interaction.reply({
-                content: `**Operatia** '${operationArg} **este invalida.** Floseste** 'set/increment'.`,
+                content: `**Operatia** '${operationArg}' **este invalida.** **Floseste** 'set/increment'.`,
                 ephemeral: true,
             });
             return;

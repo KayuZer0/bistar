@@ -152,10 +152,12 @@ function GetOreInventory(dbDoc, vanityInventory, interaction, member) {
                     return;
                 }
                 if (dbDoc.get(oreDb.name) > 0) {
-                    var vanityString = `${oreDb.vanity_emoji} **${oreDb.vanity_name}** x${dbDoc.get(oreDb.name)}\n`;
-                    yield vanityInventory.push(vanityString);
+                    if (oreDb.name != 'premium_points') {
+                        var vanityString = `${oreDb.vanity_emoji} **${oreDb.vanity_name}** x${dbDoc.get(oreDb.name)}\n`;
+                        yield vanityInventory.push(vanityString);
+                    }
                 }
-                if (id == max.id - 0.5) {
+                if (id == max.id) {
                     GetCrateInventory(dbDoc, vanityInventory, interaction, member);
                 }
             });
