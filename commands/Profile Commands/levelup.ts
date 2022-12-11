@@ -58,7 +58,7 @@ export default {
         let bonusMsg = ``
 
         if (newLevel % 5 == 0) {
-            let bistariBonus = utils.GetRandomNumber(10, 151)
+            let bistariBonus = utils.GetRandomNumber(10, 99)
             let ppBonus = utils.GetRandomNumber(1, 16)
 
             const newBistari = bistari + bistariBonus
@@ -73,7 +73,7 @@ export default {
                 { bistari: newBistari }
             );
 
-            bonusMsg = `\n**Ai primit un bonus pentru ca ai atins level ${newLevel}!**\n**Ai primit** ${bistariBonus} ${serverDbDoc.bistar_emoji}\n**Ai primit** ${ppBonus} ${serverDbDoc.pp_emoji}`
+            bonusMsg = `\n**Ai primit un bonus de** ${bistariBonus} ${serverDbDoc.bistar_emoji} **+** ${ppBonus} ${serverDbDoc.pp_emoji}`
         }
 
         interaction.reply({
