@@ -14,7 +14,7 @@ export default {
     description: "Mineaza niste minereuri calificate.",
 
     slash: true,
-    // cooldown: '5m',
+    cooldown: '5m',
 
     callback: async ({ channel, interaction, args }) => {
         const serverDbDoc = await serverschema.findOne({ '_id': utils.SERVER_DATABASE_DOCUMENT_ID })

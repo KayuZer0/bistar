@@ -45,7 +45,7 @@ exports.default = {
     category: "Job Miner",
     description: "Mineaza niste minereuri calificate.",
     slash: true,
-    // cooldown: '5m',
+    cooldown: '5m',
     callback: ({ channel, interaction, args }) => __awaiter(void 0, void 0, void 0, function* () {
         const serverDbDoc = yield serverschema_1.default.findOne({ '_id': utils.SERVER_DATABASE_DOCUMENT_ID });
         const cmdAuthorDbDoc = yield userschema_1.default.findOne({ 'user_id': interaction.user.id });
