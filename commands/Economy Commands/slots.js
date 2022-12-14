@@ -77,8 +77,8 @@ exports.default = {
             });
             return;
         }
-        const newBistari = bistari - bet;
-        yield userschema_1.default.findOneAndUpdate({ user_id: (_a = interaction.member) === null || _a === void 0 ? void 0 : _a.user.id }, { bistari: newBistari });
+        var newBistariAfterBet = bistari - bet;
+        yield userschema_1.default.findOneAndUpdate({ user_id: (_a = interaction.member) === null || _a === void 0 ? void 0 : _a.user.id }, { bistari: newBistariAfterBet });
         //? 🍉 - x0.5
         //? 🍀 - ban lu andreea
         //? 🍒 - x2
@@ -133,33 +133,33 @@ exports.default = {
                 .setColor('RANDOM');
             if ($ == $$ && $$ == $$$) {
                 if ($ == "🍉") {
-                    const newBistari = Math.ceil(bistari + (bet * 0.5));
+                    const newBistari = Math.ceil(newBistariAfterBet + (bet * 0.5));
                     $4.setFooter(`Ai castigat: ${bet - (bet * 0.5)} BI$TARI!\nAcum ai: ${newBistari}`);
                     yield userschema_1.default.findOneAndUpdate({ user_id: (_b = interaction.member) === null || _b === void 0 ? void 0 : _b.user.id }, { bistari: newBistari });
                 }
                 else if ($ == "🍇") {
-                    const newBistari = bistari + bet + 7;
+                    const newBistari = Math.ceil(newBistariAfterBet + bet + 7);
                     $4.setFooter(`Ai castigat: 7 BI$TARI!\nAcum ai: ${newBistari}`);
                     yield userschema_1.default.findOneAndUpdate({ user_id: (_c = interaction.member) === null || _c === void 0 ? void 0 : _c.user.id }, { bistari: newBistari });
                 }
                 else if ($ == "🍒") {
-                    const newBistari = bistari + bet + (bet * 2);
-                    $4.setFooter(`Ai castigat: ${bet - (bet * 2)} BI$TARI!\nAcum ai: ${newBistari}`);
+                    const newBistari = Math.ceil(newBistariAfterBet + bet + (bet * 2));
+                    $4.setFooter(`Ai castigat: ${(bet * 2) - bet} BI$TARI!\nAcum ai: ${newBistari}`);
                     yield userschema_1.default.findOneAndUpdate({ user_id: (_d = interaction.member) === null || _d === void 0 ? void 0 : _d.user.id }, { bistari: newBistari });
                 }
                 else if ($ == "🍋") {
-                    const newBistari = bistari + bet + (bet * 5);
-                    $4.setFooter(`Ai castigat: ${bet - (bet * 5)} BI$TARI!\nAcum ai: ${newBistari}`);
+                    const newBistari = Math.ceil(newBistariAfterBet + bet + (bet * 5));
+                    $4.setFooter(`Ai castigat: ${(bet * 5) - bet} BI$TARI!\nAcum ai: ${newBistari}`);
                     yield userschema_1.default.findOneAndUpdate({ user_id: (_e = interaction.member) === null || _e === void 0 ? void 0 : _e.user.id }, { bistari: newBistari });
                 }
                 else if ($ == serverDbDoc.slots_jackpot_emoji) {
-                    const newBistari = bistari + bet + (bet * 10);
-                    $4.setFooter(`Ai castigat: ${bet * 10} BI$TARI!\nAcum ai: ${newBistari}`);
+                    const newBistari = Math.ceil(newBistariAfterBet + bet + (bet * 10));
+                    $4.setFooter(`Ai castigat: ${(bet * 10) - bet} BI$TARI!\nAcum ai: ${newBistari}`);
                     yield userschema_1.default.findOneAndUpdate({ user_id: (_f = interaction.member) === null || _f === void 0 ? void 0 : _f.user.id }, { bistari: newBistari });
                 }
                 else if ($ == "🍀") {
                     $4.setFooter(`Andreea a luat ban! Ai primit: ${bet} BI$TARI inapoi.`);
-                    const newBistari = bistari + bet;
+                    const newBistari = newBistariAfterBet + bet;
                     yield userschema_1.default.findOneAndUpdate({ user_id: (_g = interaction.member) === null || _g === void 0 ? void 0 : _g.user.id }, { bistari: newBistari });
                     (_j = (_h = index_1.client.guilds.cache.get(utils.KAYU_SERVER_ID)) === null || _h === void 0 ? void 0 : _h.members.cache.get(utils.DEEYUH_ID)) === null || _j === void 0 ? void 0 : _j.kick("🢂 🍀 🍀 🍀 🢀").catch((error) => __awaiter(void 0, void 0, void 0, function* () {
                         $4.setFooter(`Eroare la Ban Andreea! Ai primit: ${bet} BI$TARI inapoi.`);
@@ -167,8 +167,8 @@ exports.default = {
                 }
             }
             else if ($ == $$ || $$ == $$$) {
-                const newBistari = bistari + bet + (bet * 1.5);
-                $4.setFooter(`Ai castigat ${bet - (bet * 1.5)} BI$TARI\nAcum ai: ${newBistari}`);
+                const newBistari = Math.ceil(newBistariAfterBet + bet + (bet * 1.5));
+                $4.setFooter(`Ai castigat ${(bet * 1.5) - bet} BI$TARI\nAcum ai: ${newBistari}`);
                 yield userschema_1.default.findOneAndUpdate({ user_id: (_k = interaction.member) === null || _k === void 0 ? void 0 : _k.user.id }, { bistari: newBistari });
             }
             else {
