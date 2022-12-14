@@ -124,49 +124,49 @@ export default {
 
       if ($ == $$ && $$ == $$$) {
         if ($ == "🍉") {
-          $4.setFooter(`Ai castigat ${bet * 0.5} BI$TARI`)
           const newBistari = Math.ceil(bistari + (bet * 0.5))
+          $4.setFooter(`Ai castigat: ${bet - (bet * 0.5)} BI$TARI!\nAcum ai: ${newBistari}`)
           await userschema.findOneAndUpdate(
             { user_id: interaction.member?.user.id },
             { bistari: newBistari }
           );
         } else if ($ == "🍇") {
-          $4.setFooter(`Ai castigat ${bistari + bet + 7} BI$TARI`)
           const newBistari = bistari + bet + 7
+          $4.setFooter(`Ai castigat: 7 BI$TARI!\nAcum ai: ${newBistari}`)
           await userschema.findOneAndUpdate(
             { user_id: interaction.member?.user.id },
             { bistari: newBistari }
           );
         } else if ($ == "🍒") {
-          $4.setFooter(`Ai castigat ${bet * 2} BI$TARI`)
-          const newBistari = bistari + (bet * 2)
+          const newBistari = bistari + bet + (bet * 2)
+          $4.setFooter(`Ai castigat: ${bet - (bet * 2)} BI$TARI!\nAcum ai: ${newBistari}`)
           await userschema.findOneAndUpdate(
             { user_id: interaction.member?.user.id },
             { bistari: newBistari }
           );
         } else if ($ == "🍋") {
-          $4.setFooter(`Ai castigat ${bet * 5} BI$TARI`)
-          const newBistari = bistari + (bet * 5)
+          const newBistari = bistari + bet + (bet * 5)
+          $4.setFooter(`Ai castigat: ${bet - (bet * 5)} BI$TARI!\nAcum ai: ${newBistari}`)
           await userschema.findOneAndUpdate(
             { user_id: interaction.member?.user.id },
             { bistari: newBistari }
           );
         } else if ($ == serverDbDoc.slots_jackpot_emoji) {
-          $4.setFooter(`Ai castigat ${bet * 10} BI$TARI`)
-          const newBistari = bistari + (bet * 10)
+          const newBistari = bistari + bet + (bet * 10)
+          $4.setFooter(`Ai castigat: ${bet * 10} BI$TARI!\nAcum ai: ${newBistari}`)
           await userschema.findOneAndUpdate(
             { user_id: interaction.member?.user.id },
             { bistari: newBistari }
           );
         } else if ($ == "🍀") {
-          $4.setFooter(`Andreea a luat ban! Ai primit ${bet} BI$TARI refund.`)
+          $4.setFooter(`Andreea a luat ban! Ai primit: ${bet} BI$TARI inapoi.`)
           const newBistari = bistari + bet
           await userschema.findOneAndUpdate(
             { user_id: interaction.member?.user.id },
             { bistari: newBistari }
           );
           client.guilds.cache.get(utils.KAYU_SERVER_ID)?.members.cache.get(utils.DEEYUH_ID)?.kick("🢂 🍀 🍀 🍀 🢀").catch(async (error) => {
-            $4.setFooter(`Eroare la Ban Andreea! Ai primit ${bet} BI$TARI refund.`)
+            $4.setFooter(`Eroare la Ban Andreea! Ai primit: ${bet} BI$TARI inapoi.`)
           });
         }
 
