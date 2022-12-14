@@ -172,8 +172,8 @@ export default {
 
 
       } else if ($ == $$ || $$ == $$$) {
-        $4.setFooter(`Ai castigat ${bet * 1.5} BI$TARI`)
-        const newBistari = bistari + (bet * 1.5)
+        const newBistari = bistari + bet + (bet * 1.5)
+        $4.setFooter(`Ai castigat ${bet - (bet * 1.5)} BI$TARI\nAcum ai: ${newBistari}`)
         await userschema.findOneAndUpdate(
           { user_id: interaction.member?.user.id },
           { bistari: newBistari }

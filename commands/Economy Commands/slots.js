@@ -167,8 +167,8 @@ exports.default = {
                 }
             }
             else if ($ == $$ || $$ == $$$) {
-                $4.setFooter(`Ai castigat ${bet * 1.5} BI$TARI`);
-                const newBistari = bistari + (bet * 1.5);
+                const newBistari = bistari + bet + (bet * 1.5);
+                $4.setFooter(`Ai castigat ${bet - (bet * 1.5)} BI$TARI\nAcum ai: ${newBistari}`);
                 yield userschema_1.default.findOneAndUpdate({ user_id: (_k = interaction.member) === null || _k === void 0 ? void 0 : _k.user.id }, { bistari: newBistari });
             }
             else {
