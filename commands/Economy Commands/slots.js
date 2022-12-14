@@ -168,7 +168,7 @@ exports.default = {
                 yield userschema_1.default.findOneAndUpdate({ user_id: (_h = interaction.member) === null || _h === void 0 ? void 0 : _h.user.id }, { $inc: { bistari: win } });
             }
             else {
-                $4.setFooter(`Ai pierdut ${bet} BI$TARI\nAcum ai: ${bistari - bet} BI$TARI.`);
+                $4.setFooter(`Ai pierdut ${bet} BI$TARI!\nAcum ai: ${bistari - bet} BI$TARI.`);
                 yield userschema_1.default.findOneAndUpdate({ user_id: (_j = interaction.member) === null || _j === void 0 ? void 0 : _j.user.id }, { $inc: { bistari: -bet } });
             }
             yield interaction.editReply({

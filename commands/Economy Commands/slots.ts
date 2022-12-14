@@ -167,7 +167,7 @@ export default {
           { $inc: { bistari: win } }
         );
       } else {
-        $4.setFooter(`Ai pierdut ${bet} BI$TARI\nAcum ai: ${bistari - bet} BI$TARI.`)
+        $4.setFooter(`Ai pierdut ${bet} BI$TARI!\nAcum ai: ${bistari - bet} BI$TARI.`)
         await userschema.findOneAndUpdate(
           { user_id: interaction.member?.user.id },
           { $inc: { bistari: -bet } }
