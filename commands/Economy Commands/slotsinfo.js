@@ -53,7 +53,7 @@ exports.default = {
         const embed = new discord_js_1.MessageEmbed()
             .setColor(utils.GenerateColor())
             .setTitle(`Păcănele [-] Foloseste /slots <bet> [-] Momentan ai ${bistari} ${serverDbDoc.bistar_emoji}`)
-            .setDescription(`**Win conditions:**\n\n| ${serverDbDoc.slots_roll_emoji} | ${serverDbDoc.slots_roll_emoji} | ❓ | 🢂 **x1.5**\n\n| 🍀 | 🍀 | 🍀 | 🢂 **x1 + Ban lu' Andreea**\n\n| 🍒 | 🍒 | 🍒 | 🢂 **x2**\n\n| 🍇 | 🍇 | 🍇 | 🢂 **+7**\n\n| ${serverDbDoc.slots_jackpot_emoji} | ${serverDbDoc.slots_jackpot_emoji} | ${serverDbDoc.slots_jackpot_emoji} | 🢂 **x10**`);
+            .setDescription(`**Win conditions:**\n\n| ${serverDbDoc.slots_roll_emoji} | ${serverDbDoc.slots_roll_emoji} | ❓ | 🢂 **x1.5**\n\n| 🍀 | 🍀 | 🍀 | 🢂 **x1 + Ban lu' Andreea**\n\n| 🍇 | 🍇 | 🍇 | 🢂 **+7**\n\n| 🍉 | 🍉 | 🍉 | 🢂 **x2**\n\n| 🍒 | 🍒 | 🍒 | 🢂 **x3**\n\n| 🍋 | 🍋 | 🍋 | 🢂 **x5**\n\n| ${serverDbDoc.slots_jackpot_emoji} | ${serverDbDoc.slots_jackpot_emoji} | ${serverDbDoc.slots_jackpot_emoji} | 🢂 **x10**`);
         interaction.reply({
             embeds: [embed]
         });

@@ -12,6 +12,7 @@ export default {
   description: "Juaca la niste păcănele corecte (/slotsinfo)",
 
   slash: true,
+  cooldown: '15s',
 
   options: [{
     name: "bet",
@@ -58,9 +59,9 @@ export default {
       { bistari: newBistariAfterBet }
     );
 
-    //? 🍉 - x0.5
     //? 🍀 - ban lu andreea
-    //? 🍒 - x2
+    //? 🍉 - x2
+    //? 🍒 - x3
     //? 🍇 - x5
     //? :bIan: - x 10
 
@@ -123,63 +124,60 @@ export default {
         .setColor('RANDOM')
 
       if ($ == $$ && $$ == $$$) {
-        if ($ == "🍉") {
-          const newBistari = Math.ceil(newBistariAfterBet + (bet * 0.5))
-          $4.setFooter(`Ai castigat: ${bet - (bet * 0.5)} BI$TARI!\nAcum ai: ${newBistari} BI$TARI`)
+        if ($ == "🍇") {
+          const win = (bet + 7) - bet
+          $4.setFooter(`Ai castigat: 7 BI$TARI!\nAcum ai: ${bistari + win} BI$TARI.`)
           await userschema.findOneAndUpdate(
             { user_id: interaction.member?.user.id },
-            { bistari: newBistari }
+            { $inc: { bistari: win } }
           );
-        } else if ($ == "🍇") {
-          const newBistari = Math.ceil(newBistariAfterBet + bet + 7)
-          $4.setFooter(`Ai castigat: 7 BI$TARI!\nAcum ai: ${newBistari} BI$TARI`)
+        } else if ($ == "🍉") {
+          const win = (bet * 2) - bet
+          $4.setFooter(`Ai castigat: ${win} BI$TARI!\nAcum ai: ${bistari + win} BI$TARI.`)
           await userschema.findOneAndUpdate(
             { user_id: interaction.member?.user.id },
-            { bistari: newBistari }
+            { $inc: { bistari: win } }
           );
         } else if ($ == "🍒") {
-          const newBistari = Math.ceil(newBistariAfterBet + bet + (bet * 2))
-          $4.setFooter(`Ai castigat: ${(bet * 2) - bet} BI$TARI!\nAcum ai: ${newBistari} BI$TARI`)
+          const win = (bet * 3) - bet
+          $4.setFooter(`Ai castigat: ${win} BI$TARI!\nAcum ai: ${bistari + win} BI$TARI.`)
           await userschema.findOneAndUpdate(
             { user_id: interaction.member?.user.id },
-            { bistari: newBistari }
+            { $inc: { bistari: win } }
           );
         } else if ($ == "🍋") {
-          const newBistari = Math.ceil(newBistariAfterBet + bet + (bet * 5))
-          $4.setFooter(`Ai castigat: ${(bet * 5) - bet} BI$TARI!\nAcum ai: ${newBistari} BI$TARI`)
+          const win = (bet * 5) - bet
+          $4.setFooter(`Ai castigat: ${win} BI$TARI!\nAcum ai: ${bistari + win} BI$TARI.`)
           await userschema.findOneAndUpdate(
             { user_id: interaction.member?.user.id },
-            { bistari: newBistari }
+            { $inc: { bistari: win } }
           );
         } else if ($ == serverDbDoc.slots_jackpot_emoji) {
-          const newBistari = Math.ceil(newBistariAfterBet + bet + (bet * 10))
-          $4.setFooter(`Ai castigat: ${(bet * 10) - bet} BI$TARI!\nAcum ai: ${newBistari} BI$TARI`)
+          const win = (bet * 10) - bet
+          $4.setFooter(`Ai castigat: ${win} BI$TARI!\nAcum ai: ${bistari + win} BI$TARI.`)
           await userschema.findOneAndUpdate(
             { user_id: interaction.member?.user.id },
-            { bistari: newBistari }
+            { $inc: { bistari: win } }
           );
         } else if ($ == "🍀") {
-          $4.setFooter(`Andreea a luat ban! Ai primit: ${bet} BI$TARI inapoi.`)
-          const newBistari = newBistariAfterBet + bet
-          await userschema.findOneAndUpdate(
-            { user_id: interaction.member?.user.id },
-            { bistari: newBistari }
-          );
+          $4.setFooter(`Andreea a luat ban si nu ai castigat nimic. Acum ai: ${bistari} BI$TARI.`)
           client.guilds.cache.get(utils.KAYU_SERVER_ID)?.members.cache.get(utils.DEEYUH_ID)?.kick("🢂 🍀 🍀 🍀 🢀").catch(async (error) => {
             $4.setFooter(`Eroare la Ban Andreea! Ai primit: ${bet} BI$TARI inapoi.`)
           });
         }
-
-
       } else if ($ == $$ || $$ == $$$) {
-        const newBistari = Math.ceil(newBistariAfterBet + bet + (bet * 1.5))
-        $4.setFooter(`Ai castigat ${(bet * 1.5) - bet} BI$TARI\nAcum ai: ${newBistari} BI$TARI`)
+        const win = (bet * 1.5) - bet
+        $4.setFooter(`Ai castigat ${win} BI$TARI!\nAcum ai: ${bistari + win} BI$TARI.`)
         await userschema.findOneAndUpdate(
           { user_id: interaction.member?.user.id },
-          { bistari: newBistari }
+          { $inc: { bistari: win } }
         );
       } else {
-        $4.setFooter(`Ai pierdut ${bet} BI$TARI\nAcum ai: ${newBistariAfterBet} BI$TARI`)
+        $4.setFooter(`Ai pierdut ${bet} BI$TARI\nAcum ai: ${bistari - bet} BI$TARI.`)
+        await userschema.findOneAndUpdate(
+          { user_id: interaction.member?.user.id },
+          { $inc: { bistari: -bet } }
+        );
       }
 
       await interaction.editReply({
