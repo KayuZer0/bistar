@@ -52,7 +52,6 @@ exports.default = {
             required: true
         }],
     callback: ({ channel, interaction, args }) => __awaiter(void 0, void 0, void 0, function* () {
-        var _a;
         const serverDbDoc = yield serverschema_1.default.findOne({ '_id': utils.SERVER_DATABASE_DOCUMENT_ID });
         const cmdAuthorDbDoc = yield userschema_1.default.findOne({ 'user_id': interaction.user.id });
         if (cmdAuthorDbDoc == null || serverDbDoc == null) {
@@ -78,8 +77,6 @@ exports.default = {
             });
             return;
         }
-        var newBistariAfterBet = bistari - bet;
-        yield userschema_1.default.findOneAndUpdate({ user_id: (_a = interaction.member) === null || _a === void 0 ? void 0 : _a.user.id }, { bistari: newBistariAfterBet });
         //? 🍀 - ban lu andreea
         //? 🍉 - x2
         //? 🍒 - x3
@@ -127,7 +124,7 @@ exports.default = {
             });
         }), 1800);
         setTimeout(() => __awaiter(void 0, void 0, void 0, function* () {
-            var _b, _c, _d, _e, _f, _g, _h, _j, _k;
+            var _a, _b, _c, _d, _e, _f, _g, _h, _j;
             var $4 = new discord_js_1.MessageEmbed()
                 .setTitle(`Păcănele - Bet: ${bet}`)
                 .setDescription("🢂 | " + $ + " | " + $$ + " | " + $$$ + " | 🢀")
@@ -136,31 +133,31 @@ exports.default = {
                 if ($ == "🍇") {
                     const win = (bet + 7) - bet;
                     $4.setFooter(`Ai castigat: 7 BI$TARI!\nAcum ai: ${bistari + win} BI$TARI.`);
-                    yield userschema_1.default.findOneAndUpdate({ user_id: (_b = interaction.member) === null || _b === void 0 ? void 0 : _b.user.id }, { $inc: { bistari: win } });
+                    yield userschema_1.default.findOneAndUpdate({ user_id: (_a = interaction.member) === null || _a === void 0 ? void 0 : _a.user.id }, { $inc: { bistari: win } });
                 }
                 else if ($ == "🍉") {
                     const win = (bet * 2) - bet;
                     $4.setFooter(`Ai castigat: ${win} BI$TARI!\nAcum ai: ${bistari + win} BI$TARI.`);
-                    yield userschema_1.default.findOneAndUpdate({ user_id: (_c = interaction.member) === null || _c === void 0 ? void 0 : _c.user.id }, { $inc: { bistari: win } });
+                    yield userschema_1.default.findOneAndUpdate({ user_id: (_b = interaction.member) === null || _b === void 0 ? void 0 : _b.user.id }, { $inc: { bistari: win } });
                 }
                 else if ($ == "🍒") {
                     const win = (bet * 3) - bet;
                     $4.setFooter(`Ai castigat: ${win} BI$TARI!\nAcum ai: ${bistari + win} BI$TARI.`);
-                    yield userschema_1.default.findOneAndUpdate({ user_id: (_d = interaction.member) === null || _d === void 0 ? void 0 : _d.user.id }, { $inc: { bistari: win } });
+                    yield userschema_1.default.findOneAndUpdate({ user_id: (_c = interaction.member) === null || _c === void 0 ? void 0 : _c.user.id }, { $inc: { bistari: win } });
                 }
                 else if ($ == "🍋") {
                     const win = (bet * 5) - bet;
                     $4.setFooter(`Ai castigat: ${win} BI$TARI!\nAcum ai: ${bistari + win} BI$TARI.`);
-                    yield userschema_1.default.findOneAndUpdate({ user_id: (_e = interaction.member) === null || _e === void 0 ? void 0 : _e.user.id }, { $inc: { bistari: win } });
+                    yield userschema_1.default.findOneAndUpdate({ user_id: (_d = interaction.member) === null || _d === void 0 ? void 0 : _d.user.id }, { $inc: { bistari: win } });
                 }
                 else if ($ == serverDbDoc.slots_jackpot_emoji) {
                     const win = (bet * 10) - bet;
                     $4.setFooter(`Ai castigat: ${win} BI$TARI!\nAcum ai: ${bistari + win} BI$TARI.`);
-                    yield userschema_1.default.findOneAndUpdate({ user_id: (_f = interaction.member) === null || _f === void 0 ? void 0 : _f.user.id }, { $inc: { bistari: win } });
+                    yield userschema_1.default.findOneAndUpdate({ user_id: (_e = interaction.member) === null || _e === void 0 ? void 0 : _e.user.id }, { $inc: { bistari: win } });
                 }
                 else if ($ == "🍀") {
                     $4.setFooter(`Andreea a luat ban si nu ai castigat nimic. Acum ai: ${bistari} BI$TARI.`);
-                    (_h = (_g = index_1.client.guilds.cache.get(utils.KAYU_SERVER_ID)) === null || _g === void 0 ? void 0 : _g.members.cache.get(utils.DEEYUH_ID)) === null || _h === void 0 ? void 0 : _h.kick("🢂 🍀 🍀 🍀 🢀").catch((error) => __awaiter(void 0, void 0, void 0, function* () {
+                    (_g = (_f = index_1.client.guilds.cache.get(utils.KAYU_SERVER_ID)) === null || _f === void 0 ? void 0 : _f.members.cache.get(utils.DEEYUH_ID)) === null || _g === void 0 ? void 0 : _g.kick("🢂 🍀 🍀 🍀 🢀").catch((error) => __awaiter(void 0, void 0, void 0, function* () {
                         $4.setFooter(`Eroare la Ban Andreea! Ai primit: ${bet} BI$TARI inapoi.`);
                     }));
                 }
@@ -168,11 +165,11 @@ exports.default = {
             else if ($ == $$ || $$ == $$$) {
                 const win = (bet * 1.5) - bet;
                 $4.setFooter(`Ai castigat ${win} BI$TARI!\nAcum ai: ${bistari + win} BI$TARI.`);
-                yield userschema_1.default.findOneAndUpdate({ user_id: (_j = interaction.member) === null || _j === void 0 ? void 0 : _j.user.id }, { $inc: { bistari: win } });
+                yield userschema_1.default.findOneAndUpdate({ user_id: (_h = interaction.member) === null || _h === void 0 ? void 0 : _h.user.id }, { $inc: { bistari: win } });
             }
             else {
                 $4.setFooter(`Ai pierdut ${bet} BI$TARI\nAcum ai: ${bistari - bet} BI$TARI.`);
-                yield userschema_1.default.findOneAndUpdate({ user_id: (_k = interaction.member) === null || _k === void 0 ? void 0 : _k.user.id }, { $inc: { bistari: -bet } });
+                yield userschema_1.default.findOneAndUpdate({ user_id: (_j = interaction.member) === null || _j === void 0 ? void 0 : _j.user.id }, { $inc: { bistari: -bet } });
             }
             yield interaction.editReply({
                 embeds: [$4]

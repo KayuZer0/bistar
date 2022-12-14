@@ -53,12 +53,6 @@ export default {
       return
     }
 
-    var newBistariAfterBet = bistari - bet
-    await userschema.findOneAndUpdate(
-      { user_id: interaction.member?.user.id },
-      { bistari: newBistariAfterBet }
-    );
-
     //? 🍀 - ban lu andreea
     //? 🍉 - x2
     //? 🍒 - x3
