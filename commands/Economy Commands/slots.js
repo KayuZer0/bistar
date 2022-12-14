@@ -44,7 +44,7 @@ exports.default = {
     category: "Economy",
     description: "Juaca la niste păcănele corecte (/slotsinfo)",
     slash: true,
-    cooldown: '15s',
+    cooldown: '10s',
     options: [{
             name: "bet",
             description: "Cat vrei sa pariezi la pacanele.",

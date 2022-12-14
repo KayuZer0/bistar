@@ -12,7 +12,7 @@ export default {
   description: "Juaca la niste păcănele corecte (/slotsinfo)",
 
   slash: true,
-  cooldown: '15s',
+  cooldown: '10s',
 
   options: [{
     name: "bet",
