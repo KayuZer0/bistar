@@ -179,7 +179,7 @@ export default {
           { bistari: newBistari }
         );
       } else {
-        $4.setFooter(`Ai pierdut ${bet} BI$TARI`)
+        $4.setFooter(`Ai pierdut ${bet} BI$TARI\nAcum ai: ${newBistariAfterBet} BI$TARI`)
       }
 
       await interaction.editReply({

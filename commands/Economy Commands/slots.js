@@ -172,7 +172,7 @@ exports.default = {
                 yield userschema_1.default.findOneAndUpdate({ user_id: (_k = interaction.member) === null || _k === void 0 ? void 0 : _k.user.id }, { bistari: newBistari });
             }
             else {
-                $4.setFooter(`Ai pierdut ${bet} BI$TARI`);
+                $4.setFooter(`Ai pierdut ${bet} BI$TARI\nAcum ai: ${newBistariAfterBet} BI$TARI`);
             }
             yield interaction.editReply({
                 embeds: [$4]

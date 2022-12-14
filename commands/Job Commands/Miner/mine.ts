@@ -9,8 +9,6 @@ import minerschema from "../../../schemas/minerschema";
 import oreschema from "../../../schemas/oreschema";
 import jobschema from "../../../schemas/jobschema";
 
-let cox = 1
-
 export default {
     category: "Job Miner",
     description: "Mineaza niste minereuri calificate.",
