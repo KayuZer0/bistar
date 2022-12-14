@@ -160,7 +160,7 @@ export default {
           });
         }
       } else if ($ == $$ || $$ == $$$) {
-        const win = (bet * 1.5) - bet
+        const win = Math.ceil((bet * 1.5) - bet)
         $4.setFooter(`Ai castigat ${win} BI$TARI!\nAcum ai: ${bistari + win} BI$TARI.`)
         await userschema.findOneAndUpdate(
           { user_id: interaction.member?.user.id },
