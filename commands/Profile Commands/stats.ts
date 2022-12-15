@@ -84,12 +84,12 @@ export default {
             const skill = cmdAuthorDbDoc.get(jobSkillName)
 
             const jobWorkedQuery = jobName + '_worked'
-            const jobWorked = cmdAuthorDbDoc.get(jobWorkedQuery)
+            const jobWorked = dbDoc.get(jobWorkedQuery)
 
             let workedForNextSkill = `/Max`
 
             if (skill < 6) {
-                const workedForNextSkillQuery = 'worked_for_skill_' + (cmdAuthorDbDoc.get(jobSkillName) + 1).toString()
+                const workedForNextSkillQuery = 'worked_for_skill_' + (dbDoc.get(jobSkillName) + 1).toString()
                 workedForNextSkill = `/${jobsDbDoc.get(workedForNextSkillQuery)}`
             }
 
