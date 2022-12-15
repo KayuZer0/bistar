@@ -72,10 +72,8 @@ exports.default = {
         if (newLevel % 5 == 0) {
             let bistariBonus = utils.GetRandomNumber(10, 99);
             let ppBonus = utils.GetRandomNumber(1, 16);
-            const newBistari = bistari + bistariBonus;
-            yield userschema_1.default.findOneAndUpdate({ user_id: (_d = interaction.member) === null || _d === void 0 ? void 0 : _d.user.id }, { bistari: newBistari });
-            const newPremiumPoints = premiumPoints + ppBonus;
-            yield userschema_1.default.findOneAndUpdate({ user_id: (_e = interaction.member) === null || _e === void 0 ? void 0 : _e.user.id }, { bistari: newBistari });
+            yield userschema_1.default.findOneAndUpdate({ user_id: (_d = interaction.member) === null || _d === void 0 ? void 0 : _d.user.id }, { $inc: { bistari: bistariBonus } });
+            yield userschema_1.default.findOneAndUpdate({ user_id: (_e = interaction.member) === null || _e === void 0 ? void 0 : _e.user.id }, { $inc: { premium_points: ppBonus } });
             bonusMsg = `\n**Ai primit un bonus de** ${bistariBonus} ${serverDbDoc.bistar_emoji} **+** ${ppBonus} ${serverDbDoc.pp_emoji}`;
         }
         interaction.reply({

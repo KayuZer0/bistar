@@ -61,16 +61,14 @@ export default {
             let bistariBonus = utils.GetRandomNumber(10, 99)
             let ppBonus = utils.GetRandomNumber(1, 16)
 
-            const newBistari = bistari + bistariBonus
             await userschema.findOneAndUpdate(
                 { user_id: interaction.member?.user.id },
-                { bistari: newBistari }
+                { $inc: { bistari: bistariBonus } }
             );
 
-            const newPremiumPoints = premiumPoints + ppBonus
             await userschema.findOneAndUpdate(
                 { user_id: interaction.member?.user.id },
-                { bistari: newBistari }
+                { $inc: { premium_points: ppBonus } }
             );
 
             bonusMsg = `\n**Ai primit un bonus de** ${bistariBonus} ${serverDbDoc.bistar_emoji} **+** ${ppBonus} ${serverDbDoc.pp_emoji}`
