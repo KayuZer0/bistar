@@ -88,7 +88,7 @@ export default {
         switch (operationArg) {
             case 'set':
                 await userschema.findOneAndUpdate(
-                    { user_id: interaction.user.id },
+                    { user_id: userArg.id },
                     { $set: { [fieldArg]: valueArg } }
                 );
                 interaction.reply({
@@ -97,7 +97,7 @@ export default {
                 break
             case 'increment':
                 await userschema.findOneAndUpdate(
-                    { user_id: interaction.user.id },
+                    { user_id: userArg.id },
                     { $inc: { [fieldArg]: valueArg } }
                 );
                 interaction.reply({

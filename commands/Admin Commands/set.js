@@ -80,13 +80,13 @@ exports.default = {
         }
         switch (operationArg) {
             case 'set':
-                yield userschema_1.default.findOneAndUpdate({ user_id: interaction.user.id }, { $set: { [fieldArg]: valueArg } });
+                yield userschema_1.default.findOneAndUpdate({ user_id: userArg.id }, { $set: { [fieldArg]: valueArg } });
                 interaction.reply({
                     content: `**Proprietatea** ${fieldArg} **a lui** ${userArg} **a fost setata la** ${valueArg}`,
                 });
                 break;
             case 'increment':
-                yield userschema_1.default.findOneAndUpdate({ user_id: interaction.user.id }, { $inc: { [fieldArg]: valueArg } });
+                yield userschema_1.default.findOneAndUpdate({ user_id: userArg.id }, { $inc: { [fieldArg]: valueArg } });
                 interaction.reply({
                     content: `**Proprietatea** '${fieldArg}' **a lui** ${userArg} **a fost incrementata cu** ${valueArg}`,
                 });
