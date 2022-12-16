@@ -30,9 +30,8 @@ export default {
         const ticket2 = await ticketschema.findOne({ 'id': 1 })
         const ticket3 = await ticketschema.findOne({ 'id': 2 })
         const ticket4 = await ticketschema.findOne({ 'id': 3 })
-        const ticket5 = await ticketschema.findOne({ 'id': 4 })
 
-        if (ticket1 == null || ticket2 == null || ticket3 == null || ticket4 == null || ticket5 == null) { return }
+        if (ticket1 == null || ticket2 == null || ticket3 == null || ticket4 == null) { return }
 
         const embed = new MessageEmbed()
             .setColor(utils.GenerateColor() as ColorResolvable) //! ${(await ticketschema.findOne({ 'id': 0 }))?.shop_price}
@@ -41,7 +40,6 @@ export default {
             .addField(`${ticket2.vanity_name} (ID: 1)`, `ㅤ ↳ **Pret:** ${ticket2.shop_price} ${serverDbDoc.bistar_emoji} \nㅤ ↳ **Info:** ${ticket2.info} \nㅤ ↳ **Usage:** ${ticket2.usage}`, false)
             .addField(`${ticket3.vanity_name} (ID: 2)`, `ㅤ ↳ **Pret:** ${ticket3.shop_price} ${serverDbDoc.bistar_emoji} \nㅤ ↳ **Info:** ${ticket3.info} \nㅤ ↳ **Usage:** ${ticket3.usage}`, false)
             .addField(`${ticket4.vanity_name} (ID: 3)`, `ㅤ ↳ **Pret:** ${ticket4.shop_price} ${serverDbDoc.bistar_emoji} \nㅤ ↳ **Info:** ${ticket4.info} \nㅤ ↳ **Usage:** ${ticket4.usage}`, false)
-            .addField(`${ticket5.vanity_name} (ID: 4)`, `ㅤ ↳ **Pret:** ${ticket5.shop_price} ${serverDbDoc.bistar_emoji} \nㅤ ↳ **Info:** ${ticket5.info} \nㅤ ↳ **Usage:** ${ticket5.usage}`, false)
         
         interaction.editReply({
             embeds: [embed]
