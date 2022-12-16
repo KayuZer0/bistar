@@ -58,9 +58,7 @@ exports.default = {
         const ticket3 = yield ticketschema_1.default.findOne({ 'id': 2 });
         const ticket4 = yield ticketschema_1.default.findOne({ 'id': 3 });
         const ticket5 = yield ticketschema_1.default.findOne({ 'id': 4 });
-        const ticket6 = yield ticketschema_1.default.findOne({ 'id': 5 });
-        const ticket7 = yield ticketschema_1.default.findOne({ 'id': 6 });
-        if (ticket1 == null || ticket2 == null || ticket3 == null || ticket4 == null || ticket5 == null || ticket6 == null || ticket7 == null) {
+        if (ticket1 == null || ticket2 == null || ticket3 == null || ticket4 == null || ticket5 == null) {
             return;
         }
         const embed = new discord_js_1.MessageEmbed()
@@ -70,9 +68,7 @@ exports.default = {
             .addField(`${ticket2.vanity_name} (ID: 1)`, `ㅤ ↳ **Pret:** ${ticket2.shop_price} ${serverDbDoc.bistar_emoji} \nㅤ ↳ **Info:** ${ticket2.info} \nㅤ ↳ **Usage:** ${ticket2.usage}`, false)
             .addField(`${ticket3.vanity_name} (ID: 2)`, `ㅤ ↳ **Pret:** ${ticket3.shop_price} ${serverDbDoc.bistar_emoji} \nㅤ ↳ **Info:** ${ticket3.info} \nㅤ ↳ **Usage:** ${ticket3.usage}`, false)
             .addField(`${ticket4.vanity_name} (ID: 3)`, `ㅤ ↳ **Pret:** ${ticket4.shop_price} ${serverDbDoc.bistar_emoji} \nㅤ ↳ **Info:** ${ticket4.info} \nㅤ ↳ **Usage:** ${ticket4.usage}`, false)
-            .addField(`${ticket5.vanity_name} (ID: 4)`, `ㅤ ↳ **Pret:** ${ticket5.shop_price} ${serverDbDoc.bistar_emoji} \nㅤ ↳ **Info:** ${ticket5.info} \nㅤ ↳ **Usage:** ${ticket5.usage}`, false)
-            .addField(`${ticket6.vanity_name} (ID: 5)`, `ㅤ ↳ **Pret:** ${ticket6.shop_price} ${serverDbDoc.bistar_emoji} \nㅤ ↳ **Info:** ${ticket6.info} \nㅤ ↳ **Usage:** ${ticket6.usage}`, false)
-            .addField(`${ticket7.vanity_name} (ID: 6)`, `ㅤ ↳ **Pret:** ${ticket7.shop_price} ${serverDbDoc.bistar_emoji} \nㅤ ↳ **Info:** ${ticket7.info} \nㅤ ↳ **Usage:** ${ticket7.usage}`, false);
+            .addField(`${ticket5.vanity_name} (ID: 4)`, `ㅤ ↳ **Pret:** ${ticket5.shop_price} ${serverDbDoc.bistar_emoji} \nㅤ ↳ **Info:** ${ticket5.info} \nㅤ ↳ **Usage:** ${ticket5.usage}`, false);
         interaction.editReply({
             embeds: [embed]
         });
